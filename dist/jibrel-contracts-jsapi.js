@@ -3,13 +3,255 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.totalSupply = totalSupply;
-exports.balanceOf = balanceOf;
-exports.transfer = transfer;
-exports.allEvents = allEvents;
-exports.getPastEvents = getPastEvents;
-exports.Transfer = Transfer;
-exports.estimateGas = estimateGas;
+exports.estimateGas = exports.Transfer = exports.getPastEvents = exports.allEvents = exports.transfer = exports.balanceOf = exports.totalSupply = undefined;
+
+var _regenerator = require('babel-runtime/regenerator');
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
+
+var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
+
+/**
+ * ERC20API 'calling' methods
+ */
+
+var totalSupply = exports.totalSupply = function () {
+  var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(props) {
+    var validatedProps, rpcaddr, rpcport, contractAddress, contractInstance;
+    return _regenerator2.default.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return (0, _validationSchemas.validate)(props, _validationSchemas.ERC20Schemas.totalSupply);
+
+          case 2:
+            validatedProps = _context.sent;
+            rpcaddr = validatedProps.rpcaddr, rpcport = validatedProps.rpcport, contractAddress = validatedProps.contractAddress;
+
+
+            (0, _initWeb2.default)(rpcaddr, rpcport);
+            contractInstance = (0, _getContractInstance2.default)(contractAddress, contractInterface);
+            return _context.abrupt('return', _bluebird2.default.promisify(contractInstance.totalSupply.call)());
+
+          case 7:
+          case 'end':
+            return _context.stop();
+        }
+      }
+    }, _callee, this);
+  }));
+
+  return function totalSupply(_x) {
+    return _ref.apply(this, arguments);
+  };
+}();
+
+var balanceOf = exports.balanceOf = function () {
+  var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(props) {
+    var validatedProps, rpcaddr, rpcport, contractAddress, owner, contractInstance;
+    return _regenerator2.default.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            _context2.next = 2;
+            return (0, _validationSchemas.validate)(props, _validationSchemas.ERC20Schemas.balanceOf);
+
+          case 2:
+            validatedProps = _context2.sent;
+            rpcaddr = validatedProps.rpcaddr, rpcport = validatedProps.rpcport, contractAddress = validatedProps.contractAddress, owner = validatedProps.owner;
+
+
+            (0, _initWeb2.default)(rpcaddr, rpcport);
+            contractInstance = (0, _getContractInstance2.default)(contractAddress, contractInterface);
+            return _context2.abrupt('return', _bluebird2.default.promisify(contractInstance.balanceOf.call)(owner));
+
+          case 7:
+          case 'end':
+            return _context2.stop();
+        }
+      }
+    }, _callee2, this);
+  }));
+
+  return function balanceOf(_x2) {
+    return _ref2.apply(this, arguments);
+  };
+}();
+
+/**
+ * ERC20API 'transaction' methods
+ */
+
+var transfer = exports.transfer = function () {
+  var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(props) {
+    var validatedProps, rpcaddr, rpcport, contractAddress, privateKey, gasLimit, to, value, contractInstance;
+    return _regenerator2.default.wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            _context3.next = 2;
+            return (0, _validationSchemas.validate)(props, _validationSchemas.ERC20Schemas.transfer);
+
+          case 2:
+            validatedProps = _context3.sent;
+            rpcaddr = validatedProps.rpcaddr, rpcport = validatedProps.rpcport, contractAddress = validatedProps.contractAddress, privateKey = validatedProps.privateKey, gasLimit = validatedProps.gasLimit, to = validatedProps.to, value = validatedProps.value;
+
+
+            (0, _initWeb2.default)(rpcaddr, rpcport);
+            contractInstance = (0, _getContractInstance2.default)(contractAddress, contractInterface);
+            return _context3.abrupt('return', (0, _submitContractTx2.default)({
+              privateKey: privateKey,
+              gasLimit: gasLimit,
+              args: [to, value],
+              method: contractInstance.transfer
+            }));
+
+          case 7:
+          case 'end':
+            return _context3.stop();
+        }
+      }
+    }, _callee3, this);
+  }));
+
+  return function transfer(_x3) {
+    return _ref3.apply(this, arguments);
+  };
+}();
+
+/**
+ * ERC20API events
+ */
+
+var allEvents = exports.allEvents = function () {
+  var _ref4 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4(props) {
+    var validatedProps, rpcaddr, rpcport, contractAddress, options, callback, contractInstance;
+    return _regenerator2.default.wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            _context4.next = 2;
+            return (0, _validationSchemas.validate)(props, _validationSchemas.ERC20Schemas.allEvents);
+
+          case 2:
+            validatedProps = _context4.sent;
+            rpcaddr = validatedProps.rpcaddr, rpcport = validatedProps.rpcport, contractAddress = validatedProps.contractAddress, options = validatedProps.options, callback = validatedProps.callback;
+
+
+            (0, _initWeb2.default)(rpcaddr, rpcport);
+            contractInstance = (0, _getContractInstance2.default)(contractAddress, contractInterface);
+            return _context4.abrupt('return', (0, _eventUtils.subscribeToContractEvent)(contractInstance.allEvents, options, callback));
+
+          case 7:
+          case 'end':
+            return _context4.stop();
+        }
+      }
+    }, _callee4, this);
+  }));
+
+  return function allEvents(_x4) {
+    return _ref4.apply(this, arguments);
+  };
+}();
+
+var getPastEvents = exports.getPastEvents = function () {
+  var _ref5 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5(props) {
+    var validatedProps, rpcaddr, rpcport, contractAddress, event, options, contractInstance;
+    return _regenerator2.default.wrap(function _callee5$(_context5) {
+      while (1) {
+        switch (_context5.prev = _context5.next) {
+          case 0:
+            _context5.next = 2;
+            return (0, _validationSchemas.validate)(props, _validationSchemas.ERC20Schemas.getPastEvents);
+
+          case 2:
+            validatedProps = _context5.sent;
+            rpcaddr = validatedProps.rpcaddr, rpcport = validatedProps.rpcport, contractAddress = validatedProps.contractAddress, event = validatedProps.event, options = validatedProps.options;
+
+
+            (0, _initWeb2.default)(rpcaddr, rpcport);
+            contractInstance = (0, _getContractInstance2.default)(contractAddress, contractInterface);
+            return _context5.abrupt('return', (0, _eventUtils.getPastContractEvents)(contractInstance[event], options));
+
+          case 7:
+          case 'end':
+            return _context5.stop();
+        }
+      }
+    }, _callee5, this);
+  }));
+
+  return function getPastEvents(_x5) {
+    return _ref5.apply(this, arguments);
+  };
+}();
+
+var Transfer = exports.Transfer = function () {
+  var _ref6 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee6(props) {
+    var validatedProps, rpcaddr, rpcport, contractAddress, options, callback, contractInstance;
+    return _regenerator2.default.wrap(function _callee6$(_context6) {
+      while (1) {
+        switch (_context6.prev = _context6.next) {
+          case 0:
+            _context6.next = 2;
+            return (0, _validationSchemas.validate)(props, _validationSchemas.ERC20Schemas.Transfer);
+
+          case 2:
+            validatedProps = _context6.sent;
+            rpcaddr = validatedProps.rpcaddr, rpcport = validatedProps.rpcport, contractAddress = validatedProps.contractAddress, options = validatedProps.options, callback = validatedProps.callback;
+
+
+            (0, _initWeb2.default)(rpcaddr, rpcport);
+            contractInstance = (0, _getContractInstance2.default)(contractAddress, contractInterface);
+            return _context6.abrupt('return', (0, _eventUtils.subscribeToContractEvent)(contractInstance.Transfer, options, callback));
+
+          case 7:
+          case 'end':
+            return _context6.stop();
+        }
+      }
+    }, _callee6, this);
+  }));
+
+  return function Transfer(_x6) {
+    return _ref6.apply(this, arguments);
+  };
+}();
+
+/**
+ * Estimate gas for specific method call
+ */
+
+var estimateGas = exports.estimateGas = function () {
+  var _ref7 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee7(props) {
+    var validatedProps;
+    return _regenerator2.default.wrap(function _callee7$(_context7) {
+      while (1) {
+        switch (_context7.prev = _context7.next) {
+          case 0:
+            _context7.next = 2;
+            return (0, _validationSchemas.validate)(props, _validationSchemas.ERC20Schemas.estimateGas);
+
+          case 2:
+            validatedProps = _context7.sent;
+            return _context7.abrupt('return', (0, _estimateGasForContractMethod2.default)(contractInterface, validatedProps));
+
+          case 4:
+          case 'end':
+            return _context7.stop();
+        }
+      }
+    }, _callee7, this);
+  }));
+
+  return function estimateGas(_x7) {
+    return _ref7.apply(this, arguments);
+  };
+}();
 
 var _bluebird = require('bluebird');
 
@@ -33,166 +275,284 @@ var _estimateGasForContractMethod2 = _interopRequireDefault(_estimateGasForContr
 
 var _eventUtils = require('./utils/eventUtils');
 
-var _checkParam = require('./utils/checkParam');
+var _validationSchemas = require('./validationSchemas');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var contractInterface = 'ERC20';
-
-/**
- * ERC20API 'calling' methods
- */
-
-function totalSupply(props) {
-  var rpcaddr = props.rpcaddr,
-      rpcport = props.rpcport,
-      contractAddress = props.contractAddress;
-
-
-  (0, _initWeb2.default)(rpcaddr, rpcport);
-  var contractInstance = (0, _getContractInstance2.default)(contractAddress, contractInterface);
-
-  return _bluebird2.default.promisify(contractInstance.totalSupply.call)();
-}
-
-function balanceOf(props) {
-  var rpcaddr = props.rpcaddr,
-      rpcport = props.rpcport,
-      contractAddress = props.contractAddress,
-      owner = props.owner;
-
-
-  (0, _initWeb2.default)(rpcaddr, rpcport);
-  var contractInstance = (0, _getContractInstance2.default)(contractAddress, contractInterface);
-
-  (0, _checkParam.checkParamAddress)(owner);
-
-  return _bluebird2.default.promisify(contractInstance.balanceOf.call)(owner);
-}
-
-/**
- * ERC20API 'transaction' methods
- */
-
-function transfer(props) {
-  var rpcaddr = props.rpcaddr,
-      rpcport = props.rpcport,
-      contractAddress = props.contractAddress,
-      privateKey = props.privateKey,
-      gasLimit = props.gasLimit,
-      to = props.to,
-      value = props.value;
-
-
-  (0, _initWeb2.default)(rpcaddr, rpcport);
-  var contractInstance = (0, _getContractInstance2.default)(contractAddress, contractInterface);
-
-  (0, _checkParam.checkParamPrivateKey)(privateKey);
-  (0, _checkParam.checkParamNumber)(gasLimit, 'gasLimit');
-  (0, _checkParam.checkParamAddress)(to);
-  (0, _checkParam.checkParamNumber)(value, 'value');
-
-  return (0, _submitContractTx2.default)({
-    privateKey: privateKey,
-    gasLimit: gasLimit,
-    args: [to, value],
-    method: contractInstance.transfer
-  });
-}
-
-/**
- * ERC20API events
- */
-
-function allEvents(props) {
-  var rpcaddr = props.rpcaddr,
-      rpcport = props.rpcport,
-      contractAddress = props.contractAddress,
-      options = props.options,
-      callback = props.callback;
-
-
-  (0, _initWeb2.default)(rpcaddr, rpcport);
-  var contractInstance = (0, _getContractInstance2.default)(contractAddress, contractInterface);
-
-  // options param is optional
-  if (options != null) {
-    (0, _checkParam.checkParamObject)(options, 'options', ['filter']);
-  }
-
-  // callback param is optional
-  if (callback != null) {
-    (0, _checkParam.checkParamFunction)(callback, 'callback');
-  }
-
-  return (0, _eventUtils.subscribeToContractEvent)(contractInstance.allEvents, options, callback);
-}
-
-function getPastEvents(props) {
-  var rpcaddr = props.rpcaddr,
-      rpcport = props.rpcport,
-      contractAddress = props.contractAddress,
-      event = props.event,
-      options = props.options;
-
-
-  (0, _initWeb2.default)(rpcaddr, rpcport);
-  var contractInstance = (0, _getContractInstance2.default)(contractAddress, contractInterface);
-
-  (0, _checkParam.checkParamStr)(event, 'event');
-
-  // options param is optional
-  if (options != null) {
-    (0, _checkParam.checkParamObject)(options, 'options', ['filter']);
-  }
-
-  return (0, _eventUtils.getPastContractEvents)(contractInstance[event], options);
-}
-
-function Transfer(props) {
-  var rpcaddr = props.rpcaddr,
-      rpcport = props.rpcport,
-      contractAddress = props.contractAddress,
-      options = props.options,
-      callback = props.callback;
-
-
-  (0, _initWeb2.default)(rpcaddr, rpcport);
-  var contractInstance = (0, _getContractInstance2.default)(contractAddress, contractInterface);
-
-  // options param is optional
-  if (options != null) {
-    (0, _checkParam.checkParamObject)(options, 'options', ['filter']);
-  }
-
-  // callback param is optional
-  if (callback != null) {
-    (0, _checkParam.checkParamFunction)(callback, 'callback');
-  }
-
-  return (0, _eventUtils.subscribeToContractEvent)(contractInstance.Transfer, options, callback);
-}
-
-/**
- * Estimate gas for specific method call
- */
-
-function estimateGas(props) {
-  return (0, _estimateGasForContractMethod2.default)(contractInterface, props);
-}
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.isRegulated = isRegulated;
-exports.isReceivingAllowed = isReceivingAllowed;
-exports.isSpendingAllowed = isSpendingAllowed;
-exports.isTransferAllowed = isTransferAllowed;
-exports.isApproveAllowed = isApproveAllowed;
-exports.isApprovedSpendingAllowed = isApprovedSpendingAllowed;
-exports.isTransferFromAllowed = isTransferFromAllowed;
-exports.estimateGas = estimateGas;
+exports.estimateGas = exports.isTransferFromAllowed = exports.isApprovedSpendingAllowed = exports.isApproveAllowed = exports.isTransferAllowed = exports.isSpendingAllowed = exports.isReceivingAllowed = exports.isRegulated = undefined;
+
+var _regenerator = require('babel-runtime/regenerator');
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
+
+var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
+
+/**
+ * ERC20ValidatableAPI 'calling' methods
+ */
+
+var isRegulated = exports.isRegulated = function () {
+  var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(props) {
+    var validatedProps, rpcaddr, rpcport, contractAddress, contractInstance;
+    return _regenerator2.default.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return (0, _validationSchemas.validate)(props, _validationSchemas.ERC20ValidatableSchemas.isRegulated);
+
+          case 2:
+            validatedProps = _context.sent;
+            rpcaddr = validatedProps.rpcaddr, rpcport = validatedProps.rpcport, contractAddress = validatedProps.contractAddress;
+
+
+            (0, _initWeb2.default)(rpcaddr, rpcport);
+            contractInstance = (0, _getContractInstance2.default)(contractAddress, contractInterface);
+            return _context.abrupt('return', _bluebird2.default.promisify(contractInstance.isRegulated.call)());
+
+          case 7:
+          case 'end':
+            return _context.stop();
+        }
+      }
+    }, _callee, this);
+  }));
+
+  return function isRegulated(_x) {
+    return _ref.apply(this, arguments);
+  };
+}();
+
+var isReceivingAllowed = exports.isReceivingAllowed = function () {
+  var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(props) {
+    var validatedProps, rpcaddr, rpcport, contractAddress, account, value, contractInstance;
+    return _regenerator2.default.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            _context2.next = 2;
+            return (0, _validationSchemas.validate)(props, _validationSchemas.ERC20ValidatableSchemas.isReceivingAllowed);
+
+          case 2:
+            validatedProps = _context2.sent;
+            rpcaddr = validatedProps.rpcaddr, rpcport = validatedProps.rpcport, contractAddress = validatedProps.contractAddress, account = validatedProps.account, value = validatedProps.value;
+
+
+            (0, _initWeb2.default)(rpcaddr, rpcport);
+            contractInstance = (0, _getContractInstance2.default)(contractAddress, contractInterface);
+            return _context2.abrupt('return', _bluebird2.default.promisify(contractInstance.isReceivingAllowed.call)(account, value));
+
+          case 7:
+          case 'end':
+            return _context2.stop();
+        }
+      }
+    }, _callee2, this);
+  }));
+
+  return function isReceivingAllowed(_x2) {
+    return _ref2.apply(this, arguments);
+  };
+}();
+
+var isSpendingAllowed = exports.isSpendingAllowed = function () {
+  var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(props) {
+    var validatedProps, rpcaddr, rpcport, contractAddress, account, value, contractInstance;
+    return _regenerator2.default.wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            _context3.next = 2;
+            return (0, _validationSchemas.validate)(props, _validationSchemas.ERC20ValidatableSchemas.isSpendingAllowed);
+
+          case 2:
+            validatedProps = _context3.sent;
+            rpcaddr = validatedProps.rpcaddr, rpcport = validatedProps.rpcport, contractAddress = validatedProps.contractAddress, account = validatedProps.account, value = validatedProps.value;
+
+
+            (0, _initWeb2.default)(rpcaddr, rpcport);
+            contractInstance = (0, _getContractInstance2.default)(contractAddress, contractInterface);
+            return _context3.abrupt('return', _bluebird2.default.promisify(contractInstance.isSpendingAllowed.call)(account, value));
+
+          case 7:
+          case 'end':
+            return _context3.stop();
+        }
+      }
+    }, _callee3, this);
+  }));
+
+  return function isSpendingAllowed(_x3) {
+    return _ref3.apply(this, arguments);
+  };
+}();
+
+var isTransferAllowed = exports.isTransferAllowed = function () {
+  var _ref4 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4(props) {
+    var validatedProps, rpcaddr, rpcport, contractAddress, from, to, value, contractInstance;
+    return _regenerator2.default.wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            _context4.next = 2;
+            return (0, _validationSchemas.validate)(props, _validationSchemas.ERC20ValidatableSchemas.isTransferAllowed);
+
+          case 2:
+            validatedProps = _context4.sent;
+            rpcaddr = validatedProps.rpcaddr, rpcport = validatedProps.rpcport, contractAddress = validatedProps.contractAddress, from = validatedProps.from, to = validatedProps.to, value = validatedProps.value;
+
+
+            (0, _initWeb2.default)(rpcaddr, rpcport);
+            contractInstance = (0, _getContractInstance2.default)(contractAddress, contractInterface);
+            return _context4.abrupt('return', _bluebird2.default.promisify(contractInstance.isTransferAllowed.call)(from, to, value));
+
+          case 7:
+          case 'end':
+            return _context4.stop();
+        }
+      }
+    }, _callee4, this);
+  }));
+
+  return function isTransferAllowed(_x4) {
+    return _ref4.apply(this, arguments);
+  };
+}();
+
+var isApproveAllowed = exports.isApproveAllowed = function () {
+  var _ref5 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5(props) {
+    var validatedProps, rpcaddr, rpcport, contractAddress, from, spender, value, contractInstance;
+    return _regenerator2.default.wrap(function _callee5$(_context5) {
+      while (1) {
+        switch (_context5.prev = _context5.next) {
+          case 0:
+            _context5.next = 2;
+            return (0, _validationSchemas.validate)(props, _validationSchemas.ERC20ValidatableSchemas.isApproveAllowed);
+
+          case 2:
+            validatedProps = _context5.sent;
+            rpcaddr = validatedProps.rpcaddr, rpcport = validatedProps.rpcport, contractAddress = validatedProps.contractAddress, from = validatedProps.from, spender = validatedProps.spender, value = validatedProps.value;
+
+
+            (0, _initWeb2.default)(rpcaddr, rpcport);
+            contractInstance = (0, _getContractInstance2.default)(contractAddress, contractInterface);
+            return _context5.abrupt('return', _bluebird2.default.promisify(contractInstance.isApproveAllowed.call)(from, spender, value));
+
+          case 7:
+          case 'end':
+            return _context5.stop();
+        }
+      }
+    }, _callee5, this);
+  }));
+
+  return function isApproveAllowed(_x5) {
+    return _ref5.apply(this, arguments);
+  };
+}();
+
+var isApprovedSpendingAllowed = exports.isApprovedSpendingAllowed = function () {
+  var _ref6 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee6(props) {
+    var validatedProps, rpcaddr, rpcport, contractAddress, from, spender, value, contractInstance;
+    return _regenerator2.default.wrap(function _callee6$(_context6) {
+      while (1) {
+        switch (_context6.prev = _context6.next) {
+          case 0:
+            _context6.next = 2;
+            return (0, _validationSchemas.validate)(props, _validationSchemas.ERC20ValidatableSchemas.isApprovedSpendingAllowed);
+
+          case 2:
+            validatedProps = _context6.sent;
+            rpcaddr = validatedProps.rpcaddr, rpcport = validatedProps.rpcport, contractAddress = validatedProps.contractAddress, from = validatedProps.from, spender = validatedProps.spender, value = validatedProps.value;
+
+
+            (0, _initWeb2.default)(rpcaddr, rpcport);
+            contractInstance = (0, _getContractInstance2.default)(contractAddress, contractInterface);
+            return _context6.abrupt('return', _bluebird2.default.promisify(contractInstance.isApprovedSpendingAllowed.call)(from, spender, value));
+
+          case 7:
+          case 'end':
+            return _context6.stop();
+        }
+      }
+    }, _callee6, this);
+  }));
+
+  return function isApprovedSpendingAllowed(_x6) {
+    return _ref6.apply(this, arguments);
+  };
+}();
+
+var isTransferFromAllowed = exports.isTransferFromAllowed = function () {
+  var _ref7 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee7(props) {
+    var validatedProps, rpcaddr, rpcport, contractAddress, spender, from, to, value, contractInstance;
+    return _regenerator2.default.wrap(function _callee7$(_context7) {
+      while (1) {
+        switch (_context7.prev = _context7.next) {
+          case 0:
+            _context7.next = 2;
+            return (0, _validationSchemas.validate)(props, _validationSchemas.ERC20ValidatableSchemas.isTransferFromAllowed);
+
+          case 2:
+            validatedProps = _context7.sent;
+            rpcaddr = validatedProps.rpcaddr, rpcport = validatedProps.rpcport, contractAddress = validatedProps.contractAddress, spender = validatedProps.spender, from = validatedProps.from, to = validatedProps.to, value = validatedProps.value;
+
+
+            (0, _initWeb2.default)(rpcaddr, rpcport);
+            contractInstance = (0, _getContractInstance2.default)(contractAddress, contractInterface);
+            return _context7.abrupt('return', _bluebird2.default.promisify(contractInstance.isTransferFromAllowed.call)(spender, from, to, value));
+
+          case 7:
+          case 'end':
+            return _context7.stop();
+        }
+      }
+    }, _callee7, this);
+  }));
+
+  return function isTransferFromAllowed(_x7) {
+    return _ref7.apply(this, arguments);
+  };
+}();
+
+/**
+ * Estimate gas for specific method call
+ */
+
+var estimateGas = exports.estimateGas = function () {
+  var _ref8 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee8(props) {
+    var validatedProps;
+    return _regenerator2.default.wrap(function _callee8$(_context8) {
+      while (1) {
+        switch (_context8.prev = _context8.next) {
+          case 0:
+            _context8.next = 2;
+            return (0, _validationSchemas.validate)(props, _validationSchemas.ERC20ValidatableSchemas.estimateGas);
+
+          case 2:
+            validatedProps = _context8.sent;
+            return _context8.abrupt('return', (0, _estimateGasForContractMethod2.default)(contractInterface, validatedProps));
+
+          case 4:
+          case 'end':
+            return _context8.stop();
+        }
+      }
+    }, _callee8, this);
+  }));
+
+  return function estimateGas(_x8) {
+    return _ref8.apply(this, arguments);
+  };
+}();
 
 var _bluebird = require('bluebird');
 
@@ -206,164 +566,129 @@ var _getContractInstance = require('./utils/getContractInstance');
 
 var _getContractInstance2 = _interopRequireDefault(_getContractInstance);
 
-var _checkParam = require('./utils/checkParam');
-
 var _estimateGasForContractMethod = require('./utils/estimateGasForContractMethod');
 
 var _estimateGasForContractMethod2 = _interopRequireDefault(_estimateGasForContractMethod);
 
+var _validationSchemas = require('./validationSchemas');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var contractInterface = 'ERC20Validatable';
-
-/**
- * ERC20ValidatableAPI 'calling' methods
- */
-
-function isRegulated(props) {
-  var rpcaddr = props.rpcaddr,
-      rpcport = props.rpcport,
-      contractAddress = props.contractAddress;
-
-
-  (0, _initWeb2.default)(rpcaddr, rpcport);
-  var contractInstance = (0, _getContractInstance2.default)(contractAddress, contractInterface);
-
-  return _bluebird2.default.promisify(contractInstance.isRegulated.call)();
-}
-
-function isReceivingAllowed(props) {
-  var rpcaddr = props.rpcaddr,
-      rpcport = props.rpcport,
-      contractAddress = props.contractAddress,
-      account = props.account,
-      value = props.value;
-
-
-  (0, _initWeb2.default)(rpcaddr, rpcport);
-  var contractInstance = (0, _getContractInstance2.default)(contractAddress, contractInterface);
-
-  (0, _checkParam.checkParamAddress)(account);
-  (0, _checkParam.checkParamNumber)(value, 'value');
-
-  return _bluebird2.default.promisify(contractInstance.isReceivingAllowed.call)(account, value);
-}
-
-function isSpendingAllowed(props) {
-  var rpcaddr = props.rpcaddr,
-      rpcport = props.rpcport,
-      contractAddress = props.contractAddress,
-      account = props.account,
-      value = props.value;
-
-
-  (0, _initWeb2.default)(rpcaddr, rpcport);
-  var contractInstance = (0, _getContractInstance2.default)(contractAddress, contractInterface);
-
-  (0, _checkParam.checkParamAddress)(account);
-  (0, _checkParam.checkParamNumber)(value, 'value');
-
-  return _bluebird2.default.promisify(contractInstance.isSpendingAllowed.call)(account, value);
-}
-
-function isTransferAllowed(props) {
-  var rpcaddr = props.rpcaddr,
-      rpcport = props.rpcport,
-      contractAddress = props.contractAddress,
-      from = props.from,
-      to = props.to,
-      value = props.value;
-
-
-  (0, _initWeb2.default)(rpcaddr, rpcport);
-  var contractInstance = (0, _getContractInstance2.default)(contractAddress, contractInterface);
-
-  (0, _checkParam.checkParamAddress)(from);
-  (0, _checkParam.checkParamAddress)(to);
-  (0, _checkParam.checkParamNumber)(value, 'value');
-
-  return _bluebird2.default.promisify(contractInstance.isTransferAllowed.call)(from, to, value);
-}
-
-function isApproveAllowed(props) {
-  var rpcaddr = props.rpcaddr,
-      rpcport = props.rpcport,
-      contractAddress = props.contractAddress,
-      from = props.from,
-      spender = props.spender,
-      value = props.value;
-
-
-  (0, _initWeb2.default)(rpcaddr, rpcport);
-  var contractInstance = (0, _getContractInstance2.default)(contractAddress, contractInterface);
-
-  (0, _checkParam.checkParamAddress)(from);
-  (0, _checkParam.checkParamAddress)(spender);
-  (0, _checkParam.checkParamNumber)(value, 'value');
-
-  return _bluebird2.default.promisify(contractInstance.isApproveAllowed.call)(from, spender, value);
-}
-
-function isApprovedSpendingAllowed(props) {
-  var rpcaddr = props.rpcaddr,
-      rpcport = props.rpcport,
-      contractAddress = props.contractAddress,
-      from = props.from,
-      spender = props.spender,
-      value = props.value;
-
-
-  (0, _initWeb2.default)(rpcaddr, rpcport);
-  var contractInstance = (0, _getContractInstance2.default)(contractAddress, contractInterface);
-
-  (0, _checkParam.checkParamAddress)(from);
-  (0, _checkParam.checkParamAddress)(spender);
-  (0, _checkParam.checkParamNumber)(value, 'value');
-
-  return _bluebird2.default.promisify(contractInstance.isApprovedSpendingAllowed.call)(from, spender, value);
-}
-
-function isTransferFromAllowed(props) {
-  var rpcaddr = props.rpcaddr,
-      rpcport = props.rpcport,
-      contractAddress = props.contractAddress,
-      spender = props.spender,
-      from = props.from,
-      to = props.to,
-      value = props.value;
-
-
-  (0, _initWeb2.default)(rpcaddr, rpcport);
-  var contractInstance = (0, _getContractInstance2.default)(contractAddress, contractInterface);
-
-  (0, _checkParam.checkParamAddress)(spender);
-  (0, _checkParam.checkParamAddress)(from);
-  (0, _checkParam.checkParamAddress)(to);
-  (0, _checkParam.checkParamNumber)(value, 'value');
-
-  return _bluebird2.default.promisify(contractInstance.isTransferFromAllowed.call)(spender, from, to, value);
-}
-
-/**
- * Estimate gas for specific method call
- */
-
-function estimateGas(props) {
-  return (0, _estimateGasForContractMethod2.default)(contractInterface, props);
-}
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.estimateGas = exports.getBalance = exports.sendTransaction = undefined;
+
+var _regenerator = require('babel-runtime/regenerator');
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
 
 var _objectWithoutProperties2 = require('babel-runtime/helpers/objectWithoutProperties');
 
 var _objectWithoutProperties3 = _interopRequireDefault(_objectWithoutProperties2);
 
-exports.sendTransaction = sendTransaction;
-exports.getBalance = getBalance;
-exports.estimateGas = estimateGas;
+var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
+
+var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
+
+var sendTransaction = exports.sendTransaction = function () {
+  var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(props) {
+    var validatedProps, rpcaddr, rpcport, otherProps;
+    return _regenerator2.default.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return (0, _validationSchemas.validate)(props, _validationSchemas.ETHSchemas.sendTransaction);
+
+          case 2:
+            validatedProps = _context.sent;
+            rpcaddr = validatedProps.rpcaddr, rpcport = validatedProps.rpcport, otherProps = (0, _objectWithoutProperties3.default)(validatedProps, ['rpcaddr', 'rpcport']);
+
+
+            (0, _initWeb2.default)(rpcaddr, rpcport);
+
+            return _context.abrupt('return', (0, _submitTx2.default)(otherProps));
+
+          case 6:
+          case 'end':
+            return _context.stop();
+        }
+      }
+    }, _callee, this);
+  }));
+
+  return function sendTransaction(_x) {
+    return _ref.apply(this, arguments);
+  };
+}();
+
+var getBalance = exports.getBalance = function () {
+  var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(props) {
+    var validatedProps, rpcaddr, rpcport, address, defaultBlock;
+    return _regenerator2.default.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            _context2.next = 2;
+            return (0, _validationSchemas.validate)(props, _validationSchemas.ETHSchemas.getBalance);
+
+          case 2:
+            validatedProps = _context2.sent;
+            rpcaddr = validatedProps.rpcaddr, rpcport = validatedProps.rpcport, address = validatedProps.address, defaultBlock = validatedProps.defaultBlock;
+
+
+            (0, _initWeb2.default)(rpcaddr, rpcport);
+
+            return _context2.abrupt('return', _bluebird2.default.promisify(web3.eth.getBalance)(address, defaultBlock));
+
+          case 6:
+          case 'end':
+            return _context2.stop();
+        }
+      }
+    }, _callee2, this);
+  }));
+
+  return function getBalance(_x2) {
+    return _ref2.apply(this, arguments);
+  };
+}();
+
+var estimateGas = exports.estimateGas = function () {
+  var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(props) {
+    var validatedProps, rpcaddr, rpcport, data, to, value;
+    return _regenerator2.default.wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            _context3.next = 2;
+            return (0, _validationSchemas.validate)(props, _validationSchemas.ETHSchemas.estimateGas);
+
+          case 2:
+            validatedProps = _context3.sent;
+            rpcaddr = validatedProps.rpcaddr, rpcport = validatedProps.rpcport, data = validatedProps.data, to = validatedProps.to, value = validatedProps.value;
+
+
+            (0, _initWeb2.default)(rpcaddr, rpcport);
+
+            return _context3.abrupt('return', (0, _txUtils.getGasLimit)({ data: data, to: to, value: value }));
+
+          case 6:
+          case 'end':
+            return _context3.stop();
+        }
+      }
+    }, _callee3, this);
+  }));
+
+  return function estimateGas(_x3) {
+    return _ref3.apply(this, arguments);
+  };
+}();
 
 var _bluebird = require('bluebird');
 
@@ -379,155 +704,9 @@ var _submitTx2 = _interopRequireDefault(_submitTx);
 
 var _txUtils = require('./utils/txUtils');
 
-var _checkParam = require('./utils/checkParam');
+var _validationSchemas = require('./validationSchemas');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function sendTransaction(props) {
-  var rpcaddr = props.rpcaddr,
-      rpcport = props.rpcport,
-      otherProps = (0, _objectWithoutProperties3.default)(props, ['rpcaddr', 'rpcport']);
-
-
-  (0, _initWeb2.default)(rpcaddr, rpcport);
-
-  return (0, _submitTx2.default)(otherProps);
-}
-
-function getBalance(props) {
-  var rpcaddr = props.rpcaddr,
-      rpcport = props.rpcport,
-      address = props.address,
-      defaultBlock = props.defaultBlock;
-
-
-  (0, _initWeb2.default)(rpcaddr, rpcport);
-
-  (0, _checkParam.checkParamAddress)(address);
-  (0, _checkParam.checkParamAddress)(defaultBlock);
-
-  return _bluebird2.default.promisify(web3.eth.getBalance)(address, defaultBlock);
-}
-
-function estimateGas(props) {
-  var rpcaddr = props.rpcaddr,
-      rpcport = props.rpcport,
-      data = props.data,
-      to = props.to,
-      value = props.value;
-
-
-  (0, _initWeb2.default)(rpcaddr, rpcport);
-
-  (0, _checkParam.checkParamStr)(data, 'data');
-  (0, _checkParam.checkParamAddress)(to);
-  (0, _checkParam.checkParamNumber)(value, 'value');
-
-  return (0, _txUtils.getGasLimit)({ data: data, to: to, value: value });
-}
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _typeof2 = require('babel-runtime/helpers/typeof');
-
-var _typeof3 = _interopRequireDefault(_typeof2);
-
-exports.checkParamNumber = checkParamNumber;
-exports.checkParamStr = checkParamStr;
-exports.checkParamObject = checkParamObject;
-exports.checkParamArray = checkParamArray;
-exports.checkParamFunction = checkParamFunction;
-exports.checkParamAddress = checkParamAddress;
-exports.checkParamPrivateKey = checkParamPrivateKey;
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function checkParamNumber(param, paramName) {
-  var minValue = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
-  var exactNumber = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
-
-  var isExist = param != null;
-  var isNumber = typeof param === 'number';
-  var isBigEnough = param > minValue;
-  var isExactValue = exactNumber ? param === exactNumber : true;
-
-  if (!(isExist && isNumber && isBigEnough && isExactValue)) {
-    throw new Error(paramName + ' is not found or invalid');
-  }
-}
-
-function checkParamStr(param, paramName) {
-  var minLength = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
-  var exactLength = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
-
-  var isExist = param != null;
-  var isString = typeof param === 'string';
-  var isLongEnough = param.length > minLength;
-  var isExactLength = exactLength ? param.length === exactLength : true;
-
-  if (!(isExist && isString && isLongEnough && isExactLength)) {
-    throw new Error(paramName + ' is not found or invalid');
-  }
-}
-
-function checkParamObject(param, paramName) {
-  var requiredFields = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
-
-  var isExist = param != null;
-  var isObject = (typeof param === 'undefined' ? 'undefined' : (0, _typeof3.default)(param)) === 'object';
-
-  if (!(isExist && isObject)) {
-    throw new Error(paramName + ' is not found or invalid');
-  }
-
-  requiredFields.forEach(function (key) {
-    if (param[key] == null) {
-      throw new Error('Required field ' + key + ' of ' + paramName + ' is not found');
-    }
-  });
-}
-
-function checkParamArray(param, paramName) {
-  var minLength = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
-
-  checkParamObject(param, paramName);
-
-  var isArray = Array.isArray(param);
-  var isLongEnough = param.length > minLength;
-
-  if (!(isArray && isLongEnough)) {
-    throw new Error(paramName + ' is not found or invalid');
-  }
-}
-
-function checkParamFunction(param, paramName) {
-  var isExist = param != null;
-  var isFunction = typeof param === 'function';
-
-  if (!(isExist && isFunction)) {
-    throw new Error(paramName + ' is not found or invalid');
-  }
-}
-
-function checkParamAddress(address) {
-  if (!web3.isAddress(address)) {
-    throw new Error('Provided address is invalid');
-  }
-}
-
-function checkParamPrivateKey(privateKey) {
-  checkParamStr(privateKey, 'privateKey', 0, 64);
-
-  var privateKeyLowRe = /^[a-z0-9]+$/;
-  var privateKeyUppRe = /^[A-Z0-9]+$/;
-
-  if (!(privateKeyLowRe.test(privateKey) || privateKeyUppRe.test(privateKey))) {
-    throw new Error('Private key has invalid format');
-  }
-}
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -545,8 +724,6 @@ var _getContractInstance = require('./getContractInstance');
 
 var _getContractInstance2 = _interopRequireDefault(_getContractInstance);
 
-var _checkParam = require('./checkParam');
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function estimateGasForContractMethod(contractInterface, props) {
@@ -559,9 +736,6 @@ function estimateGasForContractMethod(contractInterface, props) {
 
   (0, _initWeb2.default)(rpcaddr, rpcport);
   var contractInstance = (0, _getContractInstance2.default)(contractAddress, contractInterface);
-
-  (0, _checkParam.checkParamStr)(method, 'method');
-  (0, _checkParam.checkParamArray)(args, 'args');
 
   return (0, _txUtils.getContractGasLimit)(contractInstance[method], null, args);
 }
@@ -665,8 +839,6 @@ Object.defineProperty(exports, "__esModule", {
 var _memoize = require('./memoize');
 
 var _memoize2 = _interopRequireDefault(_memoize);
-
-var _checkParam = require('./checkParam');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -910,8 +1082,6 @@ var ERC20ValidatableABI = [{
 
 
 function _getContract(contractInterface) {
-  (0, _checkParam.checkParamStr)(contractInterface, 'contractInterface');
-
   if (contractInterface === 'ERC20') {
     return web3.eth.contract(ERC20ABI);
   } else if (contractInterface === 'ERC20Validatable') {
@@ -924,8 +1094,6 @@ function _getContract(contractInterface) {
 var getContract = (0, _memoize2.default)(_getContract);
 
 function _getContractInstance(contractAddress, contractInterface) {
-  (0, _checkParam.checkParamAddress)(contractAddress);
-
   var contract = getContract(contractInterface);
 
   return contract.at(contractAddress);
@@ -939,18 +1107,11 @@ exports.default = getContractInstance;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-var _keys = require('babel-runtime/core-js/object/keys');
-
-var _keys2 = _interopRequireDefault(_keys);
-
 exports.default = initWeb3;
 
 var _web = require('web3');
 
 var _web2 = _interopRequireDefault(_web);
-
-var _checkParam = require('./checkParam');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -977,8 +1138,6 @@ function isWeb3Injected() {
 }
 
 function getRPCEndpoint(rpcaddr, rpcport) {
-  checkWeb3ConnectionParams({ rpcaddr: rpcaddr, rpcport: rpcport });
-
   return 'http://' + rpcaddr + ':' + rpcport;
 }
 
@@ -1019,12 +1178,6 @@ function checkWeb3ethSupportedMethods(web3) {
   });
 
   return true;
-}
-
-function checkWeb3ConnectionParams(params) {
-  (0, _keys2.default)(params).forEach(function (key) {
-    return (0, _checkParam.checkParamStr)(key, params[key]);
-  });
 }
 'use strict';
 
@@ -1289,8 +1442,6 @@ var _getAddressFromPrivateKey = require('./getAddressFromPrivateKey');
 
 var _getAddressFromPrivateKey2 = _interopRequireDefault(_getAddressFromPrivateKey);
 
-var _checkParam = require('./checkParam');
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = function () {
@@ -1301,24 +1452,16 @@ exports.default = function () {
         switch (_context.prev = _context.next) {
           case 0:
             privateKey = props.privateKey, gasLimit = props.gasLimit, data = props.data, to = props.to, value = props.value;
-
-
-            (0, _checkParam.checkParamAddress)(to);
-            (0, _checkParam.checkParamPrivateKey)(privateKey);
-            (0, _checkParam.checkParamStr)(data, 'data');
-            (0, _checkParam.checkParamNumber)(value, 'value');
-            (0, _checkParam.checkParamNumber)(gasLimit, 'gasLimit');
-
             address = (0, _getAddressFromPrivateKey2.default)(privateKey);
-            _context.next = 9;
+            _context.next = 4;
             return getRawTx({ gasLimit: gasLimit, address: address, data: data, to: to, value: value });
 
-          case 9:
+          case 4:
             rawTx = _context.sent;
             signedTx = (0, _signTx2.default)(privateKey, rawTx);
             return _context.abrupt('return', _bluebird2.default.promisify(web3.eth.sendRawTransaction)(signedTx));
 
-          case 12:
+          case 7:
           case 'end':
             return _context.stop();
         }
@@ -1370,3 +1513,296 @@ function getContractGasLimit(method, txData, args) {
 
   return _bluebird2.default.promisify(method.estimateGas)({ data: data });
 }
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _joiBrowser = require('joi-browser');
+
+var _joiBrowser2 = _interopRequireDefault(_joiBrowser);
+
+var _validationRules = require('./validationRules');
+
+var _validationRules2 = _interopRequireDefault(_validationRules);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var totalSupply = _joiBrowser2.default.object().keys({
+  rpcaddr: _validationRules2.default.host.required(),
+  rpcport: _validationRules2.default.port.required(),
+  contractAddress: _validationRules2.default.address.required()
+});
+
+var balanceOf = _joiBrowser2.default.object().keys({
+  rpcaddr: _validationRules2.default.host.required(),
+  rpcport: _validationRules2.default.port.required(),
+  contractAddress: _validationRules2.default.address.required(),
+  owner: _validationRules2.default.address.required()
+});
+
+var transfer = _joiBrowser2.default.object().keys({
+  rpcaddr: _validationRules2.default.host.required(),
+  rpcport: _validationRules2.default.port.required(),
+  contractAddress: _validationRules2.default.address.required(),
+  privateKey: _validationRules2.default.privateKey.required(),
+  to: _validationRules2.default.address.required(),
+  value: _validationRules2.default.value.required(),
+  gasLimit: _validationRules2.default.gasLimit
+});
+
+var getPastEvents = _joiBrowser2.default.object().keys({
+  rpcaddr: _validationRules2.default.host.required(),
+  rpcport: _validationRules2.default.port.required(),
+  contractAddress: _validationRules2.default.address.required(),
+  event: _validationRules2.default.event.required(),
+  options: _validationRules2.default.eventOptions
+});
+
+var allEvents = _joiBrowser2.default.object().keys({
+  rpcaddr: _validationRules2.default.host.required(),
+  rpcport: _validationRules2.default.port.required(),
+  contractAddress: _validationRules2.default.address.required(),
+  options: _validationRules2.default.eventOptions,
+  callback: _validationRules2.default.callback
+});
+
+var Transfer = allEvents;
+
+var estimateGas = _joiBrowser2.default.object().keys({
+  rpcaddr: _validationRules2.default.host.required(),
+  rpcport: _validationRules2.default.port.required(),
+  contractAddress: _validationRules2.default.address.required(),
+  method: _validationRules2.default.method.required(),
+  args: _validationRules2.default.args.required()
+});
+
+exports.default = {
+  totalSupply: totalSupply,
+  balanceOf: balanceOf,
+  transfer: transfer,
+  getPastEvents: getPastEvents,
+  allEvents: allEvents,
+  Transfer: Transfer,
+  estimateGas: estimateGas
+};
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _joiBrowser = require('joi-browser');
+
+var _joiBrowser2 = _interopRequireDefault(_joiBrowser);
+
+var _validationRules = require('./validationRules');
+
+var _validationRules2 = _interopRequireDefault(_validationRules);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var isRegulated = _joiBrowser2.default.object().keys({
+  rpcaddr: _validationRules2.default.host.required(),
+  rpcport: _validationRules2.default.port.required(),
+  contractAddress: _validationRules2.default.address.required()
+});
+
+var isReceivingAllowed = _joiBrowser2.default.object().keys({
+  rpcaddr: _validationRules2.default.host.required(),
+  rpcport: _validationRules2.default.port.required(),
+  contractAddress: _validationRules2.default.address.required(),
+  account: _validationRules2.default.address.required(),
+  value: _validationRules2.default.value.required()
+});
+
+var isSpendingAllowed = isReceivingAllowed;
+
+var isTransferAllowed = _joiBrowser2.default.object().keys({
+  rpcaddr: _validationRules2.default.host.required(),
+  rpcport: _validationRules2.default.port.required(),
+  contractAddress: _validationRules2.default.address.required(),
+  from: _validationRules2.default.address.required(),
+  to: _validationRules2.default.address.required(),
+  value: _validationRules2.default.value.required()
+});
+
+var isApproveAllowed = _joiBrowser2.default.object().keys({
+  rpcaddr: _validationRules2.default.host.required(),
+  rpcport: _validationRules2.default.port.required(),
+  contractAddress: _validationRules2.default.address.required(),
+  from: _validationRules2.default.address.required(),
+  spender: _validationRules2.default.address.required(),
+  value: _validationRules2.default.value.required()
+});
+
+var isApprovedSpendingAllowed = isApproveAllowed;
+
+var isTransferFromAllowed = _joiBrowser2.default.object().keys({
+  rpcaddr: _validationRules2.default.host.required(),
+  rpcport: _validationRules2.default.port.required(),
+  contractAddress: _validationRules2.default.address.required(),
+  spender: _validationRules2.default.address.required(),
+  from: _validationRules2.default.address.required(),
+  to: _validationRules2.default.address.required(),
+  value: _validationRules2.default.value.required()
+});
+
+var estimateGas = _joiBrowser2.default.object().keys({
+  rpcaddr: _validationRules2.default.host.required(),
+  rpcport: _validationRules2.default.port.required(),
+  contractAddress: _validationRules2.default.address.required(),
+  method: _validationRules2.default.method.required(),
+  args: _validationRules2.default.args.required()
+});
+
+exports.default = {
+  isRegulated: isRegulated,
+  isReceivingAllowed: isReceivingAllowed,
+  isSpendingAllowed: isSpendingAllowed,
+  isTransferAllowed: isTransferAllowed,
+  isApproveAllowed: isApproveAllowed,
+  isApprovedSpendingAllowed: isApprovedSpendingAllowed,
+  isTransferFromAllowed: isTransferFromAllowed,
+  estimateGas: estimateGas
+};
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _joiBrowser = require('joi-browser');
+
+var _joiBrowser2 = _interopRequireDefault(_joiBrowser);
+
+var _validationRules = require('./validationRules');
+
+var _validationRules2 = _interopRequireDefault(_validationRules);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var sendTransaction = _joiBrowser2.default.object().keys({
+  rpcaddr: _validationRules2.default.host.required(),
+  rpcport: _validationRules2.default.port.required(),
+  privateKey: _validationRules2.default.privateKey.required(),
+  to: _validationRules2.default.address.required(),
+  value: _validationRules2.default.value.required(),
+  gasLimit: _validationRules2.default.gasLimit,
+  data: _validationRules2.default.data
+});
+
+var getBalance = _joiBrowser2.default.object().keys({
+  rpcaddr: _validationRules2.default.host.required(),
+  rpcport: _validationRules2.default.port.required(),
+  address: _validationRules2.default.address.required(),
+  defaultBlock: _validationRules2.default.address
+});
+
+var estimateGas = _joiBrowser2.default.object().keys({
+  rpcaddr: _validationRules2.default.host.required(),
+  rpcport: _validationRules2.default.port.required(),
+  to: _validationRules2.default.address.required(),
+  value: _validationRules2.default.value.required(),
+  data: _validationRules2.default.data
+});
+
+exports.default = {
+  sendTransaction: sendTransaction,
+  getBalance: getBalance,
+  estimateGas: estimateGas
+};
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ERC20ValidatableSchemas = exports.ERC20Schemas = exports.ETHSchemas = exports.validate = undefined;
+
+var _validate = require('./validate');
+
+var _validate2 = _interopRequireDefault(_validate);
+
+var _ETHSchemas = require('./ETHSchemas');
+
+var _ETHSchemas2 = _interopRequireDefault(_ETHSchemas);
+
+var _ERC20Schemas = require('./ERC20Schemas');
+
+var _ERC20Schemas2 = _interopRequireDefault(_ERC20Schemas);
+
+var _ERC20ValidatableSchemas = require('./ERC20ValidatableSchemas');
+
+var _ERC20ValidatableSchemas2 = _interopRequireDefault(_ERC20ValidatableSchemas);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.validate = _validate2.default;
+exports.ETHSchemas = _ETHSchemas2.default;
+exports.ERC20Schemas = _ERC20Schemas2.default;
+exports.ERC20ValidatableSchemas = _ERC20ValidatableSchemas2.default;
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = validate;
+
+var _bluebird = require('bluebird');
+
+var _bluebird2 = _interopRequireDefault(_bluebird);
+
+var _joiBrowser = require('joi-browser');
+
+var _joiBrowser2 = _interopRequireDefault(_joiBrowser);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function validate(props, schema) {
+  return new _bluebird2.default(function (resolve, reject) {
+    return _joiBrowser2.default.validate(props, schema, function (err, result) {
+      if (err) {
+        return reject(err);
+      }
+
+      return resolve(result);
+    });
+  }).catch(function (err) {
+    throw new Error(err);
+  });
+}
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _joiBrowser = require('joi-browser');
+
+var _joiBrowser2 = _interopRequireDefault(_joiBrowser);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var validationRules = {
+  host: _joiBrowser2.default.string().hostname(),
+  port: _joiBrowser2.default.number().integer().min(1).max(65535),
+  address: _joiBrowser2.default.string().regex(/^[a-zA-Z0-9]+$/).length(42),
+  privateKey: _joiBrowser2.default.string().alphanum().length(64),
+  value: _joiBrowser2.default.number().positive(),
+  event: _joiBrowser2.default.string().min(1).max(999),
+  method: _joiBrowser2.default.string().min(1).max(999),
+  args: _joiBrowser2.default.array(),
+  data: _joiBrowser2.default.string().regex(/^[a-zA-Z0-9]+$/).max(9999),
+  gasLimit: _joiBrowser2.default.number().positive(),
+  callback: _joiBrowser2.default.func(),
+  eventOptions: _joiBrowser2.default.object().keys({
+    filter: _joiBrowser2.default.object(),
+    fromBlock: [_joiBrowser2.default.number().integer().positive(), _joiBrowser2.default.string().min(6).max(7)],
+    toBlock: [_joiBrowser2.default.number().integer().positive(), _joiBrowser2.default.string().min(6).max(7)],
+    address: _joiBrowser2.default.string().regex(/^[a-zA-Z0-9]+$/).length(42),
+    topics: _joiBrowser2.default.array()
+  })
+};
+
+exports.default = validationRules;

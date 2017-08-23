@@ -12,6 +12,7 @@
     "build": "./node_modules/.bin/babel ./lib --out-file ./dist/jibrel-contracts-jsapi.js",
     "lint": "./node_modules/.bin/eslint ./lib",
     "minify": "./node_modules/.bin/minify ./dist/jibrel-contracts-jsapi.js --mangle -o ./dist/jibrel-contracts-jsapi.min.js",
+    "testrpc": "./node_modules/.bin/testrpc",
     "test": "./node_modules/.bin/mocha --compilers babel-register"
   },
   "repository": {
@@ -37,6 +38,7 @@
     "eslint": "4.5.0",
     "eslint-config-airbnb-base": "11.3.1",
     "eslint-plugin-import": "2.7.0",
+    "ethereumjs-testrpc": "4.1.0",
     "mocha": "3.5.0",
     "should": "11.2.1"
   },
@@ -45,6 +47,7 @@
     "crypto-js": "3.1.9-1",
     "elliptic": "6.4.0",
     "ethereumjs-tx": "1.3.3",
+    "joi-browser": "10.6.1",
     "web3": "0.20.1"
   }
 }

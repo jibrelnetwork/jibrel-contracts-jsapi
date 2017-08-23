@@ -21,7 +21,7 @@
     ],
     "arrow-body-style": [
       "error",
-      "as-needed"
+      "always"
     ],
     "arrow-parens": [
       "error",
