@@ -2,15 +2,16 @@ import should from 'should'
 
 import jibrelContractsApi from '../index'
 
+import testParams from '../../jibrel-contracts/.jsapi.json'
+
 const eth = jibrelContractsApi.eth
 
 const rpcaddr = '127.0.0.1'
 const rpcport = 8545
-const contractAddress = '0xa74476443119A942dE498590Fe1f2454d7D4aC0d'
-const privateKey = '11f8eccc5270476d0488b2d853ff9643b26835f537cd7f2338433c0510b9e17d'
-const address = '0xa74476443119A942dE498590Fe1f2454d7D4aC0d'
-const to = '0xa74476443119A942dE498590Fe1f2454d7D4aC0d'
-const value = 1000
+const privateKey = testParams.privateKeys[0]
+const address = testParams.accounts[0]
+const to = testParams.accounts[1]
+const value = 1
 
 describe('ETH API', function() {
 

@@ -2,15 +2,22 @@ import should from 'should'
 
 import jibrelContractsApi from '../index'
 
+import testParams from '../../jibrel-contracts/.jsapi.json'
+
 const erc20 = jibrelContractsApi.contracts.ERC20
 
 const rpcaddr = '127.0.0.1'
-const rpcport = 8545
-const contractAddress = '0xa74476443119A942dE498590Fe1f2454d7D4aC0d'
-const privateKey = '11f8eccc5270476d0488b2d853ff9643b26835f537cd7f2338433c0510b9e17d'
-const owner = '0xa74476443119A942dE498590Fe1f2454d7D4aC0d'
-const to = '0xa74476443119A942dE498590Fe1f2454d7D4aC0d'
-const value = 1000
+const rpcport = 8560
+const contractAddress = testParams.ERC20ContractAddress
+const privateKey = testParams.privateKeys[0]
+const owner = testParams.accounts[0]
+const to = testParams.accounts[2]
+const value = 1
+
+const transferOptions = {
+  from: owner,
+  gas: 1000000,
+}
 
 describe('ERC20 API', function() {
 
@@ -60,6 +67,7 @@ describe('ERC20 API', function() {
         privateKey,
         to,
         value,
+        options: transferOptions,
       }).then((result) => {
         const txHash = result
 
@@ -94,6 +102,7 @@ describe('ERC20 API', function() {
           privateKey,
           to,
           value,
+          options: transferOptions,
         }).catch(done)
       }).catch(done)
     })
@@ -106,7 +115,7 @@ describe('ERC20 API', function() {
         rpcport,
         contractAddress,
         method: 'transfer',
-        args: [to, value],
+        args: [to, value, transferOptions],
       }).then((result) => {
         const estimateGas = result.toNumber()
 

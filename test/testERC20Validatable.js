@@ -2,16 +2,18 @@ import should from 'should'
 
 import jibrelContractsApi from '../index'
 
+import testParams from '../../jibrel-contracts/.jsapi.json'
+
 const erc20Validatable = jibrelContractsApi.contracts.ERC20Validatable
 
 const rpcaddr = '127.0.0.1'
 const rpcport = 8545
-const contractAddress = '0xa74476443119A942dE498590Fe1f2454d7D4aC0d'
-const privateKey = '11f8eccc5270476d0488b2d853ff9643b26835f537cd7f2338433c0510b9e17d'
-const spender = '0xa74476443119A942dE498590Fe1f2454d7D4aC0d'
-const from = '0xa74476443119A942dE498590Fe1f2454d7D4aC0d'
-const to = '0xa74476443119A942dE498590Fe1f2454d7D4aC0d'
-const value = 1000
+const contractAddress = testParams.ERC20ValidatableContractAddress
+const privateKey = testParams.privateKeys[0]
+const spender = testParams.accounts[0]
+const from = testParams.accounts[1]
+const to = testParams.accounts[2]
+const value = 1
 
 describe('ERC20Validatable API', function() {
 
