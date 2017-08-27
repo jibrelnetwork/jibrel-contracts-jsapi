@@ -2,13 +2,17 @@ import should from 'should'
 
 import jibrelContractsApi from '../index'
 
-import testParams from '../../jibrel-contracts/.jsapi.json'
+if (process.env.JSON_PATH == null) {
+  throw (new Error('JSON_PATH env variable not found'))
+}
+
+const testParams = require(process.env.JSON_PATH)
 
 const erc20Validatable = jibrelContractsApi.contracts.ERC20Validatable
 
-const rpcaddr = '127.0.0.1'
-const rpcport = 8545
-const contractAddress = testParams.ERC20ValidatableContractAddress
+const rpcaddr = process.env.RPCADDR || '127.0.0.1'
+const rpcport = process.env.RPCPORT || 8545
+const contractAddress = testParams.contracts.jGDRViewERC20Validatable
 const privateKey = testParams.privateKeys[0]
 const spender = testParams.accounts[0]
 const from = testParams.accounts[1]
@@ -17,9 +21,8 @@ const value = 1
 
 describe('ERC20Validatable API', function() {
 
-  this.timeout(20000)
-
-  describe.skip('isRegulated', function() {
+  /* Currently not implemented for CryDR Views
+  describe('isRegulated', function() {
     it('returns isRegulated boolean flag', function(done) {
       erc20Validatable.isRegulated({
         rpcaddr,
@@ -32,6 +35,7 @@ describe('ERC20Validatable API', function() {
       }).catch(done)
     })
   })
+  */
 
   describe('isReceivingAllowed', function() {
     it('returns isReceivingAllowed boolean flag', function(done) {
@@ -143,9 +147,8 @@ describe('ERC20Validatable API', function() {
         method: 'isReceivingAllowed',
         args: [to, value],
       }).then((result) => {
-        const estimateGas = result.toNumber()
-
-        estimateGas.should.be.greaterThan(0)
+        result.should.be.a.Number()
+        result.should.be.greaterThan(0)
 
         done()
       }).catch(done)

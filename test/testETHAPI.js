@@ -2,12 +2,16 @@ import should from 'should'
 
 import jibrelContractsApi from '../index'
 
-import testParams from '../../jibrel-contracts/.jsapi.json'
+if (process.env.JSON_PATH == null) {
+  throw (new Error('JSON_PATH env variable not found'))
+}
+
+const testParams = require(process.env.JSON_PATH)
 
 const eth = jibrelContractsApi.eth
 
-const rpcaddr = '127.0.0.1'
-const rpcport = 8545
+const rpcaddr = process.env.RPCADDR || '127.0.0.1'
+const rpcport = process.env.RPCPORT || 8545
 const privateKey = testParams.privateKeys[0]
 const address = testParams.accounts[0]
 const to = testParams.accounts[1]
@@ -15,9 +19,8 @@ const value = 1
 
 describe('ETH API', function() {
 
-  this.timeout(20000)
-
   describe('sendTransaction', function() {
+
     it('returns transaction hash', function(done) {
       eth.sendTransaction({
         rpcaddr,
@@ -25,8 +28,11 @@ describe('ETH API', function() {
         privateKey,
         to,
         value,
+        nonce: 8, // testrpc getTransactionCount always returns 0 for any address
       }).then((result) => {
         result.should.be.a.String()
+        result.length.should.be.equal(66)
+        result.should.match(/^0x[a-zA-Z0-9]+/)
 
         done()
       }).catch(done)
@@ -40,10 +46,9 @@ describe('ETH API', function() {
         rpcport,
         address,
       }).then((result) => {
-        const balance = result.toNumber()
-
-        balance.should.be.equal(0)
-        //balance.should.be.greaterThan(0)
+        // result is BigNumber
+        result.greaterThan(0).should.be.equal(true)
+        result.toNumber().should.be.greaterThan(0)
 
         done()
       }).catch(done)
@@ -58,6 +63,7 @@ describe('ETH API', function() {
         to,
         value,
       }).then((result) => {
+        result.should.be.a.Number()
         result.should.be.greaterThan(0)
 
         done()

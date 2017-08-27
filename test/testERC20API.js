@@ -2,13 +2,17 @@ import should from 'should'
 
 import jibrelContractsApi from '../index'
 
-import testParams from '../../jibrel-contracts/.jsapi.json'
+if (process.env.JSON_PATH == null) {
+  throw (new Error('JSON_PATH env variable not found'))
+}
+
+const testParams = require(process.env.JSON_PATH)
 
 const erc20 = jibrelContractsApi.contracts.ERC20
 
-const rpcaddr = '127.0.0.1'
-const rpcport = 8560
-const contractAddress = testParams.ERC20ContractAddress
+const rpcaddr = process.env.RPCADDR || '127.0.0.1'
+const rpcport = process.env.RPCPORT || 8545
+const contractAddress = testParams.contracts.jUSDViewERC20
 const privateKey = testParams.privateKeys[0]
 const owner = testParams.accounts[0]
 const to = testParams.accounts[2]
@@ -30,10 +34,9 @@ describe('ERC20 API', function() {
         rpcport,
         contractAddress,
       }).then((result) => {
-        const totalSupply = result.toNumber()
-
-        totalSupply.should.be.equal(0)
-        //totalSupply.should.be.greaterThan(0)
+        // result is BigNumber
+        result.greaterThan(0).should.be.equal(true)
+        result.toNumber().should.be.greaterThan(0)
 
         done()
       }).catch(done)
@@ -48,10 +51,9 @@ describe('ERC20 API', function() {
         contractAddress,
         owner,
       }).then((result) => {
-        const balance = result.toNumber()
-
-        balance.should.be.equal(0)
-        //balance.should.be.greaterThan(0)
+        // result is BigNumber
+        result.greaterThan(0).should.be.equal(false)
+        result.toNumber().should.be.equal(0)
 
         done()
       }).catch(done)
@@ -69,9 +71,9 @@ describe('ERC20 API', function() {
         value,
         options: transferOptions,
       }).then((result) => {
-        const txHash = result
-
-        txHash.should.be.a.String()
+        result.should.be.a.String()
+        result.length.should.be.equal(66)
+        result.should.match(/^0x[a-zA-Z0-9]+/)
 
         done()
       }).catch(done)
@@ -88,6 +90,8 @@ describe('ERC20 API', function() {
         const eeTransfer = result
 
         eeTransfer.on('data', (event) => {
+          console.log('event', event)
+
           done()
         })
 
@@ -117,9 +121,8 @@ describe('ERC20 API', function() {
         method: 'transfer',
         args: [to, value, transferOptions],
       }).then((result) => {
-        const estimateGas = result.toNumber()
-
-        estimateGas.should.be.greaterThan(0)
+        result.should.be.a.Number()
+        result.should.be.greaterThan(0)
 
         done()
       }).catch(done)
