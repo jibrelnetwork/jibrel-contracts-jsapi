@@ -77,7 +77,7 @@ describe('ERC20 API', function() {
   })
 
   describe('Transfer', function() {
-    let transactionHash
+    let isDone
 
     it('returns event emitter for Transfer event', function(done) {
       erc20.Transfer({
@@ -88,8 +88,6 @@ describe('ERC20 API', function() {
         const eeTransfer = result
 
         eeTransfer.on('data', (event) => {
-          console.log('event', event)
-
           event.should.be.an.Object()
 
           event.logIndex.should.be.a.Number()
@@ -109,16 +107,14 @@ describe('ERC20 API', function() {
           event.args.should.be.an.Object()
           event.args.from.should.be.equal(owner)
           event.args.to.should.be.equal(to)
-          event.args.value.should.be.equal(BigNumber(value))
+          event.args.value.equals(new BigNumber(value)).should.be.equal(true)
 
           // ignore, if this test has already done
-          if (
-            !transactionHash ||
-            !eventTransactionHash ||
-            transactionHash !== event.transactionHash
-          ) {
+          if (isDone) {
             return
           }
+
+          isDone = true
 
           done()
         })
@@ -134,8 +130,6 @@ describe('ERC20 API', function() {
           privateKey,
           to,
           value,
-        }).then((result) => {
-          transactionHash = result
         }).catch(done)
       }).catch(done)
     })

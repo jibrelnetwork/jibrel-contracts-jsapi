@@ -13,13 +13,19 @@ export function subscribeToContractEvent(Event, options = {}, callback) {
   Event(filter, additionalOptions, (err, result) => {
     if (err) {
       contractEventEmitter.emit('error', err)
-      callback(err)
+
+      if (callback) {
+        callback(err)
+      }
 
       return
     }
 
     contractEventEmitter.emit('data', result)
-    callback(null, result)
+
+    if (callback) {
+      callback(null, result)
+    }
   })
 
   return contractEventEmitter
