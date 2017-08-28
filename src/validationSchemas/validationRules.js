@@ -11,8 +11,6 @@ const validationRules = {
   args: Joi.array(),
   data: Joi.string().regex(/^[a-zA-Z0-9]+$/).max(9999),
   gasLimit: Joi.number().positive(),
-  nonce: Joi.number().integer().min(0),
-  options: Joi.object(),
   callback: Joi.func(),
   eventOptions: Joi.object().keys({
     filter: Joi.object(),

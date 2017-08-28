@@ -40,7 +40,7 @@ export async function balanceOf(props) {
 
 export async function transfer(props) {
   const validatedProps = await validate(props, ERC20Schemas.transfer)
-  const { rpcaddr, rpcport, contractAddress, privateKey, gasLimit, to, value, options } = validatedProps
+  const { rpcaddr, rpcport, contractAddress, privateKey, gasLimit, to, value } = validatedProps
 
   initWeb3(rpcaddr, rpcport)
   const contractInstance = getContractInstance(contractAddress, contractInterface)
@@ -48,7 +48,7 @@ export async function transfer(props) {
   return submitContractTx({
     privateKey,
     gasLimit,
-    args: [to, value, options],
+    args: [to, value],
     method: contractInstance.transfer,
   })
 }

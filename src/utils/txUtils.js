@@ -13,7 +13,5 @@ export function getGasLimit(props) {
 }
 
 export function getContractGasLimit(method, args) {
-  console.log('getContractGasLimit', args)
-
   return Promise.promisify(method.estimateGas)(...args)
 }

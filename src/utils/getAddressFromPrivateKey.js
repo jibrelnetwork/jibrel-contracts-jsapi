@@ -14,5 +14,5 @@ export default function getAddressFromPrivateKey(privateKey) {
   const hash = CryptoJS.SHA3(pubKeyWordArray, { outputLength: 256 })
   const address = hash.toString(CryptoJS.enc.Hex).slice(24)
 
-  return address
+  return `0x${address}`
 }

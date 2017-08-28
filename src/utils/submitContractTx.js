@@ -6,6 +6,11 @@ import getAddressFromPrivateKey from './getAddressFromPrivateKey'
 
 export default async function submitContractTx({ method, args, privateKey, gasLimit }) {
   const address = getAddressFromPrivateKey(privateKey)
+
+  // Extend contract method args. Add transaction object as last argument
+  const transactionObject = { from: address }
+  args.push(transactionObject)
+
   const rawTx = await getRawTx(method, args, address, gasLimit)
   const signedTx = signTx(rawTx, privateKey)
 

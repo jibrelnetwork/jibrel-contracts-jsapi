@@ -28,7 +28,6 @@ describe('ETH API', function() {
         privateKey,
         to,
         value,
-        nonce: 8, // testrpc getTransactionCount always returns 0 for any address
       }).then((result) => {
         result.should.be.a.String()
         result.length.should.be.equal(66)

@@ -23,7 +23,6 @@ const transfer = Joi.object().keys({
   to: validationRules.address.required(),
   value: validationRules.value.required(),
   gasLimit: validationRules.gasLimit,
-  options: validationRules.options,
 })
 
 const getPastEvents = Joi.object().keys({
@@ -48,6 +47,7 @@ const estimateGas = Joi.object().keys({
   rpcaddr: validationRules.host.required(),
   rpcport: validationRules.port.required(),
   contractAddress: validationRules.address.required(),
+  privateKey: validationRules.privateKey.required(),
   method: validationRules.method.required(),
   args: validationRules.args.required(),
 })

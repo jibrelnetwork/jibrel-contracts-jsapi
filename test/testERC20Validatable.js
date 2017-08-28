@@ -12,7 +12,7 @@ const erc20Validatable = jibrelContractsApi.contracts.ERC20Validatable
 
 const rpcaddr = process.env.RPCADDR || '127.0.0.1'
 const rpcport = process.env.RPCPORT || 8545
-const contractAddress = testParams.contracts.jGDRViewERC20Validatable
+const contractAddress = testParams.contracts.jTBillViewERC20Validatable
 const privateKey = testParams.privateKeys[0]
 const spender = testParams.accounts[0]
 const from = testParams.accounts[1]
@@ -128,6 +128,7 @@ describe('ERC20Validatable API', function() {
         rpcaddr,
         rpcport,
         contractAddress,
+        privateKey,
         method: 'isReceivingAllowed',
         args: [to, value],
       }).then((result) => {

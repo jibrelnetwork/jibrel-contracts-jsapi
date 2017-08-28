@@ -12,17 +12,11 @@ const erc20 = jibrelContractsApi.contracts.ERC20
 
 const rpcaddr = process.env.RPCADDR || '127.0.0.1'
 const rpcport = process.env.RPCPORT || 8545
-const contractAddress = testParams.contracts.JNTViewERC20
-const privateKey = testParams.privateKeys[1]
-const owner = testParams.accounts[1]
-const to = testParams.accounts[2]
+const contractAddress = testParams.contracts.jTBillViewERC20
+const privateKey = testParams.privateKeys[3]
+const owner = testParams.accounts[3]
+const to = testParams.accounts[4]
 const value = 1
-
-const transferOptions = {
-  from: owner,
-  gas: 4712388,
-  gasPrice: 100000000000000,
-}
 
 describe('ERC20 API', function() {
 
@@ -51,8 +45,8 @@ describe('ERC20 API', function() {
         owner,
       }).then((result) => {
         // result is BigNumber
-        result.greaterThan(0).should.be.equal(false)
-        result.toNumber().should.be.equal(0)
+        result.greaterThan(0).should.be.equal(true)
+        result.toNumber().should.be.greaterThan(0)
 
         done()
       }).catch(done)
@@ -68,7 +62,6 @@ describe('ERC20 API', function() {
         privateKey,
         to,
         value,
-        options: { ...transferOptions },
       }).then((result) => {
         result.should.be.a.String()
         result.length.should.be.equal(66)
@@ -105,7 +98,6 @@ describe('ERC20 API', function() {
           privateKey,
           to,
           value,
-          options: { ...transferOptions },
         }).catch(done)
       }).catch(done)
     })
@@ -117,8 +109,9 @@ describe('ERC20 API', function() {
         rpcaddr,
         rpcport,
         contractAddress,
+        privateKey,
         method: 'transfer',
-        args: [to, value, { ...transferOptions }],
+        args: [to, value],
       }).then((result) => {
         result.should.be.a.Number()
         result.should.be.greaterThan(0)
