@@ -21,22 +21,6 @@ const value = 1
 
 describe('ERC20Validatable API', function() {
 
-  /* Currently not implemented for CryDR Views
-  describe('isRegulated', function() {
-    it('returns isRegulated boolean flag', function(done) {
-      erc20Validatable.isRegulated({
-        rpcaddr,
-        rpcport,
-        contractAddress,
-      }).then((result) => {
-        result.should.be.equal(false)
-
-        done()
-      }).catch(done)
-    })
-  })
-  */
-
   describe('isReceivingAllowed', function() {
     it('returns isReceivingAllowed boolean flag', function(done) {
       erc20Validatable.isReceivingAllowed({

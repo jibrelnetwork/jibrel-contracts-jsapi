@@ -1,14 +1,5 @@
-(function webpackUniversalModuleDefinition(root, factory) {
-	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory();
-	else if(typeof define === 'function' && define.amd)
-		define("JibrelContractsApi", [], factory);
-	else if(typeof exports === 'object')
-		exports["JibrelContractsApi"] = factory();
-	else
-		root["JibrelContractsApi"] = factory();
-})(this, function() {
-return /******/ (function(modules) { // webpackBootstrap
+var JibrelContractsApi =
+/******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -30411,7 +30402,9 @@ var _web = __webpack_require__(165);
 
 var _web2 = _interopRequireDefault(_web);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : { default: obj };
+}
 
 function initWeb3(rpcaddr, rpcport) {
   // check if web3 object already injected in global scope
@@ -32001,7 +31994,9 @@ var _bluebird = __webpack_require__(16);
 
 var _bluebird2 = _interopRequireDefault(_bluebird);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : { default: obj };
+}
 
 function getTxCount(address) {
   return _bluebird2.default.promisify(web3.eth.getTransactionCount)(address);
@@ -32015,10 +32010,10 @@ function getGasLimit(props) {
   return _bluebird2.default.promisify(web3.eth.estimateGas)(props);
 }
 
-function getContractGasLimit(method, txData, args) {
-  var data = txData && txData.length ? txData : method.getData.apply(method, (0, _toConsumableArray3.default)(args));
+function getContractGasLimit(method, args) {
+  console.log('getContractGasLimit', args);
 
-  return _bluebird2.default.promisify(method.estimateGas)({ data: data });
+  return _bluebird2.default.promisify(method.estimateGas).apply(undefined, (0, _toConsumableArray3.default)(args));
 }
 
 /***/ }),
@@ -34288,7 +34283,9 @@ var _ERC20ValidatableSchemas = __webpack_require__(321);
 
 var _ERC20ValidatableSchemas2 = _interopRequireDefault(_ERC20ValidatableSchemas);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : { default: obj };
+}
 
 exports.validate = _validate2.default;
 exports.ETHSchemas = _ETHSchemas2.default;
@@ -34310,7 +34307,9 @@ var _joiBrowser = __webpack_require__(45);
 
 var _joiBrowser2 = _interopRequireDefault(_joiBrowser);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : { default: obj };
+}
 
 var validationRules = {
   host: _joiBrowser2.default.string(),
@@ -34323,6 +34322,8 @@ var validationRules = {
   args: _joiBrowser2.default.array(),
   data: _joiBrowser2.default.string().regex(/^[a-zA-Z0-9]+$/).max(9999),
   gasLimit: _joiBrowser2.default.number().positive(),
+  nonce: _joiBrowser2.default.number().integer().min(0),
+  options: _joiBrowser2.default.object(),
   callback: _joiBrowser2.default.func(),
   eventOptions: _joiBrowser2.default.object().keys({
     filter: _joiBrowser2.default.object(),
@@ -34350,7 +34351,9 @@ var _memoize = __webpack_require__(324);
 
 var _memoize2 = _interopRequireDefault(_memoize);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : { default: obj };
+}
 
 var ERC20ABI = [{
   constant: false,
@@ -34589,7 +34592,6 @@ var ERC20ValidatableABI = [{
   payable: false,
   type: 'function'
 }];
-
 
 function _getContract(contractInterface) {
   if (contractInterface === 'ERC20') {
@@ -36479,7 +36481,9 @@ var _ethereumjsTx = __webpack_require__(227);
 
 var _ethereumjsTx2 = _interopRequireDefault(_ethereumjsTx);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : { default: obj };
+}
 
 function signTx(rawTx, privateKey) {
   var tx = new _ethereumjsTx2.default(rawTx);
@@ -39413,7 +39417,9 @@ var _cryptoJs2 = _interopRequireDefault(_cryptoJs);
 
 var _elliptic = __webpack_require__(7);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : { default: obj };
+}
 
 var ec = new _elliptic.ec('secp256k1');
 
@@ -39985,7 +39991,9 @@ var _getContractInstance = __webpack_require__(82);
 
 var _getContractInstance2 = _interopRequireDefault(_getContractInstance);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : { default: obj };
+}
 
 function estimateGasForContractMethod(contractInterface, props) {
   var rpcaddr = props.rpcaddr,
@@ -39994,11 +40002,10 @@ function estimateGasForContractMethod(contractInterface, props) {
       method = props.method,
       args = props.args;
 
-
   (0, _initWeb2.default)(rpcaddr, rpcport);
   var contractInstance = (0, _getContractInstance2.default)(contractAddress, contractInterface);
 
-  return (0, _txUtils.getContractGasLimit)(contractInstance[method], null, args);
+  return (0, _txUtils.getContractGasLimit)(contractInstance[method], args);
 }
 
 /***/ }),
@@ -40058,7 +40065,6 @@ var sendTransaction = exports.sendTransaction = function () {
             validatedProps = _context.sent;
             rpcaddr = validatedProps.rpcaddr, rpcport = validatedProps.rpcport, otherProps = (0, _objectWithoutProperties3.default)(validatedProps, ['rpcaddr', 'rpcport']);
 
-
             (0, _initWeb2.default)(rpcaddr, rpcport);
 
             return _context.abrupt('return', (0, _submitTx2.default)(otherProps));
@@ -40090,7 +40096,6 @@ var getBalance = exports.getBalance = function () {
             validatedProps = _context2.sent;
             rpcaddr = validatedProps.rpcaddr, rpcport = validatedProps.rpcport, address = validatedProps.address, defaultBlock = validatedProps.defaultBlock;
 
-
             (0, _initWeb2.default)(rpcaddr, rpcport);
 
             return _context2.abrupt('return', _bluebird2.default.promisify(web3.eth.getBalance)(address, defaultBlock));
@@ -40121,7 +40126,6 @@ var estimateGas = exports.estimateGas = function () {
           case 2:
             validatedProps = _context3.sent;
             rpcaddr = validatedProps.rpcaddr, rpcport = validatedProps.rpcport, data = validatedProps.data, to = validatedProps.to, value = validatedProps.value;
-
 
             (0, _initWeb2.default)(rpcaddr, rpcport);
 
@@ -40156,7 +40160,9 @@ var _txUtils = __webpack_require__(60);
 
 var _validationSchemas = __webpack_require__(80);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : { default: obj };
+}
 
 /***/ }),
 /* 133 */
@@ -48722,6 +48728,7 @@ var getRawTx = function () {
     var gasLimit = _ref3.gasLimit,
         address = _ref3.address,
         data = _ref3.data,
+        nonce = _ref3.nonce,
         to = _ref3.to,
         value = _ref3.value;
     var gasPrice;
@@ -48738,40 +48745,54 @@ var getRawTx = function () {
             _context2.t1 = to;
             _context2.t2 = value;
             _context2.t3 = gasPrice.toNumber();
-            _context2.next = 9;
-            return (0, _txUtils.getTxCount)(address);
 
-          case 9:
-            _context2.t4 = _context2.sent;
-
-            if (!(gasLimit != null)) {
-              _context2.next = 14;
+            if (!(nonce != null)) {
+              _context2.next = 11;
               break;
             }
 
-            _context2.t5 = gasLimit;
-            _context2.next = 17;
+            _context2.t4 = nonce;
+            _context2.next = 14;
             break;
 
+          case 11:
+            _context2.next = 13;
+            return (0, _txUtils.getTxCount)(address);
+
+          case 13:
+            _context2.t4 = _context2.sent;
+
           case 14:
-            _context2.next = 16;
+            _context2.t5 = _context2.t4;
+
+            if (!(gasLimit != null)) {
+              _context2.next = 19;
+              break;
+            }
+
+            _context2.t6 = gasLimit;
+            _context2.next = 22;
+            break;
+
+          case 19:
+            _context2.next = 21;
             return (0, _txUtils.getGasLimit)({ data: data, to: to, value: value });
 
-          case 16:
-            _context2.t5 = _context2.sent;
+          case 21:
+            _context2.t6 = _context2.sent;
 
-          case 17:
-            _context2.t6 = _context2.t5;
+          case 22:
+            _context2.t7 = _context2.t6;
             return _context2.abrupt('return', {
               data: _context2.t0,
               to: _context2.t1,
               value: _context2.t2,
               gasPrice: _context2.t3,
-              nonce: _context2.t4,
-              gasLimit: _context2.t6
+              nonce: _context2.t5,
+              gasLimit: _context2.t7
             });
 
-          case 19:
+          case 24:
           case 'end':
             return _context2.stop();
         }
@@ -48798,23 +48819,25 @@ var _getAddressFromPrivateKey = __webpack_require__(127);
 
 var _getAddressFromPrivateKey2 = _interopRequireDefault(_getAddressFromPrivateKey);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : { default: obj };
+}
 
 exports.default = function () {
   var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(props) {
-    var privateKey, gasLimit, data, to, value, address, rawTx, signedTx;
+    var privateKey, gasLimit, data, nonce, to, value, address, rawTx, signedTx;
     return _regenerator2.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            privateKey = props.privateKey, gasLimit = props.gasLimit, data = props.data, to = props.to, value = props.value;
+            privateKey = props.privateKey, gasLimit = props.gasLimit, data = props.data, nonce = props.nonce, to = props.to, value = props.value;
             address = (0, _getAddressFromPrivateKey2.default)(privateKey);
             _context.next = 4;
-            return getRawTx({ gasLimit: gasLimit, address: address, data: data, to: to, value: value });
+            return getRawTx({ gasLimit: gasLimit, address: address, data: data, nonce: nonce, to: to, value: value });
 
           case 4:
             rawTx = _context.sent;
-            signedTx = (0, _signTx2.default)(privateKey, rawTx);
+            signedTx = (0, _signTx2.default)(rawTx, privateKey);
             return _context.abrupt('return', _bluebird2.default.promisify(web3.eth.sendRawTransaction)(signedTx));
 
           case 7:
@@ -61588,7 +61611,9 @@ var _joiBrowser = __webpack_require__(45);
 
 var _joiBrowser2 = _interopRequireDefault(_joiBrowser);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : { default: obj };
+}
 
 function validate(props, schema) {
   return new _bluebird2.default(function (resolve, reject) {
@@ -61623,7 +61648,9 @@ var _validationRules = __webpack_require__(81);
 
 var _validationRules2 = _interopRequireDefault(_validationRules);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : { default: obj };
+}
 
 var sendTransaction = _joiBrowser2.default.object().keys({
   rpcaddr: _validationRules2.default.host.required(),
@@ -61632,6 +61659,7 @@ var sendTransaction = _joiBrowser2.default.object().keys({
   to: _validationRules2.default.address.required(),
   value: _validationRules2.default.value.required(),
   gasLimit: _validationRules2.default.gasLimit,
+  nonce: _validationRules2.default.nonce,
   data: _validationRules2.default.data
 });
 
@@ -61675,7 +61703,9 @@ var _validationRules = __webpack_require__(81);
 
 var _validationRules2 = _interopRequireDefault(_validationRules);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : { default: obj };
+}
 
 var totalSupply = _joiBrowser2.default.object().keys({
   rpcaddr: _validationRules2.default.host.required(),
@@ -61697,7 +61727,8 @@ var transfer = _joiBrowser2.default.object().keys({
   privateKey: _validationRules2.default.privateKey.required(),
   to: _validationRules2.default.address.required(),
   value: _validationRules2.default.value.required(),
-  gasLimit: _validationRules2.default.gasLimit
+  gasLimit: _validationRules2.default.gasLimit,
+  options: _validationRules2.default.options
 });
 
 var getPastEvents = _joiBrowser2.default.object().keys({
@@ -61755,7 +61786,9 @@ var _validationRules = __webpack_require__(81);
 
 var _validationRules2 = _interopRequireDefault(_validationRules);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : { default: obj };
+}
 
 var isRegulated = _joiBrowser2.default.object().keys({
   rpcaddr: _validationRules2.default.host.required(),
@@ -61860,7 +61893,6 @@ var totalSupply = exports.totalSupply = function () {
             validatedProps = _context.sent;
             rpcaddr = validatedProps.rpcaddr, rpcport = validatedProps.rpcport, contractAddress = validatedProps.contractAddress;
 
-
             (0, _initWeb2.default)(rpcaddr, rpcport);
             contractInstance = (0, _getContractInstance2.default)(contractAddress, contractInterface);
             return _context.abrupt('return', _bluebird2.default.promisify(contractInstance.totalSupply.call)());
@@ -61892,7 +61924,6 @@ var balanceOf = exports.balanceOf = function () {
             validatedProps = _context2.sent;
             rpcaddr = validatedProps.rpcaddr, rpcport = validatedProps.rpcport, contractAddress = validatedProps.contractAddress, owner = validatedProps.owner;
 
-
             (0, _initWeb2.default)(rpcaddr, rpcport);
             contractInstance = (0, _getContractInstance2.default)(contractAddress, contractInterface);
             return _context2.abrupt('return', _bluebird2.default.promisify(contractInstance.balanceOf.call)(owner));
@@ -61916,7 +61947,7 @@ var balanceOf = exports.balanceOf = function () {
 
 var transfer = exports.transfer = function () {
   var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(props) {
-    var validatedProps, rpcaddr, rpcport, contractAddress, privateKey, gasLimit, to, value, contractInstance;
+    var validatedProps, rpcaddr, rpcport, contractAddress, privateKey, gasLimit, to, value, options, contractInstance;
     return _regenerator2.default.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
@@ -61926,15 +61957,14 @@ var transfer = exports.transfer = function () {
 
           case 2:
             validatedProps = _context3.sent;
-            rpcaddr = validatedProps.rpcaddr, rpcport = validatedProps.rpcport, contractAddress = validatedProps.contractAddress, privateKey = validatedProps.privateKey, gasLimit = validatedProps.gasLimit, to = validatedProps.to, value = validatedProps.value;
-
+            rpcaddr = validatedProps.rpcaddr, rpcport = validatedProps.rpcport, contractAddress = validatedProps.contractAddress, privateKey = validatedProps.privateKey, gasLimit = validatedProps.gasLimit, to = validatedProps.to, value = validatedProps.value, options = validatedProps.options;
 
             (0, _initWeb2.default)(rpcaddr, rpcport);
             contractInstance = (0, _getContractInstance2.default)(contractAddress, contractInterface);
             return _context3.abrupt('return', (0, _submitContractTx2.default)({
               privateKey: privateKey,
               gasLimit: gasLimit,
-              args: [to, value],
+              args: [to, value, options],
               method: contractInstance.transfer
             }));
 
@@ -61969,7 +61999,6 @@ var allEvents = exports.allEvents = function () {
             validatedProps = _context4.sent;
             rpcaddr = validatedProps.rpcaddr, rpcport = validatedProps.rpcport, contractAddress = validatedProps.contractAddress, options = validatedProps.options, callback = validatedProps.callback;
 
-
             (0, _initWeb2.default)(rpcaddr, rpcport);
             contractInstance = (0, _getContractInstance2.default)(contractAddress, contractInterface);
             return _context4.abrupt('return', (0, _eventUtils.subscribeToContractEvent)(contractInstance.allEvents, options, callback));
@@ -62001,7 +62030,6 @@ var getPastEvents = exports.getPastEvents = function () {
             validatedProps = _context5.sent;
             rpcaddr = validatedProps.rpcaddr, rpcport = validatedProps.rpcport, contractAddress = validatedProps.contractAddress, event = validatedProps.event, options = validatedProps.options;
 
-
             (0, _initWeb2.default)(rpcaddr, rpcport);
             contractInstance = (0, _getContractInstance2.default)(contractAddress, contractInterface);
             return _context5.abrupt('return', (0, _eventUtils.getPastContractEvents)(contractInstance[event], options));
@@ -62032,7 +62060,6 @@ var Transfer = exports.Transfer = function () {
           case 2:
             validatedProps = _context6.sent;
             rpcaddr = validatedProps.rpcaddr, rpcport = validatedProps.rpcport, contractAddress = validatedProps.contractAddress, options = validatedProps.options, callback = validatedProps.callback;
-
 
             (0, _initWeb2.default)(rpcaddr, rpcport);
             contractInstance = (0, _getContractInstance2.default)(contractAddress, contractInterface);
@@ -62106,7 +62133,9 @@ var _eventUtils = __webpack_require__(325);
 
 var _validationSchemas = __webpack_require__(80);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : { default: obj };
+}
 
 var contractInterface = 'ERC20';
 
@@ -62121,55 +62150,56 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _regenerator = __webpack_require__(34);
-
-var _regenerator2 = _interopRequireDefault(_regenerator);
-
 var _toConsumableArray2 = __webpack_require__(126);
 
 var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
+
+var _regenerator = __webpack_require__(34);
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
 
 var _asyncToGenerator2 = __webpack_require__(35);
 
 var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
 
 var getRawTx = function () {
-  var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(method, txData, address, gasLimit) {
-    var gasPrice;
+  var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(method, args, address, gasLimit) {
+    var txData, gasPrice;
     return _regenerator2.default.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            _context2.next = 2;
+            txData = method.getData.apply(method, (0, _toConsumableArray3.default)(args));
+            _context2.next = 3;
             return (0, _txUtils.getGasPrice)();
 
-          case 2:
+          case 3:
             gasPrice = _context2.sent;
             _context2.t0 = txData;
             _context2.t1 = gasPrice.toNumber();
-            _context2.next = 7;
+            _context2.next = 8;
             return (0, _txUtils.getTxCount)(address);
 
-          case 7:
+          case 8:
             _context2.t2 = _context2.sent;
 
             if (!(gasLimit != null)) {
-              _context2.next = 12;
+              _context2.next = 13;
               break;
             }
 
             _context2.t3 = gasLimit;
-            _context2.next = 15;
+            _context2.next = 16;
             break;
 
-          case 12:
-            _context2.next = 14;
-            return (0, _txUtils.getContractGasLimit)(method, txData);
-
-          case 14:
-            _context2.t3 = _context2.sent;
+          case 13:
+            _context2.next = 15;
+            return (0, _txUtils.getContractGasLimit)(method, args);
 
           case 15:
+            _context2.t3 = _context2.sent;
+
+          case 16:
             _context2.t4 = _context2.t3;
             return _context2.abrupt('return', {
               data: _context2.t0,
@@ -62178,7 +62208,7 @@ var getRawTx = function () {
               gasLimit: _context2.t4
             });
 
-          case 17:
+          case 18:
           case 'end':
             return _context2.stop();
         }
@@ -62205,7 +62235,9 @@ var _getAddressFromPrivateKey = __webpack_require__(127);
 
 var _getAddressFromPrivateKey2 = _interopRequireDefault(_getAddressFromPrivateKey);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : { default: obj };
+}
 
 exports.default = function () {
   var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(_ref2) {
@@ -62213,22 +62245,21 @@ exports.default = function () {
         args = _ref2.args,
         privateKey = _ref2.privateKey,
         gasLimit = _ref2.gasLimit;
-    var txData, address, rawTx, signedTx;
+    var address, rawTx, signedTx;
     return _regenerator2.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            txData = method.getData.apply(method, (0, _toConsumableArray3.default)(args));
             address = (0, _getAddressFromPrivateKey2.default)(privateKey);
-            _context.next = 4;
-            return getRawTx(method, txData, address, gasLimit);
+            _context.next = 3;
+            return getRawTx(method, args, address, gasLimit);
 
-          case 4:
+          case 3:
             rawTx = _context.sent;
-            signedTx = (0, _signTx2.default)(privateKey, rawTx);
+            signedTx = (0, _signTx2.default)(rawTx, privateKey);
             return _context.abrupt('return', _bluebird2.default.promisify(web3.eth.sendRawTransaction)(signedTx));
 
-          case 7:
+          case 6:
           case 'end':
             return _context.stop();
         }
@@ -62301,7 +62332,9 @@ var _events = __webpack_require__(57);
 
 var _events2 = _interopRequireDefault(_events);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : { default: obj };
+}
 
 function subscribeToContractEvent(Event) {
   var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -62315,7 +62348,6 @@ function subscribeToContractEvent(Event) {
    */
   var filter = options.filter,
       additionalOptions = (0, _objectWithoutProperties3.default)(options, ['filter']);
-
 
   Event(filter, additionalOptions, function (err, result) {
     if (err) {
@@ -62357,7 +62389,7 @@ function getPastContractEvents(Event) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.estimateGas = exports.isTransferFromAllowed = exports.isApprovedSpendingAllowed = exports.isApproveAllowed = exports.isTransferAllowed = exports.isSpendingAllowed = exports.isReceivingAllowed = exports.isRegulated = undefined;
+exports.estimateGas = exports.isTransferFromAllowed = exports.isApprovedSpendingAllowed = exports.isApproveAllowed = exports.isTransferAllowed = exports.isSpendingAllowed = exports.isReceivingAllowed = undefined;
 
 var _regenerator = __webpack_require__(34);
 
@@ -62371,24 +62403,23 @@ var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
  * ERC20ValidatableAPI 'calling' methods
  */
 
-var isRegulated = exports.isRegulated = function () {
+var isReceivingAllowed = exports.isReceivingAllowed = function () {
   var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(props) {
-    var validatedProps, rpcaddr, rpcport, contractAddress, contractInstance;
+    var validatedProps, rpcaddr, rpcport, contractAddress, account, value, contractInstance;
     return _regenerator2.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             _context.next = 2;
-            return (0, _validationSchemas.validate)(props, _validationSchemas.ERC20ValidatableSchemas.isRegulated);
+            return (0, _validationSchemas.validate)(props, _validationSchemas.ERC20ValidatableSchemas.isReceivingAllowed);
 
           case 2:
             validatedProps = _context.sent;
-            rpcaddr = validatedProps.rpcaddr, rpcport = validatedProps.rpcport, contractAddress = validatedProps.contractAddress;
-
+            rpcaddr = validatedProps.rpcaddr, rpcport = validatedProps.rpcport, contractAddress = validatedProps.contractAddress, account = validatedProps.account, value = validatedProps.value;
 
             (0, _initWeb2.default)(rpcaddr, rpcport);
             contractInstance = (0, _getContractInstance2.default)(contractAddress, contractInterface);
-            return _context.abrupt('return', _bluebird2.default.promisify(contractInstance.isRegulated.call)());
+            return _context.abrupt('return', _bluebird2.default.promisify(contractInstance.isReceivingAllowed.call)(account, value));
 
           case 7:
           case 'end':
@@ -62398,12 +62429,12 @@ var isRegulated = exports.isRegulated = function () {
     }, _callee, this);
   }));
 
-  return function isRegulated(_x) {
+  return function isReceivingAllowed(_x) {
     return _ref.apply(this, arguments);
   };
 }();
 
-var isReceivingAllowed = exports.isReceivingAllowed = function () {
+var isSpendingAllowed = exports.isSpendingAllowed = function () {
   var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(props) {
     var validatedProps, rpcaddr, rpcport, contractAddress, account, value, contractInstance;
     return _regenerator2.default.wrap(function _callee2$(_context2) {
@@ -62411,16 +62442,15 @@ var isReceivingAllowed = exports.isReceivingAllowed = function () {
         switch (_context2.prev = _context2.next) {
           case 0:
             _context2.next = 2;
-            return (0, _validationSchemas.validate)(props, _validationSchemas.ERC20ValidatableSchemas.isReceivingAllowed);
+            return (0, _validationSchemas.validate)(props, _validationSchemas.ERC20ValidatableSchemas.isSpendingAllowed);
 
           case 2:
             validatedProps = _context2.sent;
             rpcaddr = validatedProps.rpcaddr, rpcport = validatedProps.rpcport, contractAddress = validatedProps.contractAddress, account = validatedProps.account, value = validatedProps.value;
 
-
             (0, _initWeb2.default)(rpcaddr, rpcport);
             contractInstance = (0, _getContractInstance2.default)(contractAddress, contractInterface);
-            return _context2.abrupt('return', _bluebird2.default.promisify(contractInstance.isReceivingAllowed.call)(account, value));
+            return _context2.abrupt('return', _bluebird2.default.promisify(contractInstance.isSpendingAllowed.call)(account, value));
 
           case 7:
           case 'end':
@@ -62430,29 +62460,28 @@ var isReceivingAllowed = exports.isReceivingAllowed = function () {
     }, _callee2, this);
   }));
 
-  return function isReceivingAllowed(_x2) {
+  return function isSpendingAllowed(_x2) {
     return _ref2.apply(this, arguments);
   };
 }();
 
-var isSpendingAllowed = exports.isSpendingAllowed = function () {
+var isTransferAllowed = exports.isTransferAllowed = function () {
   var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(props) {
-    var validatedProps, rpcaddr, rpcport, contractAddress, account, value, contractInstance;
+    var validatedProps, rpcaddr, rpcport, contractAddress, from, to, value, contractInstance;
     return _regenerator2.default.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
             _context3.next = 2;
-            return (0, _validationSchemas.validate)(props, _validationSchemas.ERC20ValidatableSchemas.isSpendingAllowed);
+            return (0, _validationSchemas.validate)(props, _validationSchemas.ERC20ValidatableSchemas.isTransferAllowed);
 
           case 2:
             validatedProps = _context3.sent;
-            rpcaddr = validatedProps.rpcaddr, rpcport = validatedProps.rpcport, contractAddress = validatedProps.contractAddress, account = validatedProps.account, value = validatedProps.value;
-
+            rpcaddr = validatedProps.rpcaddr, rpcport = validatedProps.rpcport, contractAddress = validatedProps.contractAddress, from = validatedProps.from, to = validatedProps.to, value = validatedProps.value;
 
             (0, _initWeb2.default)(rpcaddr, rpcport);
             contractInstance = (0, _getContractInstance2.default)(contractAddress, contractInterface);
-            return _context3.abrupt('return', _bluebird2.default.promisify(contractInstance.isSpendingAllowed.call)(account, value));
+            return _context3.abrupt('return', _bluebird2.default.promisify(contractInstance.isTransferAllowed.call)(from, to, value));
 
           case 7:
           case 'end':
@@ -62462,29 +62491,28 @@ var isSpendingAllowed = exports.isSpendingAllowed = function () {
     }, _callee3, this);
   }));
 
-  return function isSpendingAllowed(_x3) {
+  return function isTransferAllowed(_x3) {
     return _ref3.apply(this, arguments);
   };
 }();
 
-var isTransferAllowed = exports.isTransferAllowed = function () {
+var isApproveAllowed = exports.isApproveAllowed = function () {
   var _ref4 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4(props) {
-    var validatedProps, rpcaddr, rpcport, contractAddress, from, to, value, contractInstance;
+    var validatedProps, rpcaddr, rpcport, contractAddress, from, spender, value, contractInstance;
     return _regenerator2.default.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
             _context4.next = 2;
-            return (0, _validationSchemas.validate)(props, _validationSchemas.ERC20ValidatableSchemas.isTransferAllowed);
+            return (0, _validationSchemas.validate)(props, _validationSchemas.ERC20ValidatableSchemas.isApproveAllowed);
 
           case 2:
             validatedProps = _context4.sent;
-            rpcaddr = validatedProps.rpcaddr, rpcport = validatedProps.rpcport, contractAddress = validatedProps.contractAddress, from = validatedProps.from, to = validatedProps.to, value = validatedProps.value;
-
+            rpcaddr = validatedProps.rpcaddr, rpcport = validatedProps.rpcport, contractAddress = validatedProps.contractAddress, from = validatedProps.from, spender = validatedProps.spender, value = validatedProps.value;
 
             (0, _initWeb2.default)(rpcaddr, rpcport);
             contractInstance = (0, _getContractInstance2.default)(contractAddress, contractInterface);
-            return _context4.abrupt('return', _bluebird2.default.promisify(contractInstance.isTransferAllowed.call)(from, to, value));
+            return _context4.abrupt('return', _bluebird2.default.promisify(contractInstance.isApproveAllowed.call)(from, spender, value));
 
           case 7:
           case 'end':
@@ -62494,12 +62522,12 @@ var isTransferAllowed = exports.isTransferAllowed = function () {
     }, _callee4, this);
   }));
 
-  return function isTransferAllowed(_x4) {
+  return function isApproveAllowed(_x4) {
     return _ref4.apply(this, arguments);
   };
 }();
 
-var isApproveAllowed = exports.isApproveAllowed = function () {
+var isApprovedSpendingAllowed = exports.isApprovedSpendingAllowed = function () {
   var _ref5 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5(props) {
     var validatedProps, rpcaddr, rpcport, contractAddress, from, spender, value, contractInstance;
     return _regenerator2.default.wrap(function _callee5$(_context5) {
@@ -62507,16 +62535,15 @@ var isApproveAllowed = exports.isApproveAllowed = function () {
         switch (_context5.prev = _context5.next) {
           case 0:
             _context5.next = 2;
-            return (0, _validationSchemas.validate)(props, _validationSchemas.ERC20ValidatableSchemas.isApproveAllowed);
+            return (0, _validationSchemas.validate)(props, _validationSchemas.ERC20ValidatableSchemas.isApprovedSpendingAllowed);
 
           case 2:
             validatedProps = _context5.sent;
             rpcaddr = validatedProps.rpcaddr, rpcport = validatedProps.rpcport, contractAddress = validatedProps.contractAddress, from = validatedProps.from, spender = validatedProps.spender, value = validatedProps.value;
 
-
             (0, _initWeb2.default)(rpcaddr, rpcport);
             contractInstance = (0, _getContractInstance2.default)(contractAddress, contractInterface);
-            return _context5.abrupt('return', _bluebird2.default.promisify(contractInstance.isApproveAllowed.call)(from, spender, value));
+            return _context5.abrupt('return', _bluebird2.default.promisify(contractInstance.isApprovedSpendingAllowed.call)(from, spender, value));
 
           case 7:
           case 'end':
@@ -62526,29 +62553,28 @@ var isApproveAllowed = exports.isApproveAllowed = function () {
     }, _callee5, this);
   }));
 
-  return function isApproveAllowed(_x5) {
+  return function isApprovedSpendingAllowed(_x5) {
     return _ref5.apply(this, arguments);
   };
 }();
 
-var isApprovedSpendingAllowed = exports.isApprovedSpendingAllowed = function () {
+var isTransferFromAllowed = exports.isTransferFromAllowed = function () {
   var _ref6 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee6(props) {
-    var validatedProps, rpcaddr, rpcport, contractAddress, from, spender, value, contractInstance;
+    var validatedProps, rpcaddr, rpcport, contractAddress, spender, from, to, value, contractInstance;
     return _regenerator2.default.wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
           case 0:
             _context6.next = 2;
-            return (0, _validationSchemas.validate)(props, _validationSchemas.ERC20ValidatableSchemas.isApprovedSpendingAllowed);
+            return (0, _validationSchemas.validate)(props, _validationSchemas.ERC20ValidatableSchemas.isTransferFromAllowed);
 
           case 2:
             validatedProps = _context6.sent;
-            rpcaddr = validatedProps.rpcaddr, rpcport = validatedProps.rpcport, contractAddress = validatedProps.contractAddress, from = validatedProps.from, spender = validatedProps.spender, value = validatedProps.value;
-
+            rpcaddr = validatedProps.rpcaddr, rpcport = validatedProps.rpcport, contractAddress = validatedProps.contractAddress, spender = validatedProps.spender, from = validatedProps.from, to = validatedProps.to, value = validatedProps.value;
 
             (0, _initWeb2.default)(rpcaddr, rpcport);
             contractInstance = (0, _getContractInstance2.default)(contractAddress, contractInterface);
-            return _context6.abrupt('return', _bluebird2.default.promisify(contractInstance.isApprovedSpendingAllowed.call)(from, spender, value));
+            return _context6.abrupt('return', _bluebird2.default.promisify(contractInstance.isTransferFromAllowed.call)(spender, from, to, value));
 
           case 7:
           case 'end':
@@ -62558,40 +62584,8 @@ var isApprovedSpendingAllowed = exports.isApprovedSpendingAllowed = function () 
     }, _callee6, this);
   }));
 
-  return function isApprovedSpendingAllowed(_x6) {
+  return function isTransferFromAllowed(_x6) {
     return _ref6.apply(this, arguments);
-  };
-}();
-
-var isTransferFromAllowed = exports.isTransferFromAllowed = function () {
-  var _ref7 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee7(props) {
-    var validatedProps, rpcaddr, rpcport, contractAddress, spender, from, to, value, contractInstance;
-    return _regenerator2.default.wrap(function _callee7$(_context7) {
-      while (1) {
-        switch (_context7.prev = _context7.next) {
-          case 0:
-            _context7.next = 2;
-            return (0, _validationSchemas.validate)(props, _validationSchemas.ERC20ValidatableSchemas.isTransferFromAllowed);
-
-          case 2:
-            validatedProps = _context7.sent;
-            rpcaddr = validatedProps.rpcaddr, rpcport = validatedProps.rpcport, contractAddress = validatedProps.contractAddress, spender = validatedProps.spender, from = validatedProps.from, to = validatedProps.to, value = validatedProps.value;
-
-
-            (0, _initWeb2.default)(rpcaddr, rpcport);
-            contractInstance = (0, _getContractInstance2.default)(contractAddress, contractInterface);
-            return _context7.abrupt('return', _bluebird2.default.promisify(contractInstance.isTransferFromAllowed.call)(spender, from, to, value));
-
-          case 7:
-          case 'end':
-            return _context7.stop();
-        }
-      }
-    }, _callee7, this);
-  }));
-
-  return function isTransferFromAllowed(_x7) {
-    return _ref7.apply(this, arguments);
   };
 }();
 
@@ -62600,29 +62594,29 @@ var isTransferFromAllowed = exports.isTransferFromAllowed = function () {
  */
 
 var estimateGas = exports.estimateGas = function () {
-  var _ref8 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee8(props) {
+  var _ref7 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee7(props) {
     var validatedProps;
-    return _regenerator2.default.wrap(function _callee8$(_context8) {
+    return _regenerator2.default.wrap(function _callee7$(_context7) {
       while (1) {
-        switch (_context8.prev = _context8.next) {
+        switch (_context7.prev = _context7.next) {
           case 0:
-            _context8.next = 2;
+            _context7.next = 2;
             return (0, _validationSchemas.validate)(props, _validationSchemas.ERC20ValidatableSchemas.estimateGas);
 
           case 2:
-            validatedProps = _context8.sent;
-            return _context8.abrupt('return', (0, _estimateGasForContractMethod2.default)(contractInterface, validatedProps));
+            validatedProps = _context7.sent;
+            return _context7.abrupt('return', (0, _estimateGasForContractMethod2.default)(contractInterface, validatedProps));
 
           case 4:
           case 'end':
-            return _context8.stop();
+            return _context7.stop();
         }
       }
-    }, _callee8, this);
+    }, _callee7, this);
   }));
 
-  return function estimateGas(_x8) {
-    return _ref8.apply(this, arguments);
+  return function estimateGas(_x7) {
+    return _ref7.apply(this, arguments);
   };
 }();
 
@@ -62644,10 +62638,11 @@ var _estimateGasForContractMethod2 = _interopRequireDefault(_estimateGasForContr
 
 var _validationSchemas = __webpack_require__(80);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : { default: obj };
+}
 
 var contractInterface = 'ERC20Validatable';
 
 /***/ })
 /******/ ]);
-});

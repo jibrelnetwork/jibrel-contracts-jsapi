@@ -1,6 +1,6 @@
 import should from 'should'
 
-import jibrelContractsApi from '../index'
+import jibrelContractsApi from '../index.js'
 
 if (process.env.JSON_PATH == null) {
   throw (new Error('JSON_PATH env variable not found'))
@@ -12,20 +12,19 @@ const erc20 = jibrelContractsApi.contracts.ERC20
 
 const rpcaddr = process.env.RPCADDR || '127.0.0.1'
 const rpcport = process.env.RPCPORT || 8545
-const contractAddress = testParams.contracts.jUSDViewERC20
-const privateKey = testParams.privateKeys[0]
-const owner = testParams.accounts[0]
+const contractAddress = testParams.contracts.JNTViewERC20
+const privateKey = testParams.privateKeys[1]
+const owner = testParams.accounts[1]
 const to = testParams.accounts[2]
 const value = 1
 
 const transferOptions = {
   from: owner,
-  gas: 1000000,
+  gas: 4712388,
+  gasPrice: 100000000000000,
 }
 
 describe('ERC20 API', function() {
-
-  this.timeout(20000)
 
   describe('totalSupply', function() {
     it('returns total supply of tokens', function(done) {
@@ -69,7 +68,7 @@ describe('ERC20 API', function() {
         privateKey,
         to,
         value,
-        options: transferOptions,
+        options: { ...transferOptions },
       }).then((result) => {
         result.should.be.a.String()
         result.length.should.be.equal(66)
@@ -106,7 +105,7 @@ describe('ERC20 API', function() {
           privateKey,
           to,
           value,
-          options: transferOptions,
+          options: { ...transferOptions },
         }).catch(done)
       }).catch(done)
     })
@@ -119,7 +118,7 @@ describe('ERC20 API', function() {
         rpcport,
         contractAddress,
         method: 'transfer',
-        args: [to, value, transferOptions],
+        args: [to, value, { ...transferOptions }],
       }).then((result) => {
         result.should.be.a.Number()
         result.should.be.greaterThan(0)

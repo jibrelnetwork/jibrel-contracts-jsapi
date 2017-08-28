@@ -10,8 +10,8 @@ module.exports = {
     filename: 'jibrel-contracts-jsapi.js',
     path: distPath,
     library: 'JibrelContractsApi',
-    libraryTarget: 'umd',
-    umdNamedDefine: true,
+    //libraryTarget: 'umd',
+    //umdNamedDefine: true,
   },
   module: {
     rules: [

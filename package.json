@@ -8,11 +8,12 @@
     "npm": "^5.3.0"
   },
   "scripts": {
-    "compile": "npm run lint && npm run build && npm run minify",
-    "build": "./node_modules/.bin/webpack --config ./build/webpack.config.js",
-    "lint": "./node_modules/.bin/eslint ./lib",
+    "compile-standalone": "npm run build-standalone && npm run minify",
+    "compile": "npm run lint && npm run build",
+    "build": "./node_modules/.bin/babel -D -d ./lib ./src",
+    "build-standalone": "./node_modules/.bin/webpack --config ./build/webpack.config.js",
+    "lint": "./node_modules/.bin/eslint ./src",
     "minify": "./node_modules/.bin/minify ./dist/jibrel-contracts-jsapi.js --mangle -o ./dist/jibrel-contracts-jsapi.min.js",
-    "testrpc": "./node_modules/.bin/testrpc",
     "test": "./node_modules/.bin/mocha --compilers babel-register"
   },
   "repository": {
@@ -43,7 +44,6 @@
     "eslint": "4.5.0",
     "eslint-config-airbnb-base": "11.3.1",
     "eslint-plugin-import": "2.7.0",
-    "ethereumjs-testrpc": "4.1.0",
     "mocha": "3.5.0",
     "should": "11.2.1",
     "webpack": "3.5.5"
