@@ -46,8 +46,9 @@ export async function transfer(props) {
   const contractInstance = getContractInstance(contractAddress, contractInterface)
 
   return submitContractTx({
-    privateKey,
     gasLimit,
+    privateKey,
+    contractAddress,
     args: [to, value],
     method: contractInstance.transfer,
   })

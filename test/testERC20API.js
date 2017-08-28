@@ -1,4 +1,5 @@
 import should from 'should'
+import BigNumber from 'bignumber.js'
 
 import jibrelContractsApi from '../index.js'
 
@@ -19,6 +20,9 @@ const to = testParams.accounts[4]
 const value = 1
 
 describe('ERC20 API', function() {
+
+  // timeout should be increased to wait while transaction was mined
+  this.timeout(10000)
 
   describe('totalSupply', function() {
     it('returns total supply of tokens', function(done) {
@@ -73,6 +77,8 @@ describe('ERC20 API', function() {
   })
 
   describe('Transfer', function() {
+    let transactionHash
+
     it('returns event emitter for Transfer event', function(done) {
       erc20.Transfer({
         rpcaddr,
@@ -83,6 +89,36 @@ describe('ERC20 API', function() {
 
         eeTransfer.on('data', (event) => {
           console.log('event', event)
+
+          event.should.be.an.Object()
+
+          event.logIndex.should.be.a.Number()
+          event.transactionIndex.should.be.a.Number()
+
+          event.transactionHash.should.be.a.String()
+          event.transactionHash.length.should.be.equal(66)
+          event.transactionHash.should.match(/^0x[a-zA-Z0-9]+/)
+
+          event.blockHash.should.be.a.String()
+          event.blockNumber.should.be.a.Number()
+          event.address.should.be.a.String()
+          event.type.should.be.a.String()
+
+          event.event.should.be.equal('Transfer')
+
+          event.args.should.be.an.Object()
+          event.args.from.should.be.equal(owner)
+          event.args.to.should.be.equal(to)
+          event.args.value.should.be.equal(BigNumber(value))
+
+          // ignore, if this test has already done
+          if (
+            !transactionHash ||
+            !eventTransactionHash ||
+            transactionHash !== event.transactionHash
+          ) {
+            return
+          }
 
           done()
         })
@@ -98,6 +134,8 @@ describe('ERC20 API', function() {
           privateKey,
           to,
           value,
+        }).then((result) => {
+          transactionHash = result
         }).catch(done)
       }).catch(done)
     })
