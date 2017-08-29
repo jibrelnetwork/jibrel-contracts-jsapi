@@ -1,17 +1,11 @@
 import Joi from 'joi-browser'
 
-import validationRules from './validationRules'
+import validationRules, { generalKeys } from './validationRules'
 
-const isRegulated = Joi.object().keys({
-  rpcaddr: validationRules.host.required(),
-  rpcport: validationRules.port.required(),
-  contractAddress: validationRules.address.required(),
-})
+const isRegulated = Joi.object().keys(generalKeys)
 
 const isReceivingAllowed = Joi.object().keys({
-  rpcaddr: validationRules.host.required(),
-  rpcport: validationRules.port.required(),
-  contractAddress: validationRules.address.required(),
+  ...generalKeys,
   account: validationRules.address.required(),
   value: validationRules.value.required(),
 })
@@ -19,18 +13,14 @@ const isReceivingAllowed = Joi.object().keys({
 const isSpendingAllowed = isReceivingAllowed
 
 const isTransferAllowed = Joi.object().keys({
-  rpcaddr: validationRules.host.required(),
-  rpcport: validationRules.port.required(),
-  contractAddress: validationRules.address.required(),
+  ...generalKeys,
   from: validationRules.address.required(),
   to: validationRules.address.required(),
   value: validationRules.value.required(),
 })
 
 const isApproveAllowed = Joi.object().keys({
-  rpcaddr: validationRules.host.required(),
-  rpcport: validationRules.port.required(),
-  contractAddress: validationRules.address.required(),
+  ...generalKeys,
   from: validationRules.address.required(),
   spender: validationRules.address.required(),
   value: validationRules.value.required(),
@@ -39,9 +29,7 @@ const isApproveAllowed = Joi.object().keys({
 const isApprovedSpendingAllowed = isApproveAllowed
 
 const isTransferFromAllowed = Joi.object().keys({
-  rpcaddr: validationRules.host.required(),
-  rpcport: validationRules.port.required(),
-  contractAddress: validationRules.address.required(),
+  ...generalKeys,
   spender: validationRules.address.required(),
   from: validationRules.address.required(),
   to: validationRules.address.required(),
@@ -49,9 +37,7 @@ const isTransferFromAllowed = Joi.object().keys({
 })
 
 const estimateGas = Joi.object().keys({
-  rpcaddr: validationRules.host.required(),
-  rpcport: validationRules.port.required(),
-  contractAddress: validationRules.address.required(),
+  ...generalKeys,
   privateKey: validationRules.privateKey.required(),
   method: validationRules.method.required(),
   args: validationRules.args.required(),

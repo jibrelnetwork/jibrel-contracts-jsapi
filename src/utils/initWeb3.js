@@ -1,12 +1,12 @@
 import Web3 from 'web3'
 
-export default function initWeb3(rpcaddr, rpcport) {
+export default function initWeb3(props) {
   // check if web3 object already injected in global scope
   if (isWeb3Injected()) {
     return
   }
 
-  const rpcEndpoint = getRPCEndpoint(rpcaddr, rpcport)
+  const rpcEndpoint = getRPCEndpoint(props)
   const web3 = new Web3(new Web3.providers.HttpProvider(rpcEndpoint))
 
   setGlobalWeb3(web3)
@@ -22,8 +22,8 @@ function isWeb3Injected() {
   return checkWeb3IsConnected(globalScope.web3)
 }
 
-function getRPCEndpoint(rpcaddr, rpcport) {
-  return `http://${rpcaddr}:${rpcport}`
+function getRPCEndpoint({ rpcaddr, rpcport, ssl }) {
+  return `http${ssl ? 's' : ''}://${rpcaddr}:${rpcport}`
 }
 
 function setGlobalWeb3(web3) {

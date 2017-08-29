@@ -10,6 +10,7 @@ const sendTransaction = Joi.object().keys({
   value: validationRules.value.required(),
   gasLimit: validationRules.gasLimit,
   data: validationRules.data,
+  ssl: validationRules.ssl,
 })
 
 const getBalance = Joi.object().keys({
@@ -17,6 +18,7 @@ const getBalance = Joi.object().keys({
   rpcport: validationRules.port.required(),
   address: validationRules.address.required(),
   defaultBlock: validationRules.address,
+  ssl: validationRules.ssl,
 })
 
 const estimateGas = Joi.object().keys({
@@ -25,6 +27,7 @@ const estimateGas = Joi.object().keys({
   to: validationRules.address.required(),
   value: validationRules.value.required(),
   data: validationRules.data,
+  ssl: validationRules.ssl,
 })
 
 export default {

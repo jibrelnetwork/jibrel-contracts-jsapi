@@ -1,24 +1,16 @@
 import Joi from 'joi-browser'
 
-import validationRules from './validationRules'
+import validationRules, { generalKeys } from './validationRules'
 
-const totalSupply = Joi.object().keys({
-  rpcaddr: validationRules.host.required(),
-  rpcport: validationRules.port.required(),
-  contractAddress: validationRules.address.required(),
-})
+const totalSupply = Joi.object().keys(generalKeys)
 
 const balanceOf = Joi.object().keys({
-  rpcaddr: validationRules.host.required(),
-  rpcport: validationRules.port.required(),
-  contractAddress: validationRules.address.required(),
+  ...generalKeys,
   owner: validationRules.address.required(),
 })
 
 const transfer = Joi.object().keys({
-  rpcaddr: validationRules.host.required(),
-  rpcport: validationRules.port.required(),
-  contractAddress: validationRules.address.required(),
+  ...generalKeys,
   privateKey: validationRules.privateKey.required(),
   to: validationRules.address.required(),
   value: validationRules.value.required(),
@@ -26,17 +18,13 @@ const transfer = Joi.object().keys({
 })
 
 const getPastEvents = Joi.object().keys({
-  rpcaddr: validationRules.host.required(),
-  rpcport: validationRules.port.required(),
-  contractAddress: validationRules.address.required(),
+  ...generalKeys,
   event: validationRules.event.required(),
   options: validationRules.eventOptions,
 })
 
 const allEvents = Joi.object().keys({
-  rpcaddr: validationRules.host.required(),
-  rpcport: validationRules.port.required(),
-  contractAddress: validationRules.address.required(),
+  ...generalKeys,
   options: validationRules.eventOptions,
   callback: validationRules.callback,
 })
@@ -44,9 +32,7 @@ const allEvents = Joi.object().keys({
 const Transfer = allEvents
 
 const estimateGas = Joi.object().keys({
-  rpcaddr: validationRules.host.required(),
-  rpcport: validationRules.port.required(),
-  contractAddress: validationRules.address.required(),
+  ...generalKeys,
   privateKey: validationRules.privateKey.required(),
   method: validationRules.method.required(),
   args: validationRules.args.required(),

@@ -16,9 +16,9 @@ const contractInterface = 'ERC20'
 
 export async function totalSupply(props) {
   const validatedProps = await validate(props, ERC20Schemas.totalSupply)
-  const { rpcaddr, rpcport, contractAddress } = validatedProps
+  const { contractAddress } = validatedProps
 
-  initWeb3(rpcaddr, rpcport)
+  initWeb3(validatedProps)
   const contractInstance = getContractInstance(contractAddress, contractInterface)
 
   return Promise.promisify(contractInstance.totalSupply.call)()
@@ -26,9 +26,9 @@ export async function totalSupply(props) {
 
 export async function balanceOf(props) {
   const validatedProps = await validate(props, ERC20Schemas.balanceOf)
-  const { rpcaddr, rpcport, contractAddress, owner } = validatedProps
+  const { contractAddress, owner } = validatedProps
 
-  initWeb3(rpcaddr, rpcport)
+  initWeb3(validatedProps)
   const contractInstance = getContractInstance(contractAddress, contractInterface)
 
   return Promise.promisify(contractInstance.balanceOf.call)(owner)
@@ -40,9 +40,9 @@ export async function balanceOf(props) {
 
 export async function transfer(props) {
   const validatedProps = await validate(props, ERC20Schemas.transfer)
-  const { rpcaddr, rpcport, contractAddress, privateKey, gasLimit, to, value } = validatedProps
+  const { contractAddress, privateKey, gasLimit, to, value } = validatedProps
 
-  initWeb3(rpcaddr, rpcport)
+  initWeb3(validatedProps)
   const contractInstance = getContractInstance(contractAddress, contractInterface)
 
   return submitContractTx({
@@ -60,9 +60,9 @@ export async function transfer(props) {
 
 export async function allEvents(props) {
   const validatedProps = await validate(props, ERC20Schemas.allEvents)
-  const { rpcaddr, rpcport, contractAddress, options, callback } = validatedProps
+  const { contractAddress, options, callback } = validatedProps
 
-  initWeb3(rpcaddr, rpcport)
+  initWeb3(validatedProps)
   const contractInstance = getContractInstance(contractAddress, contractInterface)
 
   return subscribeToContractEvent(contractInstance.allEvents, options, callback)
@@ -70,9 +70,9 @@ export async function allEvents(props) {
 
 export async function getPastEvents(props) {
   const validatedProps = await validate(props, ERC20Schemas.getPastEvents)
-  const { rpcaddr, rpcport, contractAddress, event, options } = validatedProps
+  const { contractAddress, event, options } = validatedProps
 
-  initWeb3(rpcaddr, rpcport)
+  initWeb3(validatedProps)
   const contractInstance = getContractInstance(contractAddress, contractInterface)
 
   return getPastContractEvents(contractInstance[event], options)
@@ -80,9 +80,9 @@ export async function getPastEvents(props) {
 
 export async function Transfer(props) {
   const validatedProps = await validate(props, ERC20Schemas.Transfer)
-  const { rpcaddr, rpcport, contractAddress, options, callback } = validatedProps
+  const { contractAddress, options, callback } = validatedProps
 
-  initWeb3(rpcaddr, rpcport)
+  initWeb3(validatedProps)
   const contractInstance = getContractInstance(contractAddress, contractInterface)
 
   return subscribeToContractEvent(contractInstance.Transfer, options, callback)

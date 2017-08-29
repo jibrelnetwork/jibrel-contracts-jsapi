@@ -4,9 +4,9 @@ import getContractInstance from './getContractInstance'
 import getAddressFromPrivateKey from './getAddressFromPrivateKey'
 
 export default function estimateGasForContractMethod(contractInterface, props) {
-  const { rpcaddr, rpcport, contractAddress, privateKey, method, args } = props
+  const { contractAddress, privateKey, method, args } = props
 
-  initWeb3(rpcaddr, rpcport)
+  initWeb3(props)
   const contractInstance = getContractInstance(contractAddress, contractInterface)
 
   const address = getAddressFromPrivateKey(privateKey)

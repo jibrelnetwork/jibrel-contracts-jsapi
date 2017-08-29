@@ -3,6 +3,7 @@ import Joi from 'joi-browser'
 const validationRules = {
   host: Joi.string(),
   port: Joi.number().integer().min(1).max(65535),
+  ssl: Joi.boolean(),
   address: Joi.string().regex(/^[a-zA-Z0-9]+$/).length(42),
   privateKey: Joi.string().alphanum().length(64),
   value: Joi.number().positive(),
@@ -21,4 +22,11 @@ const validationRules = {
   }),
 }
 
-export default validationRules
+const generalKeys = {
+  rpcaddr: validationRules.host.required(),
+  rpcport: validationRules.port.required(),
+  contractAddress: validationRules.address.required(),
+  ssl: validationRules.ssl,
+}
+
+export { generalKeys, validationRules as default }

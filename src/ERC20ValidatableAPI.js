@@ -14,9 +14,9 @@ const contractInterface = 'ERC20Validatable'
 
 export async function isReceivingAllowed(props) {
   const validatedProps = await validate(props, ERC20ValidatableSchemas.isReceivingAllowed)
-  const { rpcaddr, rpcport, contractAddress, account, value } = validatedProps
+  const { contractAddress, account, value } = validatedProps
 
-  initWeb3(rpcaddr, rpcport)
+  initWeb3(validatedProps)
   const contractInstance = getContractInstance(contractAddress, contractInterface)
 
   return Promise.promisify(contractInstance.isReceivingAllowed.call)(account, value)
@@ -24,9 +24,9 @@ export async function isReceivingAllowed(props) {
 
 export async function isSpendingAllowed(props) {
   const validatedProps = await validate(props, ERC20ValidatableSchemas.isSpendingAllowed)
-  const { rpcaddr, rpcport, contractAddress, account, value } = validatedProps
+  const { contractAddress, account, value } = validatedProps
 
-  initWeb3(rpcaddr, rpcport)
+  initWeb3(validatedProps)
   const contractInstance = getContractInstance(contractAddress, contractInterface)
 
   return Promise.promisify(contractInstance.isSpendingAllowed.call)(account, value)
@@ -34,9 +34,9 @@ export async function isSpendingAllowed(props) {
 
 export async function isTransferAllowed(props) {
   const validatedProps = await validate(props, ERC20ValidatableSchemas.isTransferAllowed)
-  const { rpcaddr, rpcport, contractAddress, from, to, value } = validatedProps
+  const { contractAddress, from, to, value } = validatedProps
 
-  initWeb3(rpcaddr, rpcport)
+  initWeb3(validatedProps)
   const contractInstance = getContractInstance(contractAddress, contractInterface)
 
   return Promise.promisify(contractInstance.isTransferAllowed.call)(from, to, value)
@@ -44,9 +44,9 @@ export async function isTransferAllowed(props) {
 
 export async function isApproveAllowed(props) {
   const validatedProps = await validate(props, ERC20ValidatableSchemas.isApproveAllowed)
-  const { rpcaddr, rpcport, contractAddress, from, spender, value } = validatedProps
+  const { contractAddress, from, spender, value } = validatedProps
 
-  initWeb3(rpcaddr, rpcport)
+  initWeb3(validatedProps)
   const contractInstance = getContractInstance(contractAddress, contractInterface)
 
   return Promise.promisify(contractInstance.isApproveAllowed.call)(from, spender, value)
@@ -54,9 +54,9 @@ export async function isApproveAllowed(props) {
 
 export async function isApprovedSpendingAllowed(props) {
   const validatedProps = await validate(props, ERC20ValidatableSchemas.isApprovedSpendingAllowed)
-  const { rpcaddr, rpcport, contractAddress, from, spender, value } = validatedProps
+  const { contractAddress, from, spender, value } = validatedProps
 
-  initWeb3(rpcaddr, rpcport)
+  initWeb3(validatedProps)
   const contractInstance = getContractInstance(contractAddress, contractInterface)
 
   return Promise.promisify(contractInstance.isApprovedSpendingAllowed.call)(from, spender, value)
@@ -64,9 +64,9 @@ export async function isApprovedSpendingAllowed(props) {
 
 export async function isTransferFromAllowed(props) {
   const validatedProps = await validate(props, ERC20ValidatableSchemas.isTransferFromAllowed)
-  const { rpcaddr, rpcport, contractAddress, spender, from, to, value } = validatedProps
+  const { contractAddress, spender, from, to, value } = validatedProps
 
-  initWeb3(rpcaddr, rpcport)
+  initWeb3(validatedProps)
   const contractInstance = getContractInstance(contractAddress, contractInterface)
 
   return Promise.promisify(contractInstance.isTransferFromAllowed.call)(spender, from, to, value)

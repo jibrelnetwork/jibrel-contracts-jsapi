@@ -8,27 +8,26 @@ import { validate, ETHSchemas } from './validationSchemas'
 
 export async function sendTransaction(props) {
   const validatedProps = await validate(props, ETHSchemas.sendTransaction)
-  const { rpcaddr, rpcport, ...otherProps } = validatedProps
 
-  initWeb3(rpcaddr, rpcport)
+  initWeb3(validatedProps)
 
-  return submitTx(otherProps)
+  return submitTx(validatedProps)
 }
 
 export async function getBalance(props) {
   const validatedProps = await validate(props, ETHSchemas.getBalance)
-  const { rpcaddr, rpcport, address, defaultBlock } = validatedProps
+  const { address, defaultBlock } = validatedProps
 
-  initWeb3(rpcaddr, rpcport)
+  initWeb3(validatedProps)
 
   return Promise.promisify(web3.eth.getBalance)(address, defaultBlock)
 }
 
 export async function estimateGas(props) {
   const validatedProps = await validate(props, ETHSchemas.estimateGas)
-  const { rpcaddr, rpcport, data, to, value } = validatedProps
+  const { data, to, value } = validatedProps
 
-  initWeb3(rpcaddr, rpcport)
+  initWeb3(validatedProps)
 
   return getGasLimit({ data, to, value })
 }
