@@ -6,6 +6,7 @@ import getContractInstance from './utils/getContractInstance'
 import { validate, ERC20NamedSchemas } from './validationSchemas'
 
 const contractInterface = 'ERC20Named'
+const promiseTimeout = 1000 * 30
 
 /**
  * ERC20NamedAPI 'calling' methods
@@ -17,7 +18,9 @@ export async function name(props) {
   initWeb3(validatedProps)
   const contractInstance = getContractInstance(validatedProps.contractAddress, contractInterface)
 
-  return Promise.promisify(contractInstance.name.call)()
+  return Promise
+    .promisify(contractInstance.name.call)()
+    .timeout(promiseTimeout, new Error('Can not get name'))
 }
 
 export async function symbol(props) {
@@ -26,7 +29,9 @@ export async function symbol(props) {
   initWeb3(validatedProps)
   const contractInstance = getContractInstance(validatedProps.contractAddress, contractInterface)
 
-  return Promise.promisify(contractInstance.symbol.call)()
+  return Promise
+    .promisify(contractInstance.symbol.call)()
+    .timeout(promiseTimeout, new Error('Can not get symbol'))
 }
 
 export async function decimals(props) {
@@ -35,5 +40,7 @@ export async function decimals(props) {
   initWeb3(validatedProps)
   const contractInstance = getContractInstance(validatedProps.contractAddress, contractInterface)
 
-  return Promise.promisify(contractInstance.decimals.call)()
+  return Promise
+    .promisify(contractInstance.decimals.call)()
+    .timeout(promiseTimeout, new Error('Can not get decimals'))
 }

@@ -9,6 +9,7 @@ import { getPastContractEvents, subscribeToContractEvent } from './utils/eventUt
 import { validate, ERC20Schemas } from './validationSchemas'
 
 const contractInterface = 'ERC20'
+const promiseTimeout = 1000 * 30
 
 /**
  * ERC20API 'calling' methods
@@ -21,7 +22,9 @@ export async function totalSupply(props) {
   initWeb3(validatedProps)
   const contractInstance = getContractInstance(contractAddress, contractInterface)
 
-  return Promise.promisify(contractInstance.totalSupply.call)()
+  return Promise
+    .promisify(contractInstance.totalSupply.call)()
+    .timeout(promiseTimeout, new Error('Can not get total supply'))
 }
 
 export async function balanceOf(props) {
@@ -31,7 +34,9 @@ export async function balanceOf(props) {
   initWeb3(validatedProps)
   const contractInstance = getContractInstance(contractAddress, contractInterface)
 
-  return Promise.promisify(contractInstance.balanceOf.call)(owner)
+  return Promise
+    .promisify(contractInstance.balanceOf.call)(owner)
+    .timeout(promiseTimeout, new Error('Can not get balance'))
 }
 
 /**

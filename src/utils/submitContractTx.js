@@ -4,6 +4,8 @@ import signTx from './signTx'
 import { getGasPrice, getTxCount, getContractGasLimit } from './txUtils'
 import getAddressFromPrivateKey from './getAddressFromPrivateKey'
 
+const promiseTimeout = 1000 * 30
+
 export default async function submitContractTx(props) {
   const { method, args, contractAddress, privateKey, gasLimit } = props
   const address = getAddressFromPrivateKey(privateKey)
@@ -15,7 +17,9 @@ export default async function submitContractTx(props) {
   const rawTx = await getRawTx({ method, args, contractAddress, address, gasLimit })
   const signedTx = signTx(rawTx, privateKey)
 
-  return Promise.promisify(web3.eth.sendRawTransaction)(signedTx)
+  return Promise
+    .promisify(web3.eth.sendRawTransaction)(signedTx)
+    .timeout(promiseTimeout, new Error('Can not send raw transaction'))
 }
 
 async function getRawTx({ method, args, contractAddress, address, gasLimit }) {

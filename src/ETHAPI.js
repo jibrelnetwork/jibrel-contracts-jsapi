@@ -6,6 +6,8 @@ import { getGasLimit } from './utils/txUtils'
 
 import { validate, ETHSchemas } from './validationSchemas'
 
+const promiseTimeout = 1000 * 30
+
 export async function sendTransaction(props) {
   const validatedProps = await validate(props, ETHSchemas.sendTransaction)
 
@@ -20,7 +22,9 @@ export async function getBalance(props) {
 
   initWeb3(validatedProps)
 
-  return Promise.promisify(web3.eth.getBalance)(address, defaultBlock)
+  return Promise
+    .promisify(web3.eth.getBalance)(address, defaultBlock)
+    .timeout(promiseTimeout, new Error('Can not get balance'))
 }
 
 export async function estimateGas(props) {

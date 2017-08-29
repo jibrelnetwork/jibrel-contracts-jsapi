@@ -1,6 +1,8 @@
 import Promise from 'bluebird'
 import EventEmitter from 'events'
 
+const promiseTimeout = 1000 * 30
+
 export function subscribeToContractEvent(Event, options = {}, callback) {
   const contractEventEmitter = new EventEmitter()
 
@@ -47,8 +49,8 @@ export function getPastContractEvents(Event, options = {}) {
   return Promise
     .promisify(event.get.bind(event))()
     /**
-     * If promise is not fulfilled or rejected within 60 sec timeout (in ms),
+     * If promise is not fulfilled or rejected within 30 sec timeout (in ms),
      * returned promise will be rejected
      */
-    .timeout(1000 * 60, new Error('Can not get past contract events'))
+    .timeout(promiseTimeout, new Error('Can not get past contract events'))
 }

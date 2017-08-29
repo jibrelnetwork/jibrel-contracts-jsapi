@@ -7,6 +7,7 @@ import estimateGasForContractMethod from './utils/estimateGasForContractMethod'
 import { validate, ERC20ValidatableSchemas } from './validationSchemas'
 
 const contractInterface = 'ERC20Validatable'
+const promiseTimeout = 1000 * 30
 
 /**
  * ERC20ValidatableAPI 'calling' methods
@@ -19,7 +20,9 @@ export async function isReceivingAllowed(props) {
   initWeb3(validatedProps)
   const contractInstance = getContractInstance(contractAddress, contractInterface)
 
-  return Promise.promisify(contractInstance.isReceivingAllowed.call)(account, value)
+  return Promise
+    .promisify(contractInstance.isReceivingAllowed.call)(account, value)
+    .timeout(promiseTimeout, new Error('Can not get isReceivingAllowed flag'))
 }
 
 export async function isSpendingAllowed(props) {
@@ -29,7 +32,9 @@ export async function isSpendingAllowed(props) {
   initWeb3(validatedProps)
   const contractInstance = getContractInstance(contractAddress, contractInterface)
 
-  return Promise.promisify(contractInstance.isSpendingAllowed.call)(account, value)
+  return Promise
+    .promisify(contractInstance.isSpendingAllowed.call)(account, value)
+    .timeout(promiseTimeout, new Error('Can not get isSpendingAllowed flag'))
 }
 
 export async function isTransferAllowed(props) {
@@ -39,7 +44,9 @@ export async function isTransferAllowed(props) {
   initWeb3(validatedProps)
   const contractInstance = getContractInstance(contractAddress, contractInterface)
 
-  return Promise.promisify(contractInstance.isTransferAllowed.call)(from, to, value)
+  return Promise
+    .promisify(contractInstance.isTransferAllowed.call)(from, to, value)
+    .timeout(promiseTimeout, new Error('Can not get isTransferAllowed flag'))
 }
 
 export async function isApproveAllowed(props) {
@@ -49,7 +56,9 @@ export async function isApproveAllowed(props) {
   initWeb3(validatedProps)
   const contractInstance = getContractInstance(contractAddress, contractInterface)
 
-  return Promise.promisify(contractInstance.isApproveAllowed.call)(from, spender, value)
+  return Promise
+    .promisify(contractInstance.isApproveAllowed.call)(from, spender, value)
+    .timeout(promiseTimeout, new Error('Can not get isApproveAllowed flag'))
 }
 
 export async function isApprovedSpendingAllowed(props) {
@@ -59,7 +68,9 @@ export async function isApprovedSpendingAllowed(props) {
   initWeb3(validatedProps)
   const contractInstance = getContractInstance(contractAddress, contractInterface)
 
-  return Promise.promisify(contractInstance.isApprovedSpendingAllowed.call)(from, spender, value)
+  return Promise
+    .promisify(contractInstance.isApprovedSpendingAllowed.call)(from, spender, value)
+    .timeout(promiseTimeout, new Error('Can not get isApprovedSpendingAllowed flag'))
 }
 
 export async function isTransferFromAllowed(props) {
@@ -69,7 +80,9 @@ export async function isTransferFromAllowed(props) {
   initWeb3(validatedProps)
   const contractInstance = getContractInstance(contractAddress, contractInterface)
 
-  return Promise.promisify(contractInstance.isTransferFromAllowed.call)(spender, from, to, value)
+  return Promise
+    .promisify(contractInstance.isTransferFromAllowed.call)(spender, from, to, value)
+    .timeout(promiseTimeout, new Error('Can not get isTransferFromAllowed flag'))
 }
 
 /**
