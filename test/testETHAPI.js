@@ -1,4 +1,5 @@
 import should from 'should'
+import BigNumber from 'bignumber.js'
 
 import jibrelContractsApi from '../index'
 
@@ -45,7 +46,7 @@ describe('ETH API', function() {
         rpcport,
         address,
       }).then((result) => {
-        // result is BigNumber
+        should(result instanceof BigNumber).be.equal(true)
         result.greaterThan(0).should.be.equal(true)
         result.toNumber().should.be.greaterThan(0)
 

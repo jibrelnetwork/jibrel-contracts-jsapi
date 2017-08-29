@@ -31,7 +31,7 @@ describe('ERC20 API', function() {
         rpcport,
         contractAddress,
       }).then((result) => {
-        // result is BigNumber
+        should(result instanceof BigNumber).be.equal(true)
         result.greaterThan(0).should.be.equal(true)
         result.toNumber().should.be.greaterThan(0)
 
@@ -48,7 +48,7 @@ describe('ERC20 API', function() {
         contractAddress,
         owner,
       }).then((result) => {
-        // result is BigNumber
+        should(result instanceof BigNumber).be.equal(true)
         result.greaterThan(0).should.be.equal(true)
         result.toNumber().should.be.greaterThan(0)
 
