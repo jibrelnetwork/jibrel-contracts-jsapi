@@ -17,7 +17,7 @@ const contractAddress = testParams.contracts.jTBillViewERC20
 const privateKey = testParams.privateKeys[3]
 const owner = testParams.accounts[3]
 const to = testParams.accounts[4]
-const value = 1
+const value = new BigNumber(1, 10)
 
 describe('ERC20 API', function() {
 
@@ -31,7 +31,6 @@ describe('ERC20 API', function() {
         rpcport,
         contractAddress,
       }).then((result) => {
-        should(result instanceof BigNumber).be.equal(true)
         result.greaterThan(0).should.be.equal(true)
         result.toNumber().should.be.greaterThan(0)
 
@@ -48,7 +47,6 @@ describe('ERC20 API', function() {
         contractAddress,
         owner,
       }).then((result) => {
-        should(result instanceof BigNumber).be.equal(true)
         result.greaterThan(0).should.be.equal(true)
         result.toNumber().should.be.greaterThan(0)
 

@@ -1,4 +1,5 @@
 import should from 'should'
+import BigNumber from 'bignumber.js'
 
 import jibrelContractsApi from '../index'
 
@@ -17,7 +18,7 @@ const privateKey = testParams.privateKeys[0]
 const spender = testParams.accounts[0]
 const from = testParams.accounts[1]
 const to = testParams.accounts[2]
-const value = 1
+const value = new BigNumber(1, 10)
 
 describe('ERC20Validatable API', function() {
 

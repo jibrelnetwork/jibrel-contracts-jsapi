@@ -1,17 +1,24 @@
 import Joi from 'joi-browser'
 
+const bigNumber = Joi.object().keys({
+  isBigNumber: Joi.boolean().valid(true), // type identifier, optional, because supported from 3.1.0
+  c: Joi.array().items(Joi.number()).required(), // coefficient
+  e: Joi.number().integer().min(-1000000000).max(1000000000).required(), // exponent
+  s: Joi.number().integer().valid([-1, 1]).required(), // sign
+})
+
 const validationRules = {
   host: Joi.string(),
   port: Joi.number().integer().min(1).max(65535),
   ssl: Joi.boolean(),
   address: Joi.string().regex(/^[a-zA-Z0-9]+$/).length(42),
   privateKey: Joi.string().alphanum().length(64),
-  value: Joi.number().positive(),
+  value: bigNumber,
   event: Joi.string().min(1).max(999),
   method: Joi.string().min(1).max(999),
   args: Joi.array(),
   data: Joi.string().regex(/^[a-zA-Z0-9]+$/).max(9999),
-  gasLimit: Joi.number().positive(),
+  gasLimit: bigNumber,
   callback: Joi.func(),
   eventOptions: Joi.object().keys({
     filter: Joi.object(),

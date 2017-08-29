@@ -16,7 +16,7 @@ const rpcport = process.env.RPCPORT || 8545
 const privateKey = testParams.privateKeys[0]
 const address = testParams.accounts[0]
 const to = testParams.accounts[1]
-const value = 1
+const value = new BigNumber(1, 10)
 
 describe('ETH API', function() {
 
@@ -46,7 +46,6 @@ describe('ETH API', function() {
         rpcport,
         address,
       }).then((result) => {
-        should(result instanceof BigNumber).be.equal(true)
         result.greaterThan(0).should.be.equal(true)
         result.toNumber().should.be.greaterThan(0)
 

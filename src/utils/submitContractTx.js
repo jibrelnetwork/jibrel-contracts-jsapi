@@ -20,13 +20,14 @@ export default async function submitContractTx(props) {
 
 async function getRawTx({ method, args, contractAddress, address, gasLimit }) {
   const txData = method.getData(...args)
-  const gasPrice = await getGasPrice()
+  const [txGasPrice, txNonce] = await Promise.all([getGasPrice(), getTxCount(address)])
+  const txGasLimit = (gasLimit != null) ? gasLimit : await getContractGasLimit(method, args)
 
   return {
     data: txData,
+    nonce: txNonce,
     to: contractAddress,
-    gasPrice: gasPrice.toNumber(),
-    nonce: await getTxCount(address),
-    gasLimit: (gasLimit != null) ? gasLimit : await getContractGasLimit(method, args),
+    gasPrice: web3.toHex(txGasPrice),
+    gasLimit: web3.toHex(txGasLimit),
   }
 }

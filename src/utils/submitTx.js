@@ -15,14 +15,15 @@ export default async function submitTx(props) {
 }
 
 async function getRawTx({ gasLimit, address, data, to, value }) {
-  const gasPrice = await getGasPrice()
+  const [txGasPrice, txNonce] = await Promise.all([getGasPrice(), getTxCount(address)])
+  const txGasLimit = (gasLimit != null) ? gasLimit : await getGasLimit({ data, to, value })
 
   return {
-    data,
     to,
-    value,
-    gasPrice: gasPrice.toNumber(),
-    nonce: await getTxCount(address),
-    gasLimit: (gasLimit != null) ? gasLimit : await getGasLimit({ data, to, value }),
+    data,
+    nonce: txNonce,
+    value: web3.toHex(value),
+    gasPrice: web3.toHex(txGasPrice),
+    gasLimit: web3.toHex(txGasLimit),
   }
 }
