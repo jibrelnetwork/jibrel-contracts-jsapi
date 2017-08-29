@@ -44,5 +44,11 @@ export function getPastContractEvents(Event, options = {}) {
    * but bluebird promisify don't save context,
    * so need to bind to event object directly
    */
-  return Promise.promisify(event.get.bind(event))()
+  return Promise
+    .promisify(event.get.bind(event))()
+    /**
+     * If promise is not fulfilled or rejected within 60 sec timeout (in ms),
+     * returned promise will be rejected
+     */
+    .timeout(1000 * 60, new Error('Can not get past contract events'))
 }
