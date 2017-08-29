@@ -39,5 +39,10 @@ export function getPastContractEvents(Event, options = {}) {
   const { filter, ...additionalOptions } = options
   const event = Event(filter, additionalOptions)
 
-  return Promise.promisify(event.get)()
+  /**
+   * event.get uses instance methods inside,
+   * but bluebird promisify don't save context,
+   * so need to bind to event object directly
+   */
+  return Promise.promisify(event.get.bind(event))()
 }

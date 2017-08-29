@@ -18,7 +18,7 @@ const validationRules = {
     fromBlock: [Joi.number().integer().positive(), Joi.string().min(6).max(7)],
     toBlock: [Joi.number().integer().positive(), Joi.string().min(6).max(7)],
     address: Joi.string().regex(/^[a-zA-Z0-9]+$/).length(42),
-    topics: Joi.array(),
+    topics: Joi.array().allow(null),
   }),
 }
 
