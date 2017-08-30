@@ -1,15 +1,17 @@
 import Web3 from 'web3'
 
-export default function initWeb3(props) {
+export default function initWeb3(payload) {
   // check if web3 object already injected in global scope
   if (isWeb3Injected()) {
-    return
+    return payload
   }
 
-  const rpcEndpoint = getRPCEndpoint(props)
+  const rpcEndpoint = getRPCEndpoint(payload.props)
   const web3 = new Web3(new Web3.providers.HttpProvider(rpcEndpoint))
 
   setGlobalWeb3(web3)
+
+  return payload
 }
 
 function isWeb3Injected() {

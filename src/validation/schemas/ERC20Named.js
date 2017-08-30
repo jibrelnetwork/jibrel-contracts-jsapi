@@ -1,8 +1,8 @@
 import Joi from 'joi-browser'
 
-import { generalKeys } from './validationRules'
+import { generalContractKeys } from '../validationRules'
 
-const name = Joi.object().keys(generalKeys)
+const name = Joi.object().keys(generalContractKeys)
 const symbol = name
 const decimals = name
 

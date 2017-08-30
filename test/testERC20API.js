@@ -9,7 +9,7 @@ if (process.env.JSON_PATH == null) {
 
 const testParams = require(process.env.JSON_PATH)
 
-const erc20 = jibrelContractsApi.contracts.ERC20
+const erc20 = jibrelContractsApi.contracts.erc20
 
 const rpcaddr = process.env.RPCADDR || '127.0.0.1'
 const rpcport = process.env.RPCPORT || 8545
@@ -25,6 +25,7 @@ describe('ERC20 API', function() {
   this.timeout(10000)
 
   describe('totalSupply', function() {
+
     it('returns total supply of tokens', function(done) {
       erc20.totalSupply({
         rpcaddr,
@@ -37,7 +38,274 @@ describe('ERC20 API', function() {
         done()
       }).catch(done)
     })
-  })
+
+    describe('returns error', function(done) {
+
+      describe('because rpcaddr', function(done) {
+
+        it('is absent', function(done) {
+          erc20.totalSupply({
+            rpcport,
+            contractAddress,
+          }).then(() => {
+            done(new Error('Exception was not thrown'))
+          }).catch((err) => {
+            err.should.be.an.Object()
+            err.message.should.be.equal(
+              'ValidationError: child "rpcaddr" fails because ["rpcaddr" is required]'
+            )
+
+            done()
+          })
+        }) // totalSupply returns error because rpcaddr is absent
+
+        it('is invalid (number)', function(done) {
+          erc20.totalSupply({
+            rpcport,
+            contractAddress,
+            rpcaddr: 123,
+          }).then(() => {
+            done(new Error('Exception was not thrown'))
+          }).catch((err) => {
+            err.should.be.an.Object()
+            err.message.should.be.equal(
+              'ValidationError: child "rpcaddr" fails because ["rpcaddr" must be a string]'
+            )
+
+            done()
+          })
+        }) // totalSupply returns error because rpcaddr is invalid (number)
+
+        it('is invalid (short string)', function(done) {
+          erc20.totalSupply({
+            rpcport,
+            contractAddress,
+            rpcaddr: 'a',
+          }).then(() => {
+            done(new Error('Exception was not thrown'))
+          }).catch((err) => {
+            err.should.be.an.Object()
+            err.message.should.be.equal(
+              'ValidationError: child "rpcaddr" fails because ["rpcaddr" length must be at least 3 characters long]'
+            )
+
+            done()
+          })
+        }) // totalSupply returns error because rpcaddr is invalid (short string)
+
+        it('is invalid (large string)', function(done) {
+          erc20.totalSupply({
+            rpcport,
+            contractAddress,
+            rpcaddr: 'a'.repeat(300),
+          }).then(() => {
+            done(new Error('Exception was not thrown'))
+          }).catch((err) => {
+            err.should.be.an.Object()
+            err.message.should.be.equal(
+              'ValidationError: child "rpcaddr" fails because ["rpcaddr" length must be less than or equal to 255 characters long]'
+            )
+
+            done()
+          })
+        }) // totalSupply returns error because rpcaddr is invalid (large string)
+
+      }) // totalSupply returns error because rpcaddr
+
+      describe('because rpcport', function(done) {
+
+        it('is absent', function(done) {
+          erc20.totalSupply({
+            rpcaddr,
+            contractAddress,
+          }).then(() => {
+            done(new Error('Exception was not thrown'))
+          }).catch((err) => {
+            err.should.be.an.Object()
+            err.message.should.be.equal(
+              'ValidationError: child "rpcport" fails because ["rpcport" is required]'
+            )
+
+            done()
+          })
+        }) // totalSupply returns error because rpcport is absent
+
+        it('is invalid (string)', function(done) {
+          erc20.totalSupply({
+            rpcaddr,
+            contractAddress,
+            rpcport: 'qwe',
+          }).then(() => {
+            done(new Error('Exception was not thrown'))
+          }).catch((err) => {
+            err.should.be.an.Object()
+            err.message.should.be.equal(
+              'ValidationError: child "rpcport" fails because ["rpcport" must be a number]'
+            )
+
+            done()
+          })
+        }) // totalSupply returns error because rpcport is invalid (string)
+
+        it('is invalid (float)', function(done) {
+          erc20.totalSupply({
+            rpcaddr,
+            contractAddress,
+            rpcport: 1.2345,
+          }).then(() => {
+            done(new Error('Exception was not thrown'))
+          }).catch((err) => {
+            err.should.be.an.Object()
+            err.message.should.be.equal(
+              'ValidationError: child "rpcport" fails because ["rpcport" must be an integer]'
+            )
+
+            done()
+          })
+        }) // totalSupply returns error because rpcport is invalid (integer)
+
+        it('is invalid (small number)', function(done) {
+          erc20.totalSupply({
+            rpcaddr,
+            contractAddress,
+            rpcport: 0,
+          }).then(() => {
+            done(new Error('Exception was not thrown'))
+          }).catch((err) => {
+            err.should.be.an.Object()
+            err.message.should.be.equal(
+              'ValidationError: child "rpcport" fails because ["rpcport" must be larger than or equal to 1]'
+            )
+
+            done()
+          })
+        }) // totalSupply returns error because rpcport is invalid (small number)
+
+        it('is invalid (big number)', function(done) {
+          erc20.totalSupply({
+            rpcaddr,
+            contractAddress,
+            rpcport: 999999,
+          }).then(() => {
+            done(new Error('Exception was not thrown'))
+          }).catch((err) => {
+            err.should.be.an.Object()
+            err.message.should.be.equal(
+              'ValidationError: child "rpcport" fails because ["rpcport" must be less than or equal to 65535]'
+            )
+
+            done()
+          })
+        }) // totalSupply returns error because rpcport is invalid (big number)
+
+      }) // totalSupply returns error because rpcport
+
+      describe('because contractAddress', function(done) {
+
+        it('is absent', function(done) {
+          erc20.totalSupply({
+            rpcaddr,
+            rpcport,
+          }).then(() => {
+            done(new Error('Exception was not thrown'))
+          }).catch((err) => {
+            err.should.be.an.Object()
+            err.message.should.be.equal(
+              'ValidationError: child "contractAddress" fails because ["contractAddress" is required]'
+            )
+
+            done()
+          })
+        }) // totalSupply returns error because contractAddress is absent
+
+        it('is invalid (number)', function(done) {
+          erc20.totalSupply({
+            rpcaddr,
+            rpcport,
+            contractAddress: 123,
+          }).then(() => {
+            done(new Error('Exception was not thrown'))
+          }).catch((err) => {
+            err.should.be.an.Object()
+            err.message.should.be.equal(
+              'ValidationError: child "contractAddress" fails because ["contractAddress" must be a string]'
+            )
+
+            done()
+          })
+        }) // totalSupply returns error because contractAddress is invalid (number)
+
+        it('is invalid (short string)', function(done) {
+          erc20.totalSupply({
+            rpcaddr,
+            rpcport,
+            contractAddress: 'a',
+          }).then(() => {
+            done(new Error('Exception was not thrown'))
+          }).catch((err) => {
+            err.should.be.an.Object()
+            err.message.should.be.equal(
+              'ValidationError: child "contractAddress" fails because ["contractAddress" length must be 42 characters long]'
+            )
+
+            done()
+          })
+        }) // totalSupply returns error because contractAddress is invalid (short string)
+
+        it('is invalid (large string)', function(done) {
+          erc20.totalSupply({
+            rpcaddr,
+            rpcport,
+            contractAddress: 'a'.repeat(300),
+          }).then(() => {
+            done(new Error('Exception was not thrown'))
+          }).catch((err) => {
+            err.should.be.an.Object()
+            err.message.should.be.equal(
+              'ValidationError: child "contractAddress" fails because ["contractAddress" length must be 42 characters long]'
+            )
+
+            done()
+          })
+        }) // totalSupply returns error because contractAddress is invalid (large string)
+
+        it('is invalid (wrong format)', function(done) {
+          erc20.totalSupply({
+            rpcaddr,
+            rpcport,
+            contractAddress: 'y'.repeat(42),
+          }).then(() => {
+            done(new Error('Exception was not thrown'))
+          }).catch((err) => {
+            err.should.be.an.Object()
+            err.message.should.be.equal(
+              'ValidationError: child "contractAddress" fails because ["contractAddress" with value "yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy" fails to match the required pattern: /^[a-fx0-9]+$/i]'
+            )
+
+            done()
+          })
+        }) // totalSupply returns error because contractAddress is invalid (wrong format)
+
+        it('is invalid (full string of zeros)', function(done) {
+          erc20.totalSupply({
+            rpcaddr,
+            rpcport,
+            contractAddress: '0'.repeat(42),
+          }).then(() => {
+            done(new Error('Exception was not thrown'))
+          }).catch((err) => {
+            err.should.be.an.Object()
+            err.message.should.be.equal('invalid address')
+
+            done()
+          })
+        }) // totalSupply returns error because contractAddress is invalid (full string of zeros)
+
+      }) // totalSupply returns error because contractAddress
+
+    }) // totalSupply returns error
+
+  }) // totalSupply
 
   describe('balanceOf', function() {
     it('returns balance of specific account', function(done) {
@@ -56,6 +324,7 @@ describe('ERC20 API', function() {
   })
 
   describe('transfer', function() {
+
     it('returns transaction hash', function(done) {
       erc20.transfer({
         rpcaddr,
@@ -67,11 +336,157 @@ describe('ERC20 API', function() {
       }).then((result) => {
         result.should.be.a.String()
         result.length.should.be.equal(66)
-        result.should.match(/^0x[a-zA-Z0-9]+/)
+        result.should.match(/^0x[a-fA-F0-9]+/)
 
         done()
       }).catch(done)
     })
+
+    describe('returns error', function(done) {
+
+      describe('because privateKey', function(done) {
+
+        it('is absent', function(done) {
+          erc20.transfer({
+            rpcaddr,
+            rpcport,
+            contractAddress,
+            to,
+            value,
+          }).then(() => {
+            done(new Error('Exception was not thrown'))
+          }).catch((err) => {
+            err.should.be.an.Object()
+            err.message.should.be.equal(
+              'ValidationError: child "privateKey" fails because ["privateKey" is required]'
+            )
+
+            done()
+          })
+        }) // transfer returns error because privateKey is absent
+
+        it('is invalid (number)', function(done) {
+          erc20.transfer({
+            rpcaddr,
+            rpcport,
+            contractAddress,
+            to,
+            value,
+            privateKey: 12345,
+          }).then(() => {
+            done(new Error('Exception was not thrown'))
+          }).catch((err) => {
+            err.should.be.an.Object()
+            err.message.should.be.equal(
+              'ValidationError: child "privateKey" fails because ["privateKey" must be a string]'
+            )
+
+            done()
+          })
+        }) // transfer returns error because privateKey is invalid (number)
+
+        it('is invalid (short string)', function(done) {
+          erc20.transfer({
+            rpcaddr,
+            rpcport,
+            contractAddress,
+            to,
+            value,
+            privateKey: 'a',
+          }).then(() => {
+            done(new Error('Exception was not thrown'))
+          }).catch((err) => {
+            err.should.be.an.Object()
+            err.message.should.be.equal(
+              'ValidationError: child "privateKey" fails because ["privateKey" length must be 64 characters long]'
+            )
+
+            done()
+          })
+        }) // transfer returns error because privateKey is invalid (short string)
+
+        it('is invalid (large string)', function(done) {
+          erc20.transfer({
+            rpcaddr,
+            rpcport,
+            contractAddress,
+            to,
+            value,
+            privateKey: 'a'.repeat(100),
+          }).then(() => {
+            done(new Error('Exception was not thrown'))
+          }).catch((err) => {
+            err.should.be.an.Object()
+            err.message.should.be.equal(
+              'ValidationError: child "privateKey" fails because ["privateKey" length must be 64 characters long]'
+            )
+
+            done()
+          })
+        }) // transfer returns error because privateKey is invalid (large string)
+
+        it('is invalid (wrong format)', function(done) {
+          erc20.transfer({
+            rpcaddr,
+            rpcport,
+            contractAddress,
+            to,
+            value,
+            privateKey: 'y'.repeat(64),
+          }).then(() => {
+            done(new Error('Exception was not thrown'))
+          }).catch((err) => {
+            err.should.be.an.Object()
+            err.message.should.be.equal(
+              'ValidationError: child "privateKey" fails because ["privateKey" with value "yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy" fails to match the required pattern: /^[a-fx0-9]+$/i]'
+            )
+
+            done()
+          })
+        }) // transfer returns error because privateKey is invalid (wrong format)
+
+        it('is invalid (full string of zeros)', function(done) {
+          erc20.transfer({
+            rpcaddr,
+            rpcport,
+            contractAddress,
+            to,
+            value,
+            privateKey: '0'.repeat(64),
+          }).then(() => {
+            done(new Error('Exception was not thrown'))
+          }).catch((err) => {
+            err.should.be.an.Object()
+            err.message.should.be.equal('Cannot read property \'fromRed\' of null')
+
+            done()
+          })
+        }) // transfer returns error because privateKey is invalid (full string of zeros)
+
+        it('is invalid (nonexistent privateKey)', function(done) {
+          erc20.transfer({
+            rpcaddr,
+            rpcport,
+            contractAddress,
+            to,
+            value,
+            privateKey: 'f'.repeat(64),
+          }).then(() => {
+            done(new Error('Exception was not thrown'))
+          }).catch((err) => {
+            err.should.be.an.Object()
+            err.message.should.startWith(
+              'Error: VM Exception while executing eth_estimateGas: out of gas'
+            )
+
+            done()
+          })
+        }) // transfer returns error because privateKey is invalid (nonexistent privateKey)
+
+      }) // transfer returns error because privateKey
+
+    }) // transfer returns error
+
   })
 
   describe('Transfer', function() {
@@ -93,7 +508,7 @@ describe('ERC20 API', function() {
 
           event.transactionHash.should.be.a.String()
           event.transactionHash.length.should.be.equal(66)
-          event.transactionHash.should.match(/^0x[a-zA-Z0-9]+/)
+          event.transactionHash.should.match(/^0x[a-fA-F0-9]+/)
 
           event.blockHash.should.be.a.String()
           event.blockNumber.should.be.a.Number()
@@ -152,7 +567,7 @@ describe('ERC20 API', function() {
 
           event.transactionHash.should.be.a.String()
           event.transactionHash.length.should.be.equal(66)
-          event.transactionHash.should.match(/^0x[a-zA-Z0-9]+/)
+          event.transactionHash.should.match(/^0x[a-fA-F0-9]+/)
 
           event.blockHash.should.be.a.String()
           event.blockNumber.should.be.a.Number()
@@ -213,7 +628,7 @@ describe('ERC20 API', function() {
 
         event.transactionHash.should.be.a.String()
         event.transactionHash.length.should.be.equal(66)
-        event.transactionHash.should.match(/^0x[a-zA-Z0-9]+/)
+        event.transactionHash.should.match(/^0x[a-fA-F0-9]+/)
 
         event.blockHash.should.be.a.String()
         event.blockNumber.should.be.a.Number()

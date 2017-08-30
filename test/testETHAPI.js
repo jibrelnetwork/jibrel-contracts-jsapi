@@ -32,7 +32,7 @@ describe('ETH API', function() {
       }).then((result) => {
         result.should.be.a.String()
         result.length.should.be.equal(66)
-        result.should.match(/^0x[a-zA-Z0-9]+/)
+        result.should.match(/^0x[a-fA-F0-9]+/)
 
         done()
       }).catch(done)

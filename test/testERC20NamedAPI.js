@@ -9,7 +9,7 @@ if (process.env.JSON_PATH == null) {
 
 const testParams = require(process.env.JSON_PATH)
 
-const erc20Named = jibrelContractsApi.contracts.ERC20Named
+const erc20Named = jibrelContractsApi.contracts.erc20Named
 
 const rpcaddr = process.env.RPCADDR || '127.0.0.1'
 const rpcport = process.env.RPCPORT || 8545

@@ -1,33 +1,27 @@
 import Joi from 'joi-browser'
 
-import validationRules from './validationRules'
+import validationRules, { generalETHKeys } from '../validationRules'
 
 const sendTransaction = Joi.object().keys({
-  rpcaddr: validationRules.host.required(),
-  rpcport: validationRules.port.required(),
+  ...generalETHKeys,
   privateKey: validationRules.privateKey.required(),
   to: validationRules.address.required(),
   value: validationRules.value.required(),
   gasLimit: validationRules.gasLimit,
   data: validationRules.data,
-  ssl: validationRules.ssl,
 })
 
 const getBalance = Joi.object().keys({
-  rpcaddr: validationRules.host.required(),
-  rpcport: validationRules.port.required(),
+  ...generalETHKeys,
   address: validationRules.address.required(),
   defaultBlock: validationRules.address,
-  ssl: validationRules.ssl,
 })
 
 const estimateGas = Joi.object().keys({
-  rpcaddr: validationRules.host.required(),
-  rpcport: validationRules.port.required(),
+  ...generalETHKeys,
   to: validationRules.address.required(),
   value: validationRules.value.required(),
   data: validationRules.data,
-  ssl: validationRules.ssl,
 })
 
 export default {

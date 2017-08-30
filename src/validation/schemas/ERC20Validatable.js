@@ -1,11 +1,11 @@
 import Joi from 'joi-browser'
 
-import validationRules, { generalKeys } from './validationRules'
+import validationRules, { generalContractKeys, estimateGasKeys } from '../validationRules'
 
-const isRegulated = Joi.object().keys(generalKeys)
+const isRegulated = Joi.object().keys(generalContractKeys)
 
 const isReceivingAllowed = Joi.object().keys({
-  ...generalKeys,
+  ...generalContractKeys,
   account: validationRules.address.required(),
   value: validationRules.value.required(),
 })
@@ -13,14 +13,14 @@ const isReceivingAllowed = Joi.object().keys({
 const isSpendingAllowed = isReceivingAllowed
 
 const isTransferAllowed = Joi.object().keys({
-  ...generalKeys,
+  ...generalContractKeys,
   from: validationRules.address.required(),
   to: validationRules.address.required(),
   value: validationRules.value.required(),
 })
 
 const isApproveAllowed = Joi.object().keys({
-  ...generalKeys,
+  ...generalContractKeys,
   from: validationRules.address.required(),
   spender: validationRules.address.required(),
   value: validationRules.value.required(),
@@ -29,19 +29,14 @@ const isApproveAllowed = Joi.object().keys({
 const isApprovedSpendingAllowed = isApproveAllowed
 
 const isTransferFromAllowed = Joi.object().keys({
-  ...generalKeys,
+  ...generalContractKeys,
   spender: validationRules.address.required(),
   from: validationRules.address.required(),
   to: validationRules.address.required(),
   value: validationRules.value.required(),
 })
 
-const estimateGas = Joi.object().keys({
-  ...generalKeys,
-  privateKey: validationRules.privateKey.required(),
-  method: validationRules.method.required(),
-  args: validationRules.args.required(),
-})
+const estimateGas = Joi.object().keys(estimateGasKeys)
 
 export default {
   isRegulated,

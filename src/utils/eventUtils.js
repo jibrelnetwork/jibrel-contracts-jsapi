@@ -3,8 +3,8 @@ import EventEmitter from 'events'
 
 const promiseTimeout = 1000 * 30
 
-export function subscribeToContractEvent(Event, options = {}, callback) {
-  const contractEventEmitter = new EventEmitter()
+export function subscribe(Event, options = {}, callback) {
+  const eventEmitter = new EventEmitter()
 
   /**
    * web3@0.x.x event takes filter and additional options in different params
@@ -14,7 +14,7 @@ export function subscribeToContractEvent(Event, options = {}, callback) {
 
   Event(filter, additionalOptions, (err, result) => {
     if (err) {
-      contractEventEmitter.emit('error', err)
+      eventEmitter.emit('error', err)
 
       if (callback) {
         callback(err)
@@ -23,17 +23,17 @@ export function subscribeToContractEvent(Event, options = {}, callback) {
       return
     }
 
-    contractEventEmitter.emit('data', result)
+    eventEmitter.emit('data', result)
 
     if (callback) {
       callback(null, result)
     }
   })
 
-  return contractEventEmitter
+  return eventEmitter
 }
 
-export function getPastContractEvents(Event, options = {}) {
+export function getPast(Event, options = {}) {
   /**
    * web3@0.x.x event takes filter and additional options in different params
    * web3@1.x.x event takes all options in one param
@@ -52,5 +52,5 @@ export function getPastContractEvents(Event, options = {}) {
      * If promise is not fulfilled or rejected within 30 sec timeout (in ms),
      * returned promise will be rejected
      */
-    .timeout(promiseTimeout, new Error('Can not get past contract events'))
+    .timeout(promiseTimeout, new Error(`Can not get past events within ${promiseTimeout}ms`))
 }

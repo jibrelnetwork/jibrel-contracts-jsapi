@@ -4,6 +4,8 @@ import { ec as EC } from 'elliptic'
 const ec = new EC('secp256k1')
 
 export default function getAddressFromPrivateKey(privateKey) {
+  checkPrivateKey(privateKey)
+
   const keyPair = ec.genKeyPair()
   keyPair._importPrivate(privateKey, 'hex')
 
@@ -15,4 +17,14 @@ export default function getAddressFromPrivateKey(privateKey) {
   const address = hash.toString(CryptoJS.enc.Hex).slice(24)
 
   return `0x${address}`
+}
+
+function checkPrivateKey(privateKey) {
+  const isTypeValid = (typeof privateKey === 'string')
+  const isLengthValid = (privateKey.length === 64)
+  const isContentValid = /^[a-fA-F0-9]+/.test(privateKey)
+
+  if (!(isTypeValid && isLengthValid && isContentValid)) {
+    throw (new Error(`Private key '${privateKey}' is invalid`))
+  }
 }
