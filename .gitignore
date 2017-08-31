@@ -5,6 +5,7 @@ node_modules
 
 lib
 dist
+docs
 
 # JetBrains
 .idea/

@@ -1,5 +1,23 @@
+/**
+ * @file Manages helper functions to init web3 object globally
+ * @author Ivan Violentov <ivan.violentov@jibrel.network>
+ */
+
 import Web3 from 'web3'
 
+/**
+ * @function initWeb3
+ *
+ * @description Initialises web3 object globally
+ *
+ * @param {object} payload - Payload object
+ * @param {object} payload.props - API function properties
+ * @param {string} payload.props.rpcaddr - RPC address of Ethereum node to connect on
+ * @param {number} payload.props.rpcport - RPC port of Ethereum node to connect on
+ * @param {boolean} [payload.props.ssl] - Defines using of ssl for connection or not
+ *
+ * @returns {object} The same (as input) payload object
+ */
 export default function initWeb3(payload) {
   // check if web3 object already injected in global scope
   if (isWeb3Injected()) {

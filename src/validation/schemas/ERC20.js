@@ -1,3 +1,8 @@
+/**
+ * @file Exposes validation schemas for ERC20 interface
+ * @author Ivan Violentov <ivan.violentov@jibrel.network>
+ */
+
 import Joi from 'joi-browser'
 
 import validationRules, { generalContractKeys, estimateGasKeys } from '../validationRules'

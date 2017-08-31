@@ -1,6 +1,6 @@
 {
   "name": "jibrel-contracts-jsapi",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "High level toolbox for solving typical tasks when creating a web wallet.",
   "main": "index.js",
   "engines": {
@@ -15,14 +15,27 @@
     "build:standalone": "./node_modules/.bin/webpack --config ./build/webpack.config.js",
     "lint": "./node_modules/.bin/eslint ./src",
     "minify": "./node_modules/.bin/minify ./dist/jibrel-contracts-jsapi.js --mangle -o ./dist/jibrel-contracts-jsapi.min.js",
-    "test": "./node_modules/.bin/mocha --compilers babel-register"
+    "test": "./node_modules/.bin/mocha --compilers babel-register",
+    "docs": "./node_modules/.bin/jsdoc ./src/ -r -d docs && npm run docs:open",
+    "docs:open": "./node_modules/.bin/opn ./docs/index.html"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jibrelnetwork/jibrel-contracts-jsapi.git"
   },
   "author": "Ivan Violentov <violentoff@gmail.com>",
-  "license": "ISC",
+  "license": "MIT",
+  "keywords": [
+    "jibrel",
+    "crydr",
+    "asset",
+    "solidity",
+    "ethereum",
+    "smart",
+    "contracts",
+    "web3",
+    "security"
+  ],
   "bugs": {
     "url": "https://github.com/jibrelnetwork/jibrel-contracts-jsapi/issues"
   },
@@ -45,7 +58,9 @@
     "eslint": "4.5.0",
     "eslint-config-airbnb-base": "11.3.1",
     "eslint-plugin-import": "2.7.0",
+    "jsdoc": "3.5.4",
     "mocha": "3.5.0",
+    "opn-cli": "3.1.0",
     "should": "11.2.1",
     "webpack": "3.5.5"
   },

@@ -1,9 +1,30 @@
+/**
+ * @file Manages function, that used to validate API function input params
+ * @author Ivan Violentov <ivan.violentov@jibrel.network>
+ */
+
 import Promise from 'bluebird'
 import Joi from 'joi-browser'
 
 import schemas from './schemas'
 
-export default function validate({ props, interfaceName, method, args }) {
+/**
+ * @async
+ * @function validate
+ *
+ * @description Validates input parameters by schema
+ *
+ * @param {object} payload - Payload object
+ * @param {object} payload.props - API function properties
+ * @param {string} payload.interfaceName - Interface name
+ * @param {string} payload.method - API function name
+ * @param {array} payload.args - API function arguments
+ *
+ * @returns Promise that will be resolved with received payload comprising validated properties
+ */
+export default function validate(payload) {
+  const { props, interfaceName, method, args } = payload
+
   const schema = getSchema(interfaceName, method)
 
   return new Promise((resolve, reject) => {

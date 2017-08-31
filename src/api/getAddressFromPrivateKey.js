@@ -1,8 +1,22 @@
+/**
+ * @file Manages helper function for deriving of address from private key
+ * @author Ivan Violentov <ivan.violentov@jibrel.network>
+ */
+
 import CryptoJS from 'crypto-js'
 import { ec as EC } from 'elliptic'
 
 const ec = new EC('secp256k1')
 
+/**
+ * @function getAddressFromPrivateKey
+ *
+ * @description Gets account's address from its private key
+ *
+ * @param {string} privateKey - Private key (64 hex symbols, without '0x' prefix)
+ *
+ * @returns {string} Account's address
+ */
 export default function getAddressFromPrivateKey(privateKey) {
   checkPrivateKey(privateKey)
 

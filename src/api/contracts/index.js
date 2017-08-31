@@ -1,3 +1,8 @@
+/**
+ * @file Exposes all supported contracts API
+ * @author Ivan Violentov <ivan.violentov@jibrel.network>
+ */
+
 import erc20 from './erc20'
 import erc20Named from './erc20Named'
 import erc20Validatable from './erc20Validatable'

@@ -1,13 +1,29 @@
+/**
+ * @file Manages helper function for getting of contract instance
+ * @author Ivan Violentov <ivan.violentov@jibrel.network>
+ */
+
 import memoize from '../../utils/memoize'
 
-import ERC20ABI from '../../abi/ERC20.json'
-import ERC20NamedABI from '../../abi/ERC20Named.json'
-import ERC20ValidatableABI from '../../abi/ERC20Validatable.json'
+import supportedContracts from '../../abi'
 
-const supportedContracts = {
-  ERC20: ERC20ABI,
-  ERC20Named: ERC20NamedABI,
-  ERC20Validatable: ERC20ValidatableABI,
+/**
+ * @function getContractInstance
+ *
+ * @description Gets contract instance
+ *
+ * @param {object} payload - Payload object
+ * @param {object} payload.props - API function properties
+ * @param {string} payload.props.contractAddress - Contract address
+ * @param {string} payload.interfaceName - Interface name
+ *
+ * @returns {object} Contract instance
+ */
+export default function getContractInstance(payload) {
+  const { props, interfaceName } = payload
+  const contractInstance = getContractAt(props.contractAddress, interfaceName)
+
+  return { ...payload, contractInstance }
 }
 
 function _getContract(interfaceName) {
@@ -31,10 +47,3 @@ function _getContractAt(contractAddress, interfaceName) {
 }
 
 const getContractAt = memoize(_getContractAt)
-
-export default function getContractInstance(payload) {
-  const { props, interfaceName } = payload
-  const contractInstance = getContractAt(props.contractAddress, interfaceName)
-
-  return { ...payload, contractInstance }
-}

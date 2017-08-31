@@ -1,3 +1,8 @@
+/**
+ * @file Exposes validation schemas for all supported interfaces
+ * @author Ivan Violentov <ivan.violentov@jibrel.network>
+ */
+
 import ETH from './ETH'
 import ERC20 from './ERC20'
 import ERC20Named from './ERC20Named'
