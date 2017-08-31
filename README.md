@@ -29,7 +29,7 @@ const jibrelContractsJsapi = require('jibrel-contracts-jsapi')
   * `docs`: compile jsdocs
   * `docs:open`: open docs index.html
 
-## Public API definitions (see mocha tests for examples of usage)
+## Public API definitions (see [mocha tests](https://github.com/jibrelnetwork/jibrel-contracts-jsapi/tree/master/test) for examples of usage)
 
 ### `ETH` API
 
