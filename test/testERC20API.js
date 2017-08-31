@@ -59,7 +59,7 @@ describe('ERC20 API', function() {
           })
         }) // totalSupply returns error because rpcaddr is absent
 
-        it('is invalid (number)', function(done) {
+        it('is invalid (wrong type)', function(done) {
           erc20.totalSupply({
             rpcport,
             contractAddress,
@@ -74,7 +74,7 @@ describe('ERC20 API', function() {
 
             done()
           })
-        }) // totalSupply returns error because rpcaddr is invalid (number)
+        }) // totalSupply returns error because rpcaddr is invalid (wrong type)
 
         it('is invalid (short string)', function(done) {
           erc20.totalSupply({
@@ -97,13 +97,13 @@ describe('ERC20 API', function() {
           erc20.totalSupply({
             rpcport,
             contractAddress,
-            rpcaddr: 'a'.repeat(300),
+            rpcaddr: 'a'.repeat(500),
           }).then(() => {
             done(new Error('Exception was not thrown'))
           }).catch((err) => {
             err.should.be.an.Object()
             err.message.should.be.equal(
-              'ValidationError: child "rpcaddr" fails because ["rpcaddr" length must be less than or equal to 255 characters long]'
+              'ValidationError: child "rpcaddr" fails because ["rpcaddr" length must be less than or equal to 300 characters long]'
             )
 
             done()
@@ -130,7 +130,7 @@ describe('ERC20 API', function() {
           })
         }) // totalSupply returns error because rpcport is absent
 
-        it('is invalid (string)', function(done) {
+        it('is invalid (wrong type)', function(done) {
           erc20.totalSupply({
             rpcaddr,
             contractAddress,
@@ -145,7 +145,7 @@ describe('ERC20 API', function() {
 
             done()
           })
-        }) // totalSupply returns error because rpcport is invalid (string)
+        }) // totalSupply returns error because rpcport is invalid (wrong type)
 
         it('is invalid (float)', function(done) {
           erc20.totalSupply({
@@ -218,7 +218,7 @@ describe('ERC20 API', function() {
           })
         }) // totalSupply returns error because contractAddress is absent
 
-        it('is invalid (number)', function(done) {
+        it('is invalid (wrong type)', function(done) {
           erc20.totalSupply({
             rpcaddr,
             rpcport,
@@ -233,7 +233,7 @@ describe('ERC20 API', function() {
 
             done()
           })
-        }) // totalSupply returns error because contractAddress is invalid (number)
+        }) // totalSupply returns error because contractAddress is invalid (wrong type)
 
         it('is invalid (short string)', function(done) {
           erc20.totalSupply({
@@ -365,7 +365,7 @@ describe('ERC20 API', function() {
           })
         }) // transfer returns error because privateKey is absent
 
-        it('is invalid (number)', function(done) {
+        it('is invalid (wrong type)', function(done) {
           erc20.transfer({
             rpcaddr,
             rpcport,
@@ -383,7 +383,7 @@ describe('ERC20 API', function() {
 
             done()
           })
-        }) // transfer returns error because privateKey is invalid (number)
+        }) // transfer returns error because privateKey is invalid (wrong type)
 
         it('is invalid (short string)', function(done) {
           erc20.transfer({
@@ -546,6 +546,73 @@ describe('ERC20 API', function() {
         }).catch(done)
       }).catch(done)
     })
+
+    describe('returns error', function() {
+
+      describe('because options', function(done) {
+
+        it('is invalid (wrong type)', function(done) {
+          erc20.Transfer({
+            rpcaddr,
+            rpcport,
+            contractAddress,
+            options: 123,
+          }).then(() => {
+            done(new Error('Exception was not thrown'))
+          }).catch((err) => {
+            err.should.be.an.Object()
+            err.message.should.be.equal(
+              'ValidationError: child "options" fails because ["options" must be an object]'
+            )
+
+            done()
+          })
+        }) // Transfer returns error because options is invalid (wrong type)
+
+        it('is invalid (wrong key of object)', function(done) {
+          erc20.Transfer({
+            rpcaddr,
+            rpcport,
+            contractAddress,
+            options: { foo: 'bar' },
+          }).then(() => {
+            done(new Error('Exception was not thrown'))
+          }).catch((err) => {
+            err.should.be.an.Object()
+            err.message.should.be.equal(
+              'ValidationError: child "options" fails because ["foo" is not allowed]'
+            )
+
+            done()
+          })
+        }) // Transfer returns error because options is invalid (wrong key of object)
+
+      }) // Transfer returns error because options
+
+      describe('because callback', function(done) {
+
+        it('is invalid (wrong type)', function(done) {
+          erc20.Transfer({
+            rpcaddr,
+            rpcport,
+            contractAddress,
+            callback: 123,
+          }).then(() => {
+            done(new Error('Exception was not thrown'))
+          }).catch((err) => {
+            err.should.be.an.Object()
+            err.message.should.be.equal(
+              'ValidationError: child "callback" fails because ["callback" must be a Function]'
+            )
+
+            done()
+          })
+        }) // Transfer returns error because callback is invalid (wrong type)
+
+      }) // Transfer returns error because callback
+
+    }) // Transfer returns error
+
   })
 
   describe('allEvents', function() {
@@ -596,6 +663,7 @@ describe('ERC20 API', function() {
         })
       }).catch(done)
     })
+
   })
 
   describe('getPastEvents', function() {
@@ -645,9 +713,11 @@ describe('ERC20 API', function() {
         done()
       }).catch(done)
     })
+
   })
 
   describe('estimateGas', function() {
+
     it('returns the used gas for the simulated call/transaction', function(done) {
       erc20.estimateGas({
         rpcaddr,
@@ -663,6 +733,137 @@ describe('ERC20 API', function() {
         done()
       }).catch(done)
     })
+
+    describe('returns error', function() {
+
+      describe('because method', function(done) {
+
+        it('is absent', function(done) {
+          erc20.estimateGas({
+            rpcaddr,
+            rpcport,
+            contractAddress,
+            privateKey,
+            args: [to, value],
+          }).then(() => {
+            done(new Error('Exception was not thrown'))
+          }).catch((err) => {
+            err.should.be.an.Object()
+            err.message.should.be.equal(
+              'ValidationError: child "method" fails because ["method" is required]'
+            )
+
+            done()
+          })
+        }) // estimateGas returns error because method is absent
+
+        it('is invalid (wrong type)', function(done) {
+          erc20.estimateGas({
+            rpcaddr,
+            rpcport,
+            contractAddress,
+            privateKey,
+            method: 123,
+            args: [to, value],
+          }).then(() => {
+            done(new Error('Exception was not thrown'))
+          }).catch((err) => {
+            err.should.be.an.Object()
+            err.message.should.be.equal(
+              'ValidationError: child "method" fails because ["method" must be a string]'
+            )
+
+            done()
+          })
+        }) // estimateGas returns error because method is invalid (wrong type)
+
+        it('is invalid (empty)', function(done) {
+          erc20.estimateGas({
+            rpcaddr,
+            rpcport,
+            contractAddress,
+            privateKey,
+            method: '',
+            args: [to, value],
+          }).then(() => {
+            done(new Error('Exception was not thrown'))
+          }).catch((err) => {
+            err.should.be.an.Object()
+            err.message.should.be.equal(
+              'ValidationError: child "method" fails because ["method" is not allowed to be empty]'
+            )
+
+            done()
+          })
+        }) // estimateGas returns error because method is invalid (short string)
+
+        it('is invalid (large string)', function(done) {
+          erc20.estimateGas({
+            rpcaddr,
+            rpcport,
+            contractAddress,
+            privateKey,
+            method: 'a'.repeat(1000),
+            args: [to, value],
+          }).then(() => {
+            done(new Error('Exception was not thrown'))
+          }).catch((err) => {
+            err.should.be.an.Object()
+            err.message.should.be.equal(
+              'ValidationError: child "method" fails because ["method" length must be less than or equal to 99 characters long]'
+            )
+
+            done()
+          })
+        }) // estimateGas returns error because method is invalid (large string)
+
+      }) // estimateGas returns error because method
+
+      describe('because args', function(done) {
+
+        it('is absent', function(done) {
+          erc20.estimateGas({
+            rpcaddr,
+            rpcport,
+            contractAddress,
+            privateKey,
+            method: 'transfer',
+          }).then(() => {
+            done(new Error('Exception was not thrown'))
+          }).catch((err) => {
+            err.should.be.an.Object()
+            err.message.should.be.equal(
+              'ValidationError: child "args" fails because ["args" is required]'
+            )
+
+            done()
+          })
+        }) // estimateGas returns error because args is absent
+
+        it('is invalid (wrong type)', function(done) {
+          erc20.estimateGas({
+            rpcaddr,
+            rpcport,
+            contractAddress,
+            privateKey,
+            method: 'transfer',
+            args: 123,
+          }).then(() => {
+            done(new Error('Exception was not thrown'))
+          }).catch((err) => {
+            err.should.be.an.Object()
+            err.message.should.be.equal(
+              'ValidationError: child "args" fails because ["args" must be an array]'
+            )
+
+            done()
+          })
+        }) // estimateGas returns error because args is invalid (wrong type)
+
+      }) // estimateGas returns error because args
+
+    }) // estimateGas returns error
+
   })
 
 })

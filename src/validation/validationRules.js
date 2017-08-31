@@ -8,14 +8,14 @@ const bigNumber = Joi.object().keys({
 })
 
 const validationRules = {
-  host: Joi.string().min(3).max(255),
+  host: Joi.string().min(3).max(300),
   port: Joi.number().integer().min(1).max(65535),
   ssl: Joi.boolean(),
   address: Joi.string().regex(/^[a-fx0-9]+$/i).length(42),
   privateKey: Joi.string().regex(/^[a-fx0-9]+$/i).length(64),
   value: bigNumber,
-  event: Joi.string().min(1).max(999),
-  method: Joi.string().min(1).max(999),
+  event: Joi.string().min(1).max(99),
+  method: Joi.string().alphanum().min(1).max(99),
   args: Joi.array(),
   data: Joi.string().regex(/^[a-fx0-9]+$/i).max(9999),
   gasLimit: bigNumber,
