@@ -126,11 +126,11 @@ The event emitter has the following events:
   * rpcport: RPC port of Ethereum node to connect on
   * contractAddress: Contract address
   * options: (optional) Event options
-    ** filter: (optional) Filter options by indexed event parameters
-    ** fromBlock: (optional) The number of the earliest block
-    ** toBlock: (optional) The number of the latest block
-    ** address: (optional) An address(es) to get logs from
-    ** topics: (optional) Allows to manually set the topics for the event filter
+    * filter: (optional) Filter options by indexed event parameters
+    * fromBlock: (optional) The number of the earliest block
+    * toBlock: (optional) The number of the latest block
+    * address: (optional) An address(es) to get logs from
+    * topics: (optional) Allows to manually set the topics for the event filter
   * callback: (optional) Callback which fired for each event or error
   * ssl: (optional) Defines using of ssl for connection or not
 
