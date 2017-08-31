@@ -136,11 +136,11 @@ The event emitter has the following events:
 
 #### contracts.erc20.Transfer(props)
 
-Subscribes to Transfer event. Returns Promise that will be resolved with the event emitter (the same as for `[allEvents](#contracts.erc20.allEvents(props))`).
+Subscribes to Transfer event. Returns Promise that will be resolved with the event emitter (the same as for [allEvents](#contractserc20alleventsprops)).
 
 ##### props
 
-The same as for `[allEvents](#contracts.erc20.allEvents(props))`
+The same as for [allEvents](#props-6)
 
 #### contracts.erc20.getPastEvents(props)
 
@@ -152,7 +152,7 @@ Returns Promise that will be resolved with the past event logs.
   * rpcport: RPC port of Ethereum node to connect on
   * contractAddress: Contract address
   * event: optional Event name
-  * options: (optional) The same options as for `[allEvents](#contracts.erc20.allEvents(props))`
+  * options: (optional) The same options as for [allEvents](#props-6)
   * ssl: (optional) Defines using of ssl for connection or not
 
 #### contracts.erc20.estimateGas(props)
