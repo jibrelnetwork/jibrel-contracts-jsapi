@@ -12,6 +12,10 @@ jibrel-contracts-jsapi is a set of stateless methods that make easier work with 
 npm install jibrel-contracts-jsapi
 ```
 
+```javascript
+const jibrelContractsJsapi = require('jibrel-contracts-jsapi')
+```
+
 ### Available npm scripts:
 
   * `compile:standalone`: build:standalone & minify
@@ -25,7 +29,7 @@ npm install jibrel-contracts-jsapi
   * `docs`: compile jsdocs
   * `docs:open`: open docs index.html
 
-## Public API definitions
+## Public API definitions (see mocha tests for examples of usage)
 
 ### `ETH` API
 
