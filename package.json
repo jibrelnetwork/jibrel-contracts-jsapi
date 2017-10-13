@@ -1,12 +1,8 @@
 {
   "name": "jibrel-contracts-jsapi",
-  "version": "0.0.1",
-  "description": "High level toolbox for solving typical tasks when creating a web wallet.",
+  "version": "0.1.0",
+  "description": "Set of stateless wrapper methods for contracts based on ERC20 token.",
   "main": "index.js",
-  "engines": {
-    "node": "^8.2.1",
-    "npm": "^5.3.0"
-  },
   "scripts": {
     "compile:standalone": "npm run build:standalone && npm run minify",
     "compile": "npm run lint && npm run build",
@@ -23,10 +19,11 @@
     "type": "git",
     "url": "git+https://github.com/jibrelnetwork/jibrel-contracts-jsapi.git"
   },
-  "author": "Ivan Violentov <violentoff@gmail.com>",
+  "author": "Jibrel Network",
   "license": "MIT",
   "keywords": [
     "jibrel",
+    "jibrelnetwork",
     "crydr",
     "asset",
     "solidity",
