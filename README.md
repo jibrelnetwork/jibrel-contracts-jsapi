@@ -4,7 +4,7 @@ web3 wrapper for jibrel-contracts
 
 ## About
 
-jibrel-contracts-jsapi is a set of stateless methods that make easier work with Ethereum blockchain and Jibrel Network contracts.
+jibrel-contracts-jsapi is a set of stateless methods that make easier work with Ethereum blockchain, ERC20 Tokens and Jibrel Network contracts.
 
 ## Get Started
 
