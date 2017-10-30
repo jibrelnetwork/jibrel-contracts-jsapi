@@ -19,23 +19,24 @@ import Web3 from 'web3'
  * @returns {object} The same (as input) payload object
  */
 export default function initWeb3(payload) {
+  const rpcEndpoint = getRPCEndpoint(payload.props)
+
   // check if web3 object already injected in global scope
-  if (isWeb3Injected()) {
+  if (isWeb3Injected(rpcEndpoint)) {
     return payload
   }
 
-  const rpcEndpoint = getRPCEndpoint(payload.props)
   const web3 = new Web3(new Web3.providers.HttpProvider(rpcEndpoint))
 
-  setGlobalWeb3(web3)
+  setGlobalWeb3(web3, rpcEndpoint)
 
   return payload
 }
 
-function isWeb3Injected() {
+function isWeb3Injected(rpcEndpoint) {
   const globalScope = (typeof window !== 'undefined') ? window : global
 
-  if (globalScope.isWeb3Injected) {
+  if (globalScope.web3Endpoint === rpcEndpoint) {
     return true
   }
 
@@ -46,7 +47,7 @@ function getRPCEndpoint({ rpcaddr, rpcport, ssl }) {
   return `http${ssl ? 's' : ''}://${rpcaddr}:${rpcport}`
 }
 
-function setGlobalWeb3(web3) {
+function setGlobalWeb3(web3, rpcEndpoint) {
   const globalScope = (typeof window !== 'undefined') ? window : global
 
   if (!checkWeb3IsConnected(web3)) {
@@ -54,7 +55,7 @@ function setGlobalWeb3(web3) {
   }
 
   globalScope.web3 = web3
-  globalScope.isWeb3Injected = true
+  globalScope.web3Endpoint = rpcEndpoint
 }
 
 function checkWeb3IsConnected(web3) {
@@ -76,11 +77,15 @@ function checkWeb3ethSupportedMethods(web3) {
 
   const supportedMethods = [
     'getBalance',
+    'getBlock',
     'contract',
-    'sendRawTransaction',
+    'filter',
+    'getTransaction',
     'getTransactionCount',
+    'getTransactionReceipt',
     'getGasPrice',
     'estimateGas',
+    'sendRawTransaction',
   ]
 
   supportedMethods.forEach((method) => {
