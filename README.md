@@ -2,6 +2,18 @@
 
 web3 wrapper for jibrel-contracts
 
+  * [jibrel-contracts-jsapi](#jibrel-contracts-jsapi)
+    * [About](#about)
+    * [Get Started](#get-started)
+      * [Available npm scripts](#available-npm-scripts)
+    * [Public API definitions](#public-api-definitions)
+      * [ETH](#eth-api)
+      * [ERC20](#erc20-api)
+      * [ERC20Named](#erc20named-api)
+      * [ERC20Validatable](#erc20validatable-api)
+      * [getAddressFromPrivateKey](#getaddressfromprivatekeyprivatekey)
+    * [Testing](#testing)
+
 ## About
 
 jibrel-contracts-jsapi is a set of stateless methods that make easier work with Ethereum blockchain, ERC20 Tokens and Jibrel Network contracts.
@@ -29,7 +41,9 @@ const jibrelContractsJsapi = require('jibrel-contracts-jsapi')
   * `docs`: compile jsdocs
   * `docs:open`: open docs index.html
 
-## Public API definitions (see [mocha tests](https://github.com/jibrelnetwork/jibrel-contracts-jsapi/tree/master/test) for examples of usage)
+## Public API definitions
+
+See [mocha tests](https://github.com/jibrelnetwork/jibrel-contracts-jsapi/tree/master/test) for examples of usage
 
 ### `ETH` API
 
@@ -239,7 +253,7 @@ Returns Promise that will be resolved with estimate gas value.
 
 ### `ERC20Named` API
 
-### contracts.erc20Named.name(props)
+#### contracts.erc20Named.name(props)
 
 Returns Promise that will be resolved with the token name.
 
@@ -250,7 +264,7 @@ Returns Promise that will be resolved with the token name.
   * contractAddress: Contract address
   * ssl: (optional) Defines using of ssl for connection or not
 
-### contracts.erc20Named.symbol(props)
+#### contracts.erc20Named.symbol(props)
 
 Returns Promise that will be resolved with the token symbol.
 
@@ -261,7 +275,7 @@ Returns Promise that will be resolved with the token symbol.
   * contractAddress: Contract address
   * ssl: (optional) Defines using of ssl for connection or not
 
-### contracts.erc20Named.decimals(props)
+#### contracts.erc20Named.decimals(props)
 
 Returns Promise that will be resolved with token decimals.
 
