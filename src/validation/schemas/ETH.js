@@ -22,6 +22,32 @@ const getBalance = Joi.object().keys({
   defaultBlock: validationRules.address,
 })
 
+const getBlock = Joi.object().keys({
+  ...generalETHKeys,
+  blockId: validationRules.blockId,
+  returnTransactionObjects: validationRules.returnTransactionObjects,
+})
+
+const getTransaction = Joi.object().keys({
+  ...generalETHKeys,
+  transactionHash: validationRules.transactionHash.required(),
+})
+
+const getTransactionReceipt = Joi.object().keys({
+  ...generalETHKeys,
+  transactionHash: validationRules.transactionHash.required(),
+})
+
+const getLogsFilter = Joi.object().keys({
+  ...generalETHKeys,
+  options: validationRules.logsOptions,
+})
+
+const getPastLogs = Joi.object().keys({
+  ...generalETHKeys,
+  options: validationRules.logsOptions,
+})
+
 const estimateGas = Joi.object().keys({
   ...generalETHKeys,
   to: validationRules.address.required(),
@@ -32,5 +58,10 @@ const estimateGas = Joi.object().keys({
 export default {
   sendTransaction,
   getBalance,
+  getBlock,
+  getTransaction,
+  getTransactionReceipt,
+  getLogsFilter,
+  getPastLogs,
   estimateGas,
 }

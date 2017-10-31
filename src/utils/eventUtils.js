@@ -77,7 +77,7 @@ export function subscribe(Event, options = {}, callback) {
 
 /**
  * @async
- * @function getPast
+ * @function getEvents
  *
  * @description Gets past events
  *
@@ -91,7 +91,7 @@ export function subscribe(Event, options = {}, callback) {
  *
  * @returns Promise that will be resolved with past events
  */
-export function getPast(Event, options = {}) {
+export function getEvents(Event, options = {}) {
   /**
    * web3@0.x.x event takes filter and additional options in different params
    * web3@1.x.x event takes all options in one param

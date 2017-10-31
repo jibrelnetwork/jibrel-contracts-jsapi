@@ -12,7 +12,6 @@ import Joi from 'joi-browser'
  * @property {number} e - exponent
  * @property {number} s - sign
  */
-
 const bigNumber = Joi.object().keys({
   isBigNumber: Joi.boolean().valid(true),
   c: Joi.array().items(Joi.number()).required(),
@@ -20,25 +19,40 @@ const bigNumber = Joi.object().keys({
   s: Joi.number().integer().valid([-1, 1]).required(),
 })
 
+const blockString = Joi.string().valid(['latest', 'pending'])
+const hash = Joi.string().regex(/^[a-fx0-9]+$/i)
+
+const options = {
+  fromBlock: [Joi.number().integer().min(0), blockString],
+  toBlock: [Joi.number().integer().min(0), blockString],
+  address: [hash.length(42), Joi.array().items(hash.length(42))],
+  topics: Joi.array().allow(null),
+}
+
 const validationRules = {
   host: Joi.string().min(3).max(300),
   port: Joi.number().integer().min(1).max(65535),
   ssl: Joi.boolean(),
-  address: Joi.string().regex(/^[a-fx0-9]+$/i).length(42),
-  privateKey: Joi.string().regex(/^[a-fx0-9]+$/i).length(64),
+  address: hash.length(42),
+  privateKey: hash.length(64),
   value: bigNumber,
   event: Joi.string().min(1).max(99),
   method: Joi.string().alphanum().min(1).max(99),
   args: Joi.array(),
-  data: Joi.string().regex(/^[a-fx0-9]+$/i).max(9999),
+  data: hash.max(9999),
   gasLimit: bigNumber,
   callback: Joi.func(),
+  blockId: [
+    hash.length(66),
+    Joi.number().integer().min(0),
+    Joi.string().valid(['earliest', 'latest', 'pending']),
+  ],
+  returnTransactionObjects: Joi.boolean(),
+  transactionHash: hash.length(66),
+  logsOptions: Joi.object().keys(options),
   eventOptions: Joi.object().keys({
+    ...options,
     filter: Joi.object(),
-    fromBlock: [Joi.number().integer().positive(), Joi.string().min(6).max(7)],
-    toBlock: [Joi.number().integer().positive(), Joi.string().min(6).max(7)],
-    address: Joi.string().regex(/^[a-fx0-9]+$/i).length(42),
-    topics: Joi.array().allow(null),
   }),
 }
 

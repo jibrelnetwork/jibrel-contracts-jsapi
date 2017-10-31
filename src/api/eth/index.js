@@ -57,6 +57,114 @@ export function getBalance(props = {}) {
 
 /**
  * @async
+ * @function getBlock
+ *
+ * @description Returns block data
+ *
+ * @param {object} props={} - API function properties
+ * @param {string} props.rpcaddr - RPC address of Ethereum node to connect on
+ * @param {number} props.rpcport - RPC port of Ethereum node to connect on
+ * @param {string} [props.blockId] - block number or hash. Or the string "earliest"/"latest"/"pending"
+ * @param {boolean} [props.returnTransactionObjects] - return all transactions as objects if true
+ * @param {boolean} [props.ssl] - Defines using of ssl for connection or not
+ *
+ * @returns Promise that will be resolved with block data
+ */
+export function getBlock(props = {}) {
+  const { blockId, returnTransactionObjects } = props
+
+  return ethMethod.call({
+    props,
+    interfaceName,
+    method: 'getBlock',
+    args: [blockId || 'latest', returnTransactionObjects],
+  })
+}
+
+/**
+ * @async
+ * @function getTransaction
+ *
+ * @description Returns transaction data
+ *
+ * @param {object} props={} - API function properties
+ * @param {string} props.rpcaddr - RPC address of Ethereum node to connect on
+ * @param {number} props.rpcport - RPC port of Ethereum node to connect on
+ * @param {string} props.transactionHash - Transaction hash
+ * @param {boolean} [props.ssl] - Defines using of ssl for connection or not
+ *
+ * @returns Promise that will be resolved with transaction data
+ */
+export function getTransaction(props = {}) {
+  return ethMethod.call({
+    props,
+    interfaceName,
+    method: 'getTransaction',
+    args: [props.transactionHash],
+  })
+}
+
+/**
+ * @async
+ * @function getTransactionReceipt
+ *
+ * @description Returns the receipt of a transaction
+ *
+ * @param {object} props={} - API function properties
+ * @param {string} props.rpcaddr - RPC address of Ethereum node to connect on
+ * @param {number} props.rpcport - RPC port of Ethereum node to connect on
+ * @param {string} props.transactionHash - Transaction hash
+ * @param {boolean} [props.ssl] - Defines using of ssl for connection or not
+ *
+ * @returns Promise that will be resolved with transaction receipt
+ */
+export function getTransactionReceipt(props = {}) {
+  return ethMethod.call({
+    props,
+    interfaceName,
+    method: 'getTransactionReceipt',
+    args: [props.transactionHash],
+  })
+}
+
+/**
+ * @async
+ * @function getLogsFilter
+ *
+ * @description Returns object for filtering of logs
+ *
+ * @param {object} props - API function properties
+ * @param {string} props.rpcaddr - RPC address of Ethereum node to connect on
+ * @param {number} props.rpcport - RPC port of Ethereum node to connect on
+ * @param {object} [props.options] - Filter options (@see filter)
+ * @param {boolean} [props.ssl] - Defines using of ssl for connection or not
+ *
+ * @returns Promise that will be resolved with the filter object (@see filter)
+ */
+export function getLogsFilter(props) {
+  return ethMethod.filterLogs({ props, interfaceName, method: 'getLogsFilter' })
+}
+
+/**
+ * @async
+ * @function getPastLogs
+ *
+ * @description Gets past events
+ *
+ * @param {object} props - API function properties
+ * @param {string} props.rpcaddr - RPC address of Ethereum node to connect on
+ * @param {number} props.rpcport - RPC port of Ethereum node to connect on
+ * @param {object} [props.options] - Logs options (@see filter)
+ * @param {boolean} [props.ssl] - Defines using of ssl for connection or not
+ *
+ * @returns Promise that will be resolved with the event logs (@see getLogs)
+ */
+export function getPastLogs(props) {
+  return ethMethod.getPastLogs({ props, interfaceName, method: 'getPastLogs' })
+}
+
+/**
+ * @async
  * @function estimateGas
  *
  * @description Gets estimate gas for the transaction
@@ -75,4 +183,13 @@ export function estimateGas(props) {
   return ethMethod.estimateGas({ props, interfaceName, method: 'estimateGas' })
 }
 
-export default { sendTransaction, getBalance, estimateGas }
+export default {
+  sendTransaction,
+  getBalance,
+  getBlock,
+  getTransaction,
+  getTransactionReceipt,
+  getLogsFilter,
+  getPastLogs,
+  estimateGas,
+}

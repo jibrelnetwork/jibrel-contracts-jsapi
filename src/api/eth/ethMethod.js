@@ -10,6 +10,7 @@ import getAddressFromPrivateKey from '../getAddressFromPrivateKey'
 import validate from '../../validation'
 
 import initWeb3 from '../../utils/initWeb3'
+import { filter, getLogs } from '../../utils/logUtils'
 import { signTx, getRawTx, getGasLimit } from '../../utils/txUtils'
 
 import config from '../../config'
@@ -32,6 +33,26 @@ function call(payload) {
  */
 function sendTransaction(payload) {
   return prepareETHMethod(payload).then(sendETHTransaction)
+}
+
+/**
+ * @async
+ * @function filterLogs
+ *
+ * @description Wrapper for filterETHLogs function (@see filterETHLogs)
+ */
+function filterLogs(payload) {
+  return prepareETHMethod(payload).then(filterETHLogs)
+}
+
+/**
+ * @async
+ * @function getPastLogs
+ *
+ * @description Wrapper for getPastETHLogs function (@see getPastETHLogs)
+ */
+function getPastLogs(payload) {
+  return prepareETHMethod(payload).then(getPastETHLogs)
 }
 
 /**
@@ -106,6 +127,37 @@ async function sendETHTransaction(payload) {
 }
 
 /**
+ * @function filterETHLogs
+ *
+ * @description Initializes filter object
+ *
+ * @param {object} payload - Payload object
+ * @param {object} payload.props - API function properties
+ * @param {object} [payload.props.options] - Filter options (@see filter)
+ *
+ * @returns {object} The event emitter (@see subscribe)
+ */
+function filterETHLogs(payload) {
+  return filter(payload.props.options)
+}
+
+/**
+ * @async
+ * @function getPastETHLogs
+ *
+ * @description Gets past ETH logs
+ *
+ * @param {object} payload - Payload object
+ * @param {object} payload.props - API function properties
+ * @param {object} [payload.props.options] - Event options (@see getLogs)
+ *
+ * @returns Promise that will be resolved with past logs (@see getLogs)
+ */
+function getPastETHLogs(payload) {
+  return getLogs(payload.props.options)
+}
+
+/**
  * @async
  * @function estimateETHGas
  *
@@ -120,4 +172,4 @@ function estimateETHGas(payload) {
   return getGasLimit(payload.props)
 }
 
-export default { call, sendTransaction, estimateGas }
+export default { call, sendTransaction, filterLogs, getPastLogs, estimateGas }

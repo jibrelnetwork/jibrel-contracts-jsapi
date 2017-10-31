@@ -62,6 +62,70 @@ Returns Promise that will be resolved with balance of the provided address.
   * defaultBlock: (optional) Redefines of web3.eth.defaultBlock
   * ssl: (optional) Defines using of ssl for connection or not
 
+#### eth.getBlock(props)
+
+Returns Promise that will be resolved with block data.
+
+##### props
+
+  * rpcaddr: RPC address of Ethereum node to connect on
+  * rpcport: RPC port of Ethereum node to connect on
+  * blockId: (optional) Block number or hash. Or the string "earliest"/"latest"/"pending"
+  * returnTransactionObjects: (optional) Return all transactions as objects if true
+  * ssl: (optional) Defines using of ssl for connection or not
+
+#### eth.getTransaction(props)
+
+Returns Promise that will be resolved with transaction data.
+
+##### props
+
+  * rpcaddr: RPC address of Ethereum node to connect on
+  * rpcport: RPC port of Ethereum node to connect on
+  * transactionHash: Transaction hash
+  * ssl: (optional) Defines using of ssl for connection or not
+
+#### eth.getTransactionReceipt(props)
+
+Returns Promise that will be resolved with transaction receipt.
+
+##### props
+
+  * rpcaddr: RPC address of Ethereum node to connect on
+  * rpcport: RPC port of Ethereum node to connect on
+  * transactionHash: Transaction hash
+  * ssl: (optional) Defines using of ssl for connection or not
+
+#### eth.getLogsFilter(props)
+
+Returns Promise that will be resolved with filter object, that can be used for getting of past logs or watching of new.
+
+##### props
+
+  * rpcaddr: RPC address of Ethereum node to connect on
+  * rpcport: RPC port of Ethereum node to connect on
+  * options: (optional) Event options
+    * fromBlock: (optional) The number of the earliest block
+    * toBlock: (optional) The number of the latest block
+    * address: (optional) An address(es) to get logs from
+    * topics: (optional) Allows to manually set the topics for the event filter
+  * ssl: (optional) Defines using of ssl for connection or not
+
+#### eth.getPastLogs(props)
+
+Returns Promise that will be resolved with past logs.
+
+##### props
+
+  * rpcaddr: RPC address of Ethereum node to connect on
+  * rpcport: RPC port of Ethereum node to connect on
+  * options: (optional) Event options
+    * fromBlock: (optional) The number of the earliest block
+    * toBlock: (optional) The number of the latest block
+    * address: (optional) An address(es) to get logs from
+    * topics: (optional) Allows to manually set the topics for the event filter
+  * ssl: (optional) Defines using of ssl for connection or not
+
 #### eth.estimateGas(props)
 
 Returns Promise that will be resolved with estimate gas value.

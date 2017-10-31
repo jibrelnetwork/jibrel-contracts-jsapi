@@ -12,7 +12,7 @@ import getAddressFromPrivateKey from '../getAddressFromPrivateKey'
 import validate from '../../validation'
 
 import initWeb3 from '../../utils/initWeb3'
-import { getPast, subscribe } from '../../utils/eventUtils'
+import { getEvents, subscribe } from '../../utils/eventUtils'
 import { signTx, getContractRawTx, getContractGasLimit } from '../../utils/txUtils'
 
 import config from '../../config'
@@ -168,16 +168,16 @@ function subscribeToContractEvent(payload) {
  * @param {object} payload - Payload object
  * @param {object} payload.props - API function properties
  * @param {string} payload.props.event - Event name
- * @param {object} [payload.props.options] - Event options (@see getPast)
+ * @param {object} [payload.props.options] - Event options (@see getEvents)
  * @param {object} payload.contractInstance - Contract instance
  *
- * @returns Promise that will be resolved with past events (@see getPast)
+ * @returns Promise that will be resolved with past events (@see getEvents)
  */
 function getPastContractEvents(payload) {
   const { props, contractInstance } = payload
   const { event, options } = props
 
-  return getPast(contractInstance[event], options)
+  return getEvents(contractInstance[event], options)
 }
 
 /**
