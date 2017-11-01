@@ -57,6 +57,28 @@ export function getBalance(props = {}) {
 
 /**
  * @async
+ * @function getBlockNumber
+ *
+ * @description Gets current block number
+ *
+ * @param {object} props={} - API function properties
+ * @param {string} props.rpcaddr - RPC address of Ethereum node to connect on
+ * @param {number} props.rpcport - RPC port of Ethereum node to connect on
+ * @param {boolean} [props.ssl] - Defines using of ssl for connection or not
+ *
+ * @returns Promise that will be resolved with current block number
+ */
+export function getBlockNumber(props = {}) {
+  return ethMethod.call({
+    props,
+    interfaceName,
+    method: 'getBlockNumber',
+    args: [],
+  })
+}
+
+/**
+ * @async
  * @function getBlock
  *
  * @description Returns block data
@@ -186,6 +208,7 @@ export function estimateGas(props) {
 export default {
   sendTransaction,
   getBalance,
+  getBlockNumber,
   getBlock,
   getTransaction,
   getTransactionReceipt,

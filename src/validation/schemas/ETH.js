@@ -22,6 +22,10 @@ const getBalance = Joi.object().keys({
   defaultBlock: validationRules.address,
 })
 
+const getBlockNumber = Joi.object().keys({
+  ...generalETHKeys,
+})
+
 const getBlock = Joi.object().keys({
   ...generalETHKeys,
   blockId: validationRules.blockId,
@@ -58,6 +62,7 @@ const estimateGas = Joi.object().keys({
 export default {
   sendTransaction,
   getBalance,
+  getBlockNumber,
   getBlock,
   getTransaction,
   getTransactionReceipt,

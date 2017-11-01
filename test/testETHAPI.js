@@ -67,6 +67,20 @@ describe('ETH API', function() {
     })
   })
 
+  describe('getBlockNumber', function() {
+    it('returns block number', function(done) {
+      eth.getBlockNumber({
+        rpcaddr,
+        rpcport,
+      }).then((result) => {
+        result.should.be.a.Number()
+        result.should.be.greaterThan(0)
+
+        done()
+      }).catch(done)
+    })
+  })
+
   describe('getBlock', function() {
     it('returns block data', function(done) {
       eth.getBlock({

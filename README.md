@@ -76,6 +76,16 @@ Returns Promise that will be resolved with balance of the provided address.
   * defaultBlock: (optional) Redefines of web3.eth.defaultBlock
   * ssl: (optional) Defines using of ssl for connection or not
 
+#### eth.getBlockNumber(props)
+
+Returns Promise that will be resolved with current block number.
+
+##### props
+
+  * rpcaddr: RPC address of Ethereum node to connect on
+  * rpcport: RPC port of Ethereum node to connect on
+  * ssl: (optional) Defines using of ssl for connection or not
+
 #### eth.getBlock(props)
 
 Returns Promise that will be resolved with block data.
