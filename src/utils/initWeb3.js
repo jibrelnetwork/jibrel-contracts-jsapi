@@ -36,8 +36,8 @@ export default function initWeb3(payload) {
 function isWeb3Injected(rpcEndpoint) {
   const globalScope = (typeof window !== 'undefined') ? window : global
 
-  if (globalScope.web3Endpoint === rpcEndpoint) {
-    return true
+  if (globalScope.web3Endpoint !== rpcEndpoint) {
+    return false
   }
 
   return checkWeb3IsConnected(globalScope.web3)
