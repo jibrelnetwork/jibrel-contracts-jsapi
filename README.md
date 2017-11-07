@@ -2,6 +2,8 @@
 
 web3 wrapper for jibrel-contracts
 
+[Exhaustive API description](https://jibrelnetwork.github.io/jibrel-contracts-jsapi/)
+
   * [jibrel-contracts-jsapi](#jibrel-contracts-jsapi)
     * [About](#about)
     * [Get Started](#get-started)
