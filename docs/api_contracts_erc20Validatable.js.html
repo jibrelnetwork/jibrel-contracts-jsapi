@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: api/contracts/erc20Validatable.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: api/contracts/erc20Validatable.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file Exposes ERC20Validatable API
+ * @author Ivan Violentov &lt;ivan.violentov@jibrel.network>
+ */
+
+import contractMethod from './contractMethod'
+
+const interfaceName = 'ERC20Validatable'
+
+/**
+ * @async
+ * @function isReceivingAllowed
+ *
+ * @description Gets isReceivingAllowed flag
+ *
+ * @param {object} props - API function properties
+ * @param {string} props.rpcaddr - RPC address of Ethereum node to connect on
+ * @param {number} props.rpcport - RPC port of Ethereum node to connect on
+ * @param {string} props.contractAddress - Contract address
+ * @param {string} props.account - Account address
+ * @param {BigNumber} props.value - Transaction value
+ * @param {boolean} [props.ssl] - Defines using of ssl for connection or not
+ *
+ * @returns Promise that will be resolved with the isReceivingAllowed flag
+ */
+export function isReceivingAllowed(props) {
+  const { account, value } = props
+
+  return contractMethod.call({
+    props,
+    interfaceName,
+    method: 'isReceivingAllowed',
+    args: [account, value],
+  })
+}
+
+/**
+ * @async
+ * @function isSpendingAllowed
+ *
+ * @description Gets isSpendingAllowed flag
+ *
+ * @param {object} props - API function properties
+ * @param {string} props.rpcaddr - RPC address of Ethereum node to connect on
+ * @param {number} props.rpcport - RPC port of Ethereum node to connect on
+ * @param {string} props.contractAddress - Contract address
+ * @param {string} props.account - Account address
+ * @param {BigNumber} props.value - Transaction value
+ * @param {boolean} [props.ssl] - Defines using of ssl for connection or not
+ *
+ * @returns Promise that will be resolved with the isSpendingAllowed flag
+ */
+export function isSpendingAllowed(props) {
+  const { account, value } = props
+
+  return contractMethod.call({
+    props,
+    interfaceName,
+    method: 'isSpendingAllowed',
+    args: [account, value],
+  })
+}
+
+/**
+ * @async
+ * @function isTransferAllowed
+ *
+ * @description Gets isTransferAllowed flag
+ *
+ * @param {object} props - API function properties
+ * @param {string} props.rpcaddr - RPC address of Ethereum node to connect on
+ * @param {number} props.rpcport - RPC port of Ethereum node to connect on
+ * @param {string} props.contractAddress - Contract address
+ * @param {string} props.from - Sender address
+ * @param {string} props.to - Receiver address
+ * @param {BigNumber} props.value - Transaction value
+ * @param {boolean} [props.ssl] - Defines using of ssl for connection or not
+ *
+ * @returns Promise that will be resolved with the isTransferAllowed flag
+ */
+export function isTransferAllowed(props) {
+  const { from, to, value } = props
+
+  return contractMethod.call({
+    props,
+    interfaceName,
+    method: 'isTransferAllowed',
+    args: [from, to, value],
+  })
+}
+
+/**
+ * @async
+ * @function isApproveAllowed
+ *
+ * @description Gets isApproveAllowed flag
+ *
+ * @param {object} props - API function properties
+ * @param {string} props.rpcaddr - RPC address of Ethereum node to connect on
+ * @param {number} props.rpcport - RPC port of Ethereum node to connect on
+ * @param {string} props.contractAddress - Contract address
+ * @param {string} props.from - Sender address
+ * @param {string} props.spender - Spender address
+ * @param {BigNumber} props.value - Transaction value
+ * @param {boolean} [props.ssl] - Defines using of ssl for connection or not
+ *
+ * @returns Promise that will be resolved with the isApproveAllowed flag
+ */
+export function isApproveAllowed(props) {
+  const { from, spender, value } = props
+
+  return contractMethod.call({
+    props,
+    interfaceName,
+    method: 'isApproveAllowed',
+    args: [from, spender, value],
+  })
+}
+
+/**
+ * @async
+ * @function isApprovedSpendingAllowed
+ *
+ * @description Gets isApprovedSpendingAllowed flag
+ *
+ * @param {object} props - API function properties
+ * @param {string} props.rpcaddr - RPC address of Ethereum node to connect on
+ * @param {number} props.rpcport - RPC port of Ethereum node to connect on
+ * @param {string} props.contractAddress - Contract address
+ * @param {string} props.from - Sender address
+ * @param {string} props.spender - Spender address
+ * @param {BigNumber} props.value - Transaction value
+ * @param {boolean} [props.ssl] - Defines using of ssl for connection or not
+ *
+ * @returns Promise that will be resolved with the isApprovedSpendingAllowed flag
+ */
+export function isApprovedSpendingAllowed(props) {
+  const { from, spender, value } = props
+
+  return contractMethod.call({
+    props,
+    interfaceName,
+    method: 'isApprovedSpendingAllowed',
+    args: [from, spender, value],
+  })
+}
+
+/**
+ * @async
+ * @function isTransferFromAllowed
+ *
+ * @description Gets isTransferFromAllowed flag
+ *
+ * @param {object} props - API function properties
+ * @param {string} props.rpcaddr - RPC address of Ethereum node to connect on
+ * @param {number} props.rpcport - RPC port of Ethereum node to connect on
+ * @param {string} props.contractAddress - Contract address
+ * @param {string} props.spender - Spender address
+ * @param {string} props.from - Sender address
+ * @param {string} props.to - Receiver address
+ * @param {BigNumber} props.value - Transaction value
+ * @param {boolean} [props.ssl] - Defines using of ssl for connection or not
+ *
+ * @returns Promise that will be resolved with the isTransferFromAllowed flag
+ */
+export function isTransferFromAllowed(props) {
+  const { spender, from, to, value } = props
+
+  return contractMethod.call({
+    props,
+    interfaceName,
+    method: 'isTransferFromAllowed',
+    args: [spender, from, to, value],
+  })
+}
+
+/**
+ * @async
+ * @function estimateGas
+ *
+ * @description Gets estimate gas for the contract transaction
+ *
+ * @param {object} props - API function properties
+ * @param {string} props.rpcaddr - RPC address of Ethereum node to connect on
+ * @param {number} props.rpcport - RPC port of Ethereum node to connect on
+ * @param {string} props.contractAddress - Contract address
+ * @param {string} props.privateKey - Private key (64 hex symbols, without '0x' prefix)
+ * @param {string} props.method - Method name
+ * @param {array} props.args - Method arguments
+ *
+ * @returns Promise that will be resolved with estimate gas value
+ */
+export function estimateGas(props) {
+  return contractMethod.estimateGas({ props, interfaceName, method: 'estimateGas' })
+}
+
+export default {
+  isReceivingAllowed,
+  isSpendingAllowed,
+  isTransferAllowed,
+  isApproveAllowed,
+  isApprovedSpendingAllowed,
+  isTransferFromAllowed,
+  estimateGas,
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Events</h3><ul><li><a href="global.html#event:subscribeDataEvent">subscribeDataEvent</a></li><li><a href="global.html#event:subscribeErrorEvent">subscribeErrorEvent</a></li></ul><h3>Global</h3><ul><li><a href="global.html#add0x">add0x</a></li><li><a href="global.html#allEvents">allEvents</a></li><li><a href="global.html#balanceOf">balanceOf</a></li><li><a href="global.html#call">call</a></li><li><a href="global.html#callContractMethod">callContractMethod</a></li><li><a href="global.html#callETHMethod">callETHMethod</a></li><li><a href="global.html#decimals">decimals</a></li><li><a href="global.html#estimateContractGas">estimateContractGas</a></li><li><a href="global.html#estimateETHGas">estimateETHGas</a></li><li><a href="global.html#estimateGas">estimateGas</a></li><li><a href="global.html#filter">filter</a></li><li><a href="global.html#filterETHLogs">filterETHLogs</a></li><li><a href="global.html#filterLogs">filterLogs</a></li><li><a href="global.html#getAddressFromPrivateKey">getAddressFromPrivateKey</a></li><li><a href="global.html#getBalance">getBalance</a></li><li><a href="global.html#getBlock">getBlock</a></li><li><a href="global.html#getBlockNumber">getBlockNumber</a></li><li><a href="global.html#getContractGasLimit">getContractGasLimit</a></li><li><a href="global.html#getContractInstance">getContractInstance</a></li><li><a href="global.html#getContractRawTx">getContractRawTx</a></li><li><a href="global.html#getEvents">getEvents</a></li><li><a href="global.html#getGasLimit">getGasLimit</a></li><li><a href="global.html#getLogs">getLogs</a></li><li><a href="global.html#getLogsFilter">getLogsFilter</a></li><li><a href="global.html#getPastContractEvents">getPastContractEvents</a></li><li><a href="global.html#getPastETHLogs">getPastETHLogs</a></li><li><a href="global.html#getPastEvents">getPastEvents</a></li><li><a href="global.html#getPastLogs">getPastLogs</a></li><li><a href="global.html#getRawTx">getRawTx</a></li><li><a href="global.html#getTransaction">getTransaction</a></li><li><a href="global.html#getTransactionReceipt">getTransactionReceipt</a></li><li><a href="global.html#initWeb3">initWeb3</a></li><li><a href="global.html#isApproveAllowed">isApproveAllowed</a></li><li><a href="global.html#isApprovedSpendingAllowed">isApprovedSpendingAllowed</a></li><li><a href="global.html#isReceivingAllowed">isReceivingAllowed</a></li><li><a href="global.html#isSpendingAllowed">isSpendingAllowed</a></li><li><a href="global.html#isTransferAllowed">isTransferAllowed</a></li><li><a href="global.html#isTransferFromAllowed">isTransferFromAllowed</a></li><li><a href="global.html#memoize">memoize</a></li><li><a href="global.html#name">name</a></li><li><a href="global.html#sendContractTransaction">sendContractTransaction</a></li><li><a href="global.html#sendETHTransaction">sendETHTransaction</a></li><li><a href="global.html#sendTransaction">sendTransaction</a></li><li><a href="global.html#signTx">signTx</a></li><li><a href="global.html#subscribe">subscribe</a></li><li><a href="global.html#subscribeToContractEvent">subscribeToContractEvent</a></li><li><a href="global.html#subscribeToEvent">subscribeToEvent</a></li><li><a href="global.html#symbol">symbol</a></li><li><a href="global.html#totalSupply">totalSupply</a></li><li><a href="global.html#transfer">transfer</a></li><li><a href="global.html#Transfer">Transfer</a></li><li><a href="global.html#validate">validate</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.4</a> on Tue Nov 07 2017 19:25:53 GMT+0300 (MSK)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

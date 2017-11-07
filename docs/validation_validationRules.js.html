@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: validation/validationRules.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: validation/validationRules.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file Manages rules for validation of API functions
+ * @author Ivan Violentov &lt;ivan.violentov@jibrel.network>
+ */
+
+import Joi from 'joi-browser'
+
+/**
+ * @typedef {Object} BigNumber
+ * @property {boolean} [isBigNumber] - type identifier, optional, because supported from v3.1.0
+ * @property {number[]} c - coefficient
+ * @property {number} e - exponent
+ * @property {number} s - sign
+ */
+const bigNumber = Joi.object().keys({
+  isBigNumber: Joi.boolean().valid(true),
+  c: Joi.array().items(Joi.number()).required(),
+  e: Joi.number().integer().min(-1000000000).max(1000000000).required(),
+  s: Joi.number().integer().valid([-1, 1]).required(),
+})
+
+const blockString = Joi.string().valid(['latest', 'pending'])
+const hash = Joi.string().regex(/^[a-fx0-9]+$/i)
+
+const options = {
+  fromBlock: [Joi.number().integer().min(0), blockString],
+  toBlock: [Joi.number().integer().min(0), blockString],
+  address: [hash.length(42), Joi.array().items(hash.length(42))],
+  topics: Joi.array().allow(null),
+}
+
+const validationRules = {
+  host: Joi.string().min(3).max(300),
+  port: Joi.number().integer().min(1).max(65535),
+  ssl: Joi.boolean(),
+  address: hash.length(42),
+  privateKey: hash.length(64),
+  value: bigNumber,
+  event: Joi.string().min(1).max(99),
+  method: Joi.string().alphanum().min(1).max(99),
+  args: Joi.array(),
+  data: hash.max(9999),
+  gasLimit: bigNumber,
+  gasPrice: bigNumber,
+  nonce: Joi.number().integer().min(0),
+  callback: Joi.func(),
+  blockId: [
+    hash.length(66),
+    Joi.number().integer().min(0),
+    Joi.string().valid(['earliest', 'latest', 'pending']),
+  ],
+  returnTransactionObjects: Joi.boolean(),
+  transactionHash: hash.length(66),
+  logsOptions: Joi.object().keys(options),
+  eventOptions: Joi.object().keys({
+    ...options,
+    filter: Joi.object(),
+  }),
+}
+
+const generalETHKeys = {
+  rpcaddr: validationRules.host.required(),
+  rpcport: validationRules.port.required(),
+  ssl: validationRules.ssl,
+}
+
+const generalContractKeys = {
+  ...generalETHKeys,
+  contractAddress: validationRules.address.required(),
+}
+
+const estimateGasKeys = {
+  ...generalContractKeys,
+  privateKey: validationRules.privateKey.required(),
+  method: validationRules.method.required(),
+  args: validationRules.args.required(),
+}
+
+export { generalETHKeys, generalContractKeys, estimateGasKeys, validationRules as default }
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Events</h3><ul><li><a href="global.html#event:subscribeDataEvent">subscribeDataEvent</a></li><li><a href="global.html#event:subscribeErrorEvent">subscribeErrorEvent</a></li></ul><h3>Global</h3><ul><li><a href="global.html#add0x">add0x</a></li><li><a href="global.html#allEvents">allEvents</a></li><li><a href="global.html#balanceOf">balanceOf</a></li><li><a href="global.html#call">call</a></li><li><a href="global.html#callContractMethod">callContractMethod</a></li><li><a href="global.html#callETHMethod">callETHMethod</a></li><li><a href="global.html#decimals">decimals</a></li><li><a href="global.html#estimateContractGas">estimateContractGas</a></li><li><a href="global.html#estimateETHGas">estimateETHGas</a></li><li><a href="global.html#estimateGas">estimateGas</a></li><li><a href="global.html#filter">filter</a></li><li><a href="global.html#filterETHLogs">filterETHLogs</a></li><li><a href="global.html#filterLogs">filterLogs</a></li><li><a href="global.html#getAddressFromPrivateKey">getAddressFromPrivateKey</a></li><li><a href="global.html#getBalance">getBalance</a></li><li><a href="global.html#getBlock">getBlock</a></li><li><a href="global.html#getBlockNumber">getBlockNumber</a></li><li><a href="global.html#getContractGasLimit">getContractGasLimit</a></li><li><a href="global.html#getContractInstance">getContractInstance</a></li><li><a href="global.html#getContractRawTx">getContractRawTx</a></li><li><a href="global.html#getEvents">getEvents</a></li><li><a href="global.html#getGasLimit">getGasLimit</a></li><li><a href="global.html#getLogs">getLogs</a></li><li><a href="global.html#getLogsFilter">getLogsFilter</a></li><li><a href="global.html#getPastContractEvents">getPastContractEvents</a></li><li><a href="global.html#getPastETHLogs">getPastETHLogs</a></li><li><a href="global.html#getPastEvents">getPastEvents</a></li><li><a href="global.html#getPastLogs">getPastLogs</a></li><li><a href="global.html#getRawTx">getRawTx</a></li><li><a href="global.html#getTransaction">getTransaction</a></li><li><a href="global.html#getTransactionReceipt">getTransactionReceipt</a></li><li><a href="global.html#initWeb3">initWeb3</a></li><li><a href="global.html#isApproveAllowed">isApproveAllowed</a></li><li><a href="global.html#isApprovedSpendingAllowed">isApprovedSpendingAllowed</a></li><li><a href="global.html#isReceivingAllowed">isReceivingAllowed</a></li><li><a href="global.html#isSpendingAllowed">isSpendingAllowed</a></li><li><a href="global.html#isTransferAllowed">isTransferAllowed</a></li><li><a href="global.html#isTransferFromAllowed">isTransferFromAllowed</a></li><li><a href="global.html#memoize">memoize</a></li><li><a href="global.html#name">name</a></li><li><a href="global.html#sendContractTransaction">sendContractTransaction</a></li><li><a href="global.html#sendETHTransaction">sendETHTransaction</a></li><li><a href="global.html#sendTransaction">sendTransaction</a></li><li><a href="global.html#signTx">signTx</a></li><li><a href="global.html#subscribe">subscribe</a></li><li><a href="global.html#subscribeToContractEvent">subscribeToContractEvent</a></li><li><a href="global.html#subscribeToEvent">subscribeToEvent</a></li><li><a href="global.html#symbol">symbol</a></li><li><a href="global.html#totalSupply">totalSupply</a></li><li><a href="global.html#transfer">transfer</a></li><li><a href="global.html#Transfer">Transfer</a></li><li><a href="global.html#validate">validate</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.4</a> on Tue Nov 07 2017 19:25:53 GMT+0300 (MSK)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

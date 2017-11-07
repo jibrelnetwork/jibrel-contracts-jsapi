@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: utils/eventUtils.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: utils/eventUtils.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file Manages helper functions to work with events
+ * @author Ivan Violentov &lt;ivan.violentov@jibrel.network>
+ */
+
+import Promise from 'bluebird'
+import EventEmitter from 'events'
+
+import config from '../config'
+
+/**
+ * @callback eventCallback
+ *
+ * @param {Object} error
+ * @param {Object} event
+ */
+
+/**
+ * @function subscribe
+ *
+ * @description Subscribes to provided event
+ *
+ * @param {function} Event - Function for event subscribing
+ * @param {object} [options={}] - Event options
+ * @param {object} [options.filter] - Filter options by indexed event parameters
+ * @param {(number|string)} [options.fromBlock] - The number of the earliest block
+ * @param {(number|string)} [options.toBlock] - The number of the latest block
+ * @param {(string|string[])} [options.address] - An address(es) to get logs from
+ * @param {string[]} [options.topics] - Allows to manually set the topics for the event filter
+ * @param {eventCallback} [callback] - Callback which fired for each event or error
+ *
+ * @returns {object} The event emitter has the following events:&lt;br />
+ * - data: Fires on each incoming event with the event object as argument&lt;br />
+ * - error: Fires when an error in the subscription occours
+ */
+export function subscribe(Event, options = {}, callback) {
+  const eventEmitter = new EventEmitter()
+
+  /**
+   * web3@0.x.x event takes filter and additional options in different params
+   * web3@1.x.x event takes all options in one param
+   */
+  const { filter, ...additionalOptions } = options
+
+  Event(filter, additionalOptions, (err, result) => {
+    if (err) {
+      /**
+       * Error event
+       *
+       * @event subscribeErrorEvent
+       * @type {object}
+       */
+      eventEmitter.emit('error', err)
+
+      if (callback) {
+        callback(err)
+      }
+
+      return
+    }
+
+    /**
+     * Data event
+     *
+     * @event subscribeDataEvent
+     * @type {object}
+     */
+    eventEmitter.emit('data', result)
+
+    if (callback) {
+      callback(null, result)
+    }
+  })
+
+  return eventEmitter
+}
+
+/**
+ * @async
+ * @function getEvents
+ *
+ * @description Gets past events
+ *
+ * @param {function} Event - Function to get past events
+ * @param {object} [options={}] - Event options
+ * @param {object} [options.filter] - Filter options by indexed event parameters
+ * @param {(number|string)} [options.fromBlock] - The number of the earliest block
+ * @param {(number|string)} [options.toBlock] - The number of the latest block
+ * @param {(string|string[])} [options.address] - An address(es) to get logs from
+ * @param {string[]} [options.topics] - Allows to manually set the topics for the event filter
+ *
+ * @returns Promise that will be resolved with past events
+ */
+export function getEvents(Event, options = {}) {
+  /**
+   * web3@0.x.x event takes filter and additional options in different params
+   * web3@1.x.x event takes all options in one param
+   */
+  const { filter, ...additionalOptions } = options
+  const event = Event(filter, additionalOptions)
+
+  /**
+   * event.get uses instance methods inside,
+   * but bluebird promisify don't save context,
+   * so need to bind to event object directly
+   */
+  return Promise
+    .promisify(event.get.bind(event))()
+    .timeout(
+      config.promiseTimeout,
+      new Error(`Can not get past events within ${config.promiseTimeout}ms`)
+    )
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Events</h3><ul><li><a href="global.html#event:subscribeDataEvent">subscribeDataEvent</a></li><li><a href="global.html#event:subscribeErrorEvent">subscribeErrorEvent</a></li></ul><h3>Global</h3><ul><li><a href="global.html#add0x">add0x</a></li><li><a href="global.html#allEvents">allEvents</a></li><li><a href="global.html#balanceOf">balanceOf</a></li><li><a href="global.html#call">call</a></li><li><a href="global.html#callContractMethod">callContractMethod</a></li><li><a href="global.html#callETHMethod">callETHMethod</a></li><li><a href="global.html#decimals">decimals</a></li><li><a href="global.html#estimateContractGas">estimateContractGas</a></li><li><a href="global.html#estimateETHGas">estimateETHGas</a></li><li><a href="global.html#estimateGas">estimateGas</a></li><li><a href="global.html#filter">filter</a></li><li><a href="global.html#filterETHLogs">filterETHLogs</a></li><li><a href="global.html#filterLogs">filterLogs</a></li><li><a href="global.html#getAddressFromPrivateKey">getAddressFromPrivateKey</a></li><li><a href="global.html#getBalance">getBalance</a></li><li><a href="global.html#getBlock">getBlock</a></li><li><a href="global.html#getBlockNumber">getBlockNumber</a></li><li><a href="global.html#getContractGasLimit">getContractGasLimit</a></li><li><a href="global.html#getContractInstance">getContractInstance</a></li><li><a href="global.html#getContractRawTx">getContractRawTx</a></li><li><a href="global.html#getEvents">getEvents</a></li><li><a href="global.html#getGasLimit">getGasLimit</a></li><li><a href="global.html#getLogs">getLogs</a></li><li><a href="global.html#getLogsFilter">getLogsFilter</a></li><li><a href="global.html#getPastContractEvents">getPastContractEvents</a></li><li><a href="global.html#getPastETHLogs">getPastETHLogs</a></li><li><a href="global.html#getPastEvents">getPastEvents</a></li><li><a href="global.html#getPastLogs">getPastLogs</a></li><li><a href="global.html#getRawTx">getRawTx</a></li><li><a href="global.html#getTransaction">getTransaction</a></li><li><a href="global.html#getTransactionReceipt">getTransactionReceipt</a></li><li><a href="global.html#initWeb3">initWeb3</a></li><li><a href="global.html#isApproveAllowed">isApproveAllowed</a></li><li><a href="global.html#isApprovedSpendingAllowed">isApprovedSpendingAllowed</a></li><li><a href="global.html#isReceivingAllowed">isReceivingAllowed</a></li><li><a href="global.html#isSpendingAllowed">isSpendingAllowed</a></li><li><a href="global.html#isTransferAllowed">isTransferAllowed</a></li><li><a href="global.html#isTransferFromAllowed">isTransferFromAllowed</a></li><li><a href="global.html#memoize">memoize</a></li><li><a href="global.html#name">name</a></li><li><a href="global.html#sendContractTransaction">sendContractTransaction</a></li><li><a href="global.html#sendETHTransaction">sendETHTransaction</a></li><li><a href="global.html#sendTransaction">sendTransaction</a></li><li><a href="global.html#signTx">signTx</a></li><li><a href="global.html#subscribe">subscribe</a></li><li><a href="global.html#subscribeToContractEvent">subscribeToContractEvent</a></li><li><a href="global.html#subscribeToEvent">subscribeToEvent</a></li><li><a href="global.html#symbol">symbol</a></li><li><a href="global.html#totalSupply">totalSupply</a></li><li><a href="global.html#transfer">transfer</a></li><li><a href="global.html#Transfer">Transfer</a></li><li><a href="global.html#validate">validate</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.4</a> on Tue Nov 07 2017 19:25:53 GMT+0300 (MSK)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: api/eth/ethMethod.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: api/eth/ethMethod.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file Manages web3.eth wrapper
+ * @author Ivan Violentov &lt;ivan.violentov@jibrel.network>
+ */
+
+import Promise from 'bluebird'
+
+import getAddressFromPrivateKey from '../getAddressFromPrivateKey'
+
+import validate from '../../validation'
+
+import initWeb3 from '../../utils/initWeb3'
+import { filter, getLogs } from '../../utils/logUtils'
+import { signTx, getRawTx, getGasLimit } from '../../utils/txUtils'
+
+import config from '../../config'
+
+/**
+ * @async
+ * @function call
+ *
+ * @description Wrapper for callETHMethod function (@see callETHMethod)
+ */
+function call(payload) {
+  return prepareETHMethod(payload).then(callETHMethod)
+}
+
+/**
+ * @async
+ * @function sendTransaction
+ *
+ * @description Wrapper for sendETHTransaction function (@see sendETHTransaction)
+ */
+function sendTransaction(payload) {
+  return prepareETHMethod(payload).then(sendETHTransaction)
+}
+
+/**
+ * @async
+ * @function filterLogs
+ *
+ * @description Wrapper for filterETHLogs function (@see filterETHLogs)
+ */
+function filterLogs(payload) {
+  return prepareETHMethod(payload).then(filterETHLogs)
+}
+
+/**
+ * @async
+ * @function getPastLogs
+ *
+ * @description Wrapper for getPastETHLogs function (@see getPastETHLogs)
+ */
+function getPastLogs(payload) {
+  return prepareETHMethod(payload).then(getPastETHLogs)
+}
+
+/**
+ * @async
+ * @function estimateGas
+ *
+ * @description Wrapper for estimateETHGas function (@see estimateETHGas)
+ */
+function estimateGas(payload) {
+  return prepareETHMethod(payload).then(estimateETHGas)
+}
+
+function prepareETHMethod(payload) {
+  return Promise
+    .bind(this, payload)
+    .then(validate)
+    .then(initWeb3)
+}
+
+/**
+ * @async
+ * @function callETHMethod
+ *
+ * @description Calls specific web3.eth method with provided arguments
+ *
+ * @param {object} payload - Payload object
+ * @param {string} payload.method - Method name
+ * @param {array} payload.args - Method arguments
+ *
+ * @returns Promise that will be resolved with the result of web3.eth method execution
+ */
+function callETHMethod(payload) {
+  const { method, args } = payload
+
+  return Promise
+    .promisify(web3.eth[method])(...args)
+    .timeout(
+      config.promiseTimeout,
+      new Error(`Can not call web3.eth.${method} within ${config.promiseTimeout}ms`)
+    )
+}
+
+/**
+ * @async
+ * @function sendETHTransaction
+ *
+ * @description Sends transaction
+ *
+ * @param {object} payload - Payload object
+ * @param {object} payload.props - Method properties
+ * @param {string} payload.props.privateKey - Private key (64 hex symbols, without '0x' prefix)
+ * @param {string} payload.props.to - Address of the transaction receiver
+ * @param {BigNumber} payload.props.value - Transaction value
+ * @param {BigNumber} [payload.props.gasLimit] - Gas limit for the transaction
+ * @param {BigNumber} [payload.props.gasPrice] - Gas price for the transaction
+ * @param {number} [payload.props.nonce] - Nonce for the transaction
+ * @param {string} [payload.props.data] - Transaction data
+ *
+ * @returns Promise that will be resolved with the hash of the transaction
+ */
+async function sendETHTransaction(payload) {
+  const { privateKey, to, value, gasLimit, gasPrice, nonce, data } = payload.props
+
+  const address = getAddressFromPrivateKey(privateKey)
+  const rawTx = await getRawTx({ gasLimit, gasPrice, nonce, address, data, to, value })
+  const signedTx = signTx(rawTx, privateKey)
+
+  return Promise
+    .promisify(web3.eth.sendRawTransaction)(signedTx)
+    .timeout(
+      config.promiseTimeout,
+      new Error(`Can not call web3.eth.sendRawTransaction within ${config.promiseTimeout}ms`)
+    )
+}
+
+/**
+ * @function filterETHLogs
+ *
+ * @description Initializes filter object
+ *
+ * @param {object} payload - Payload object
+ * @param {object} payload.props - API function properties
+ * @param {object} [payload.props.options] - Filter options (@see filter)
+ *
+ * @returns {object} The event emitter (@see subscribe)
+ */
+function filterETHLogs(payload) {
+  return filter(payload.props.options)
+}
+
+/**
+ * @async
+ * @function getPastETHLogs
+ *
+ * @description Gets past ETH logs
+ *
+ * @param {object} payload - Payload object
+ * @param {object} payload.props - API function properties
+ * @param {object} [payload.props.options] - Event options (@see getLogs)
+ *
+ * @returns Promise that will be resolved with past logs (@see getLogs)
+ */
+function getPastETHLogs(payload) {
+  return getLogs(payload.props.options)
+}
+
+/**
+ * @async
+ * @function estimateETHGas
+ *
+ * @description Gets estimate gas for the transaction
+ *
+ * @param {object} payload - Payload object
+ * @param {object} payload.props - Method properties
+ *
+ * @returns Promise that will be resolved with estimate gas value
+ */
+function estimateETHGas(payload) {
+  return getGasLimit(payload.props)
+}
+
+export default { call, sendTransaction, filterLogs, getPastLogs, estimateGas }
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Events</h3><ul><li><a href="global.html#event:subscribeDataEvent">subscribeDataEvent</a></li><li><a href="global.html#event:subscribeErrorEvent">subscribeErrorEvent</a></li></ul><h3>Global</h3><ul><li><a href="global.html#add0x">add0x</a></li><li><a href="global.html#allEvents">allEvents</a></li><li><a href="global.html#balanceOf">balanceOf</a></li><li><a href="global.html#call">call</a></li><li><a href="global.html#callContractMethod">callContractMethod</a></li><li><a href="global.html#callETHMethod">callETHMethod</a></li><li><a href="global.html#decimals">decimals</a></li><li><a href="global.html#estimateContractGas">estimateContractGas</a></li><li><a href="global.html#estimateETHGas">estimateETHGas</a></li><li><a href="global.html#estimateGas">estimateGas</a></li><li><a href="global.html#filter">filter</a></li><li><a href="global.html#filterETHLogs">filterETHLogs</a></li><li><a href="global.html#filterLogs">filterLogs</a></li><li><a href="global.html#getAddressFromPrivateKey">getAddressFromPrivateKey</a></li><li><a href="global.html#getBalance">getBalance</a></li><li><a href="global.html#getBlock">getBlock</a></li><li><a href="global.html#getBlockNumber">getBlockNumber</a></li><li><a href="global.html#getContractGasLimit">getContractGasLimit</a></li><li><a href="global.html#getContractInstance">getContractInstance</a></li><li><a href="global.html#getContractRawTx">getContractRawTx</a></li><li><a href="global.html#getEvents">getEvents</a></li><li><a href="global.html#getGasLimit">getGasLimit</a></li><li><a href="global.html#getLogs">getLogs</a></li><li><a href="global.html#getLogsFilter">getLogsFilter</a></li><li><a href="global.html#getPastContractEvents">getPastContractEvents</a></li><li><a href="global.html#getPastETHLogs">getPastETHLogs</a></li><li><a href="global.html#getPastEvents">getPastEvents</a></li><li><a href="global.html#getPastLogs">getPastLogs</a></li><li><a href="global.html#getRawTx">getRawTx</a></li><li><a href="global.html#getTransaction">getTransaction</a></li><li><a href="global.html#getTransactionReceipt">getTransactionReceipt</a></li><li><a href="global.html#initWeb3">initWeb3</a></li><li><a href="global.html#isApproveAllowed">isApproveAllowed</a></li><li><a href="global.html#isApprovedSpendingAllowed">isApprovedSpendingAllowed</a></li><li><a href="global.html#isReceivingAllowed">isReceivingAllowed</a></li><li><a href="global.html#isSpendingAllowed">isSpendingAllowed</a></li><li><a href="global.html#isTransferAllowed">isTransferAllowed</a></li><li><a href="global.html#isTransferFromAllowed">isTransferFromAllowed</a></li><li><a href="global.html#memoize">memoize</a></li><li><a href="global.html#name">name</a></li><li><a href="global.html#sendContractTransaction">sendContractTransaction</a></li><li><a href="global.html#sendETHTransaction">sendETHTransaction</a></li><li><a href="global.html#sendTransaction">sendTransaction</a></li><li><a href="global.html#signTx">signTx</a></li><li><a href="global.html#subscribe">subscribe</a></li><li><a href="global.html#subscribeToContractEvent">subscribeToContractEvent</a></li><li><a href="global.html#subscribeToEvent">subscribeToEvent</a></li><li><a href="global.html#symbol">symbol</a></li><li><a href="global.html#totalSupply">totalSupply</a></li><li><a href="global.html#transfer">transfer</a></li><li><a href="global.html#Transfer">Transfer</a></li><li><a href="global.html#validate">validate</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.4</a> on Tue Nov 07 2017 19:25:53 GMT+0300 (MSK)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

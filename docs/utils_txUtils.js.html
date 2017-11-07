@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: utils/txUtils.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: utils/txUtils.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file Manages helper functions for sending of transactions
+ * @author Ivan Violentov &lt;ivan.violentov@jibrel.network>
+ */
+
+import Promise from 'bluebird'
+import Tx from 'ethereumjs-tx'
+
+import add0x from '../utils/add0x'
+
+import config from '../config'
+
+/**
+ * @function signTx
+ *
+ * @description Signs raw transaction data with the specified private key
+ *
+ * @param {object} rawTx - Transaction data
+ * @param {string} privateKey - Private key (64 hex symbols, without '0x' prefix)
+ *
+ * @returns {string} Serialized string of signed transaction
+ */
+export function signTx(rawTx, privateKey) {
+  const tx = new Tx(rawTx)
+  tx.sign(new Buffer(privateKey, 'hex'))
+  const signedTx = tx.serialize().toString('hex')
+
+  return add0x(signedTx)
+}
+
+/**
+ * @async
+ * @function getRawTx
+ *
+ * @description Gets raw transaction data
+ *
+ * @param {object} props - Properties
+ * @param {string} props.address - Address of the transaction sender
+ * @param {string} props.to - Address of the transaction receiver
+ * @param {BigNumber} props.value - Transaction value
+ * @param {BigNumber} [props.gasLimit] - Gas limit for the transaction
+ * @param {BigNumber} [props.gasPrice] - Gas price for the transaction
+ * @param {number} [props.nonce] - Nonce for the transaction
+ * @param {string} [props.data] - Transaction data
+ *
+ * @returns Promise that will be resolved with raw transaction data
+ */
+export async function getRawTx(props) {
+  const { address, to, gasLimit, gasPrice, nonce, data } = props
+  const value = web3.toHex(props.value)
+
+  const [txNonce, txGasPrice, txGasLimit] = await Promise.all([
+    nonce || getNonce(address),
+    gasPrice || getGasPrice(),
+    gasLimit || getGasLimit({ data, to, value }),
+  ])
+
+  return {
+    to,
+    data,
+    value,
+    nonce: web3.toHex(txNonce),
+    gasPrice: web3.toHex(txGasPrice),
+    gasLimit: web3.toHex(txGasLimit),
+  }
+}
+
+/**
+ * @async
+ * @function getContractRawTx
+ *
+ * @description Gets raw contract transaction data
+ *
+ * @param {object} payload - Payload object
+ * @param {object} payload.props - API function properties
+ * @param {string} payload.props.contractAddress - Contract address
+ * @param {BigNumber} [payload.props.gasLimit] - Gas limit for the contract transaction
+ * @param {BigNumber} [payload.props.gasPrice] - Gas price for the transaction
+ * @param {number} [payload.props.nonce] - Nonce for the transaction
+ * @param {string} payload.address - Address of the transaction sender
+ * @param {function} payload.contractMethod - Contract method that used to send transaction
+ * @param {array} payload.args - Contract method arguments
+ *
+ * @returns Promise that will be resolved with raw contract transaction data
+ */
+export async function getContractRawTx(payload) {
+  const { props, address, contractMethod, args } = payload
+  const { contractAddress, gasLimit, gasPrice, nonce } = props
+
+  const [txData, txNonce, txGasPrice, txGasLimit] = await Promise.all([
+    contractMethod.getData(...args),
+    nonce || getNonce(address),
+    gasPrice || getGasPrice(),
+    gasLimit || getContractGasLimit(contractMethod, args),
+  ])
+
+  return {
+    data: txData,
+    to: contractAddress,
+    nonce: web3.toHex(txNonce),
+    gasPrice: web3.toHex(txGasPrice),
+    gasLimit: web3.toHex(txGasLimit),
+  }
+}
+
+/**
+ * @async
+ * @function getGasLimit
+ *
+ * @description Gets gas limit for the transaction
+ *
+ * @param {object} props - Properties of the web3.eth.estimateGas function
+ *
+ * @returns Promise that will be resolved with estimate gas for sending of the transaction
+ */
+export function getGasLimit(props) {
+  return Promise
+    .promisify(web3.eth.estimateGas)(props)
+    .timeout(config.promiseTimeout, new Error('Can not get estimate gas'))
+}
+
+/**
+ * @async
+ * @function getContractGasLimit
+ *
+ * @description Gets gas limit for the contract transaction
+ *
+ * @param {function} method - Contract method that used to send transaction
+ * @param {array} args - Contract method argumets
+ *
+ * @returns Promise that will be resolved with estimate gas for sending of the contract transaction
+ */
+export function getContractGasLimit(method, args) {
+  return Promise
+    .promisify(method.estimateGas)(...args)
+    .timeout(config.promiseTimeout, new Error('Can not get estimate gas for contract method'))
+}
+
+function getNonce(address) {
+  return Promise
+    .promisify(web3.eth.getTransactionCount)(address)
+    .timeout(config.promiseTimeout, new Error('Can not get transaction count'))
+}
+
+function getGasPrice() {
+  return Promise
+    .promisify(web3.eth.getGasPrice)()
+    .timeout(config.promiseTimeout, new Error('Can not get gas price'))
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Events</h3><ul><li><a href="global.html#event:subscribeDataEvent">subscribeDataEvent</a></li><li><a href="global.html#event:subscribeErrorEvent">subscribeErrorEvent</a></li></ul><h3>Global</h3><ul><li><a href="global.html#add0x">add0x</a></li><li><a href="global.html#allEvents">allEvents</a></li><li><a href="global.html#balanceOf">balanceOf</a></li><li><a href="global.html#call">call</a></li><li><a href="global.html#callContractMethod">callContractMethod</a></li><li><a href="global.html#callETHMethod">callETHMethod</a></li><li><a href="global.html#decimals">decimals</a></li><li><a href="global.html#estimateContractGas">estimateContractGas</a></li><li><a href="global.html#estimateETHGas">estimateETHGas</a></li><li><a href="global.html#estimateGas">estimateGas</a></li><li><a href="global.html#filter">filter</a></li><li><a href="global.html#filterETHLogs">filterETHLogs</a></li><li><a href="global.html#filterLogs">filterLogs</a></li><li><a href="global.html#getAddressFromPrivateKey">getAddressFromPrivateKey</a></li><li><a href="global.html#getBalance">getBalance</a></li><li><a href="global.html#getBlock">getBlock</a></li><li><a href="global.html#getBlockNumber">getBlockNumber</a></li><li><a href="global.html#getContractGasLimit">getContractGasLimit</a></li><li><a href="global.html#getContractInstance">getContractInstance</a></li><li><a href="global.html#getContractRawTx">getContractRawTx</a></li><li><a href="global.html#getEvents">getEvents</a></li><li><a href="global.html#getGasLimit">getGasLimit</a></li><li><a href="global.html#getLogs">getLogs</a></li><li><a href="global.html#getLogsFilter">getLogsFilter</a></li><li><a href="global.html#getPastContractEvents">getPastContractEvents</a></li><li><a href="global.html#getPastETHLogs">getPastETHLogs</a></li><li><a href="global.html#getPastEvents">getPastEvents</a></li><li><a href="global.html#getPastLogs">getPastLogs</a></li><li><a href="global.html#getRawTx">getRawTx</a></li><li><a href="global.html#getTransaction">getTransaction</a></li><li><a href="global.html#getTransactionReceipt">getTransactionReceipt</a></li><li><a href="global.html#initWeb3">initWeb3</a></li><li><a href="global.html#isApproveAllowed">isApproveAllowed</a></li><li><a href="global.html#isApprovedSpendingAllowed">isApprovedSpendingAllowed</a></li><li><a href="global.html#isReceivingAllowed">isReceivingAllowed</a></li><li><a href="global.html#isSpendingAllowed">isSpendingAllowed</a></li><li><a href="global.html#isTransferAllowed">isTransferAllowed</a></li><li><a href="global.html#isTransferFromAllowed">isTransferFromAllowed</a></li><li><a href="global.html#memoize">memoize</a></li><li><a href="global.html#name">name</a></li><li><a href="global.html#sendContractTransaction">sendContractTransaction</a></li><li><a href="global.html#sendETHTransaction">sendETHTransaction</a></li><li><a href="global.html#sendTransaction">sendTransaction</a></li><li><a href="global.html#signTx">signTx</a></li><li><a href="global.html#subscribe">subscribe</a></li><li><a href="global.html#subscribeToContractEvent">subscribeToContractEvent</a></li><li><a href="global.html#subscribeToEvent">subscribeToEvent</a></li><li><a href="global.html#symbol">symbol</a></li><li><a href="global.html#totalSupply">totalSupply</a></li><li><a href="global.html#transfer">transfer</a></li><li><a href="global.html#Transfer">Transfer</a></li><li><a href="global.html#validate">validate</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.4</a> on Tue Nov 07 2017 19:25:53 GMT+0300 (MSK)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
