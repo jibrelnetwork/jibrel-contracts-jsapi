@@ -6,6 +6,8 @@
 import CryptoJS from 'crypto-js'
 import { ec as EC } from 'elliptic'
 
+import add0x from '../utils/add0x'
+
 const ec = new EC('secp256k1')
 
 /**
@@ -30,7 +32,7 @@ export default function getAddressFromPrivateKey(privateKey) {
   const hash = CryptoJS.SHA3(pubKeyWordArray, { outputLength: 256 })
   const address = hash.toString(CryptoJS.enc.Hex).slice(24)
 
-  return `0x${address}`
+  return add0x(address)
 }
 
 function checkPrivateKey(privateKey) {

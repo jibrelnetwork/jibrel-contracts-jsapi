@@ -6,6 +6,8 @@
 import Promise from 'bluebird'
 import Tx from 'ethereumjs-tx'
 
+import add0x from '../utils/add0x'
+
 import config from '../config'
 
 /**
@@ -21,8 +23,9 @@ import config from '../config'
 export function signTx(rawTx, privateKey) {
   const tx = new Tx(rawTx)
   tx.sign(new Buffer(privateKey, 'hex'))
+  const signedTx = tx.serialize().toString('hex')
 
-  return tx.serialize().toString('hex')
+  return add0x(signedTx)
 }
 
 /**
@@ -41,7 +44,8 @@ export function signTx(rawTx, privateKey) {
  * @returns Promise that will be resolved with raw transaction data
  */
 export async function getRawTx(props) {
-  const { address, to, value, gasLimit, data } = props
+  const { address, to, gasLimit, data } = props
+  const value = web3.toHex(props.value)
 
   const [txGasPrice, txNonce, txGasLimit] = await Promise.all([
     getGasPrice(),
@@ -52,8 +56,8 @@ export async function getRawTx(props) {
   return {
     to,
     data,
-    nonce: txNonce,
-    value: web3.toHex(value),
+    value,
+    nonce: web3.toHex(txNonce),
     gasPrice: web3.toHex(txGasPrice),
     gasLimit: web3.toHex(txGasLimit),
   }
@@ -88,8 +92,8 @@ export async function getContractRawTx(payload) {
 
   return {
     data: txData,
-    nonce: txNonce,
     to: contractAddress,
+    nonce: web3.toHex(txNonce),
     gasPrice: web3.toHex(txGasPrice),
     gasLimit: web3.toHex(txGasLimit),
   }

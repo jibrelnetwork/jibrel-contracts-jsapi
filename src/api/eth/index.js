@@ -18,7 +18,7 @@ const interfaceName = 'ETH'
  * @param {number} props.rpcport - RPC port of Ethereum node to connect on
  * @param {string} props.privateKey - Private key (64 hex symbols, without '0x' prefix)
  * @param {string} props.to - Address of the transaction receiver
- * @param {BigNumber} props.value - Transaction value
+ * @param {BigNumber} props.value - Transaction value (in wei)
  * @param {BigNumber} [props.gasLimit] - Gas limit for the transaction
  * @param {string} [props.data] - Transaction data
  * @param {boolean} [props.ssl] - Defines using of ssl for connection or not
