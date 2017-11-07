@@ -13,6 +13,8 @@ const sendTransaction = Joi.object().keys({
   to: validationRules.address.required(),
   value: validationRules.value.required(),
   gasLimit: validationRules.gasLimit,
+  gasPrice: validationRules.gasPrice,
+  nonce: validationRules.nonce,
   data: validationRules.data,
 })
 

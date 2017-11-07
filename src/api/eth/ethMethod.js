@@ -107,15 +107,17 @@ function callETHMethod(payload) {
  * @param {string} payload.props.to - Address of the transaction receiver
  * @param {BigNumber} payload.props.value - Transaction value
  * @param {BigNumber} [payload.props.gasLimit] - Gas limit for the transaction
+ * @param {BigNumber} [payload.props.gasPrice] - Gas price for the transaction
+ * @param {number} [payload.props.nonce] - Nonce for the transaction
  * @param {string} [payload.props.data] - Transaction data
  *
  * @returns Promise that will be resolved with the hash of the transaction
  */
 async function sendETHTransaction(payload) {
-  const { privateKey, to, value, gasLimit, data } = payload.props
+  const { privateKey, to, value, gasLimit, gasPrice, nonce, data } = payload.props
 
   const address = getAddressFromPrivateKey(privateKey)
-  const rawTx = await getRawTx({ gasLimit, address, data, to, value })
+  const rawTx = await getRawTx({ gasLimit, gasPrice, nonce, address, data, to, value })
   const signedTx = signTx(rawTx, privateKey)
 
   return Promise

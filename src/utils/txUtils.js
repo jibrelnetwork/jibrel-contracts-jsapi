@@ -39,17 +39,19 @@ export function signTx(rawTx, privateKey) {
  * @param {string} props.to - Address of the transaction receiver
  * @param {BigNumber} props.value - Transaction value
  * @param {BigNumber} [props.gasLimit] - Gas limit for the transaction
+ * @param {BigNumber} [props.gasPrice] - Gas price for the transaction
+ * @param {number} [props.nonce] - Nonce for the transaction
  * @param {string} [props.data] - Transaction data
  *
  * @returns Promise that will be resolved with raw transaction data
  */
 export async function getRawTx(props) {
-  const { address, to, gasLimit, data } = props
+  const { address, to, gasLimit, gasPrice, nonce, data } = props
   const value = web3.toHex(props.value)
 
-  const [txGasPrice, txNonce, txGasLimit] = await Promise.all([
-    getGasPrice(),
-    getNonce(address),
+  const [txNonce, txGasPrice, txGasLimit] = await Promise.all([
+    nonce || getNonce(address),
+    gasPrice || getGasPrice(),
     gasLimit || getGasLimit({ data, to, value }),
   ])
 
@@ -71,8 +73,10 @@ export async function getRawTx(props) {
  *
  * @param {object} payload - Payload object
  * @param {object} payload.props - API function properties
- * @param {object} payload.props.contractAddress - Contract address
- * @param {object} [payload.props.gasLimit] - Gas limit for the contract transaction
+ * @param {string} payload.props.contractAddress - Contract address
+ * @param {BigNumber} [payload.props.gasLimit] - Gas limit for the contract transaction
+ * @param {BigNumber} [payload.props.gasPrice] - Gas price for the transaction
+ * @param {number} [payload.props.nonce] - Nonce for the transaction
  * @param {string} payload.address - Address of the transaction sender
  * @param {function} payload.contractMethod - Contract method that used to send transaction
  * @param {array} payload.args - Contract method arguments
@@ -81,12 +85,12 @@ export async function getRawTx(props) {
  */
 export async function getContractRawTx(payload) {
   const { props, address, contractMethod, args } = payload
-  const { contractAddress, gasLimit } = props
+  const { contractAddress, gasLimit, gasPrice, nonce } = props
 
-  const [txData, txGasPrice, txNonce, txGasLimit] = await Promise.all([
+  const [txData, txNonce, txGasPrice, txGasLimit] = await Promise.all([
     contractMethod.getData(...args),
-    getGasPrice(),
-    getNonce(address),
+    nonce || getNonce(address),
+    gasPrice || getGasPrice(),
     gasLimit || getContractGasLimit(contractMethod, args),
   ])
 

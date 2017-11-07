@@ -20,6 +20,8 @@ const interfaceName = 'ETH'
  * @param {string} props.to - Address of the transaction receiver
  * @param {BigNumber} props.value - Transaction value (in wei)
  * @param {BigNumber} [props.gasLimit] - Gas limit for the transaction
+ * @param {BigNumber} [props.gasPrice] - Gas price for the transaction
+ * @param {number} [props.nonce] - Nonce for the transaction
  * @param {string} [props.data] - Transaction data
  * @param {boolean} [props.ssl] - Defines using of ssl for connection or not
  *

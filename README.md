@@ -61,6 +61,8 @@ Sends transaction. Returns Promise that will be resolved with the hash of create
   * to: Address of the transaction receiver
   * value: Transaction value
   * gasLimit: (optional) Gas limit for the transaction
+  * gasPrice: (optional) Gas price for the transaction
+  * nonce: (optional) Nonce for the transaction
   * data: (optional) Transaction data
   * ssl: (optional) Defines using of ssl for connection or not
 
@@ -160,7 +162,6 @@ Returns Promise that will be resolved with estimate gas value.
   * rpcport: RPC port of Ethereum node to connect on
   * to: Address of the transaction receiver
   * value: Transaction value
-  * gasLimit: (optional) Gas limit for the transaction
   * data: (optional) Transaction data
   * ssl: (optional) Defines using of ssl for connection or not
 
@@ -202,6 +203,8 @@ Transfers tokens. Returns Promise that will be resolved with the hash of created
   * to: Address of the transaction receiver
   * value: Transaction value
   * gasLimit: (optional) Gas limit for the transaction
+  * gasPrice: (optional) Gas price for the transaction
+  * nonce: (optional) Nonce for the transaction
   * ssl: (optional) Defines using of ssl for connection or not
 
 #### contracts.erc20.allEvents(props)

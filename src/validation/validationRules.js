@@ -41,6 +41,8 @@ const validationRules = {
   args: Joi.array(),
   data: hash.max(9999),
   gasLimit: bigNumber,
+  gasPrice: bigNumber,
+  nonce: Joi.number().integer().min(0),
   callback: Joi.func(),
   blockId: [
     hash.length(66),

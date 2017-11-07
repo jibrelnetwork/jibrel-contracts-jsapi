@@ -20,6 +20,8 @@ const transfer = Joi.object().keys({
   to: validationRules.address.required(),
   value: validationRules.value.required(),
   gasLimit: validationRules.gasLimit,
+  gasPrice: validationRules.gasPrice,
+  nonce: validationRules.nonce,
 })
 
 const getPastEvents = Joi.object().keys({

@@ -58,6 +58,8 @@ export function balanceOf(props = {}) {
  * @param {string} props.to - Address of tokens receiver
  * @param {BigNumber} props.value - Transaction value
  * @param {BigNumber} [props.gasLimit] - Gas limit for the transaction
+ * @param {BigNumber} [props.gasPrice] - Gas price for the transaction
+ * @param {number} [props.nonce] - Nonce for the transaction
  * @param {boolean} [props.ssl] - Defines using of ssl for connection or not
  *
  * @returns Promise that will be resolved with the hash of created contract transaction
