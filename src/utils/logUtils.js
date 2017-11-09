@@ -21,7 +21,7 @@ import config from '../config'
  * @returns {object} (@see {@link https://github.com/ethereum/wiki/wiki/JavaScript-API#web3ethfilter})
  */
 export function filter(options = {}) {
-  return web3.eth.filter(options)
+  return jWeb3.eth.filter(options)
 }
 
 /**
@@ -39,7 +39,7 @@ export function filter(options = {}) {
  * @returns Promise that will be resolved with past logs
  */
 export function getLogs(options = {}) {
-  const filterObject = web3.eth.filter(options)
+  const filterObject = jWeb3.eth.filter(options)
 
   /**
    * filter.get uses instance methods inside,

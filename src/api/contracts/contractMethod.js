@@ -11,7 +11,7 @@ import getAddressFromPrivateKey from '../getAddressFromPrivateKey'
 
 import validate from '../../validation'
 
-import initWeb3 from '../../utils/initWeb3'
+import checkWeb3 from '../../utils/checkWeb3'
 import { getEvents, subscribe } from '../../utils/eventUtils'
 import { signTx, getContractRawTx, getContractGasLimit } from '../../utils/txUtils'
 
@@ -71,7 +71,7 @@ function prepareContractInstanceMethod(payload) {
   return Promise
     .bind(this, payload)
     .then(validate)
-    .then(initWeb3)
+    .then(checkWeb3)
     .then(getContractInstance)
 }
 
@@ -131,7 +131,7 @@ async function sendContractTransaction(payload) {
   const signedTx = signTx(rawTx, privateKey)
 
   return Promise
-    .promisify(web3.eth.sendRawTransaction)(signedTx)
+    .promisify(jWeb3.eth.sendRawTransaction)(signedTx)
     .timeout(
       config.promiseTimeout,
       new Error(`Can not submit ${interfaceName}.${method} within ${config.promiseTimeout}ms`)

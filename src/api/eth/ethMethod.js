@@ -9,7 +9,7 @@ import getAddressFromPrivateKey from '../getAddressFromPrivateKey'
 
 import validate from '../../validation'
 
-import initWeb3 from '../../utils/initWeb3'
+import checkWeb3 from '../../utils/checkWeb3'
 import { filter, getLogs } from '../../utils/logUtils'
 import { signTx, getRawTx, getGasLimit } from '../../utils/txUtils'
 
@@ -69,7 +69,7 @@ function prepareETHMethod(payload) {
   return Promise
     .bind(this, payload)
     .then(validate)
-    .then(initWeb3)
+    .then(checkWeb3)
 }
 
 /**
@@ -88,7 +88,7 @@ function callETHMethod(payload) {
   const { method, args } = payload
 
   return Promise
-    .promisify(web3.eth[method])(...args)
+    .promisify(jWeb3.eth[method])(...args)
     .timeout(
       config.promiseTimeout,
       new Error(`Can not call web3.eth.${method} within ${config.promiseTimeout}ms`)
@@ -121,7 +121,7 @@ async function sendETHTransaction(payload) {
   const signedTx = signTx(rawTx, privateKey)
 
   return Promise
-    .promisify(web3.eth.sendRawTransaction)(signedTx)
+    .promisify(jWeb3.eth.sendRawTransaction)(signedTx)
     .timeout(
       config.promiseTimeout,
       new Error(`Can not call web3.eth.sendRawTransaction within ${config.promiseTimeout}ms`)

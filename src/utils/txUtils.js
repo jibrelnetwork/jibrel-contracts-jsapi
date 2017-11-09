@@ -47,7 +47,7 @@ export function signTx(rawTx, privateKey) {
  */
 export async function getRawTx(props) {
   const { address, to, gasLimit, gasPrice, nonce, data } = props
-  const value = web3.toHex(props.value)
+  const value = jWeb3.toHex(props.value)
 
   const [txNonce, txGasPrice, txGasLimit] = await Promise.all([
     nonce || getNonce(address),
@@ -59,9 +59,9 @@ export async function getRawTx(props) {
     to,
     data,
     value,
-    nonce: web3.toHex(txNonce),
-    gasPrice: web3.toHex(txGasPrice),
-    gasLimit: web3.toHex(txGasLimit),
+    nonce: jWeb3.toHex(txNonce),
+    gasPrice: jWeb3.toHex(txGasPrice),
+    gasLimit: jWeb3.toHex(txGasLimit),
   }
 }
 
@@ -97,9 +97,9 @@ export async function getContractRawTx(payload) {
   return {
     data: txData,
     to: contractAddress,
-    nonce: web3.toHex(txNonce),
-    gasPrice: web3.toHex(txGasPrice),
-    gasLimit: web3.toHex(txGasLimit),
+    nonce: jWeb3.toHex(txNonce),
+    gasPrice: jWeb3.toHex(txGasPrice),
+    gasLimit: jWeb3.toHex(txGasLimit),
   }
 }
 
@@ -115,7 +115,7 @@ export async function getContractRawTx(payload) {
  */
 export function getGasLimit(props) {
   return Promise
-    .promisify(web3.eth.estimateGas)(props)
+    .promisify(jWeb3.eth.estimateGas)(props)
     .timeout(config.promiseTimeout, new Error('Can not get estimate gas'))
 }
 
@@ -138,12 +138,12 @@ export function getContractGasLimit(method, args) {
 
 function getNonce(address) {
   return Promise
-    .promisify(web3.eth.getTransactionCount)(address)
+    .promisify(jWeb3.eth.getTransactionCount)(address)
     .timeout(config.promiseTimeout, new Error('Can not get transaction count'))
 }
 
 function getGasPrice() {
   return Promise
-    .promisify(web3.eth.getGasPrice)()
+    .promisify(jWeb3.eth.getGasPrice)()
     .timeout(config.promiseTimeout, new Error('Can not get gas price'))
 }

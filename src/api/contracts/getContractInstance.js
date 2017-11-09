@@ -35,7 +35,7 @@ function _getContract(interfaceName) {
     throw (new Error(`Contract interface ${interfaceName} is not supported`))
   }
 
-  return web3.eth.contract(contractABI)
+  return jWeb3.eth.contract(contractABI)
 }
 
 const getContract = memoize(_getContract)

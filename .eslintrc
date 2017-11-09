@@ -11,22 +11,20 @@
     "sourceType": "module"
   },
   "globals": {
-    "web3": false,
-    "isWeb3Injected": false
+    "jWeb3": false,
+    "jWeb3Endpoint": false
   },
   "rules": {
     "semi": [
       "error",
       "never"
     ],
-    "arrow-body-style": [
-      "error",
-      "always"
-    ],
     "arrow-parens": [
       "error",
       "as-needed",
-      { "requireForBlockBody": true }
+      {
+        "requireForBlockBody": true
+      }
     ],
     "comma-dangle": [
       "error",
@@ -68,6 +66,7 @@
     "class-methods-use-this": "warn",
     "require-yield": "warn",
     "no-underscore-dangle": "off",
-    "no-use-before-define": "off"
+    "no-use-before-define": "off",
+    "arrow-body-style": "off"
   }
 }
