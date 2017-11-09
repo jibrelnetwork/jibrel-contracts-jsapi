@@ -64,7 +64,7 @@ function checkWeb3Connection(jWeb3) {
   const err = 'Web3 is not connected to the node'
 
   return new Promise((resolve, reject) => {
-    if (!(jWeb3 && jWeb3.isConnected())) {
+    if (!(jWeb3/* && jWeb3.isConnected() */)) {
       return reject(new Error(err))
     }
 
