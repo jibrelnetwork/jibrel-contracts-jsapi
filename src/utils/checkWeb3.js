@@ -65,7 +65,7 @@ function checkWeb3Connection(jWeb3) {
 
   return new Promise((resolve, reject) => {
     if (!(jWeb3 && jWeb3.isConnected())) {
-      return reject(err)
+      return reject(new Error(err))
     }
 
     return resolve(jWeb3)
