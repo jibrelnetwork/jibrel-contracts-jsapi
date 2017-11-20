@@ -16,7 +16,10 @@ export default function memoize(fn) {
   const cache = {}
 
   return (...args) => {
-    const key = args.join(':')
+    /**
+     * current jWeb3Endpoint is necessary
+     */
+    const key = [jWeb3Endpoint, ...args].join(':')
 
     if (key in cache) {
       return cache[key]
