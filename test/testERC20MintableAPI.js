@@ -155,6 +155,10 @@ describe('ERC20Mintable API', function() {
 
   })
 
+  /**
+   * NOTE: burn of tokens is not working
+   * TODO: investigate an issue and unskip these tests
+   */
   describe.skip('BurnEvent', function() {
     let isDone
 
@@ -182,8 +186,6 @@ describe('ERC20Mintable API', function() {
           event.type.should.be.a.String()
 
           event.event.should.be.equal('BurnEvent')
-
-          console.log('args', args)
 
           event.args.should.be.an.Object()
           event.args.owner.should.be.equal(account)
@@ -383,8 +385,6 @@ describe('ERC20Mintable API', function() {
         event.type.should.be.a.String()
 
         event.event.should.be.equal(eventName)
-
-        console.log(event)
 
         event.args.should.be.an.Object()
         event.args.owner.should.be.equal(account)
