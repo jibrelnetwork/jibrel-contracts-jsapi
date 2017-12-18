@@ -12,7 +12,6 @@ web3 wrapper for jibrel-contracts
       * [ETH](#eth-api)
       * [ERC20](#erc20-api)
       * [ERC20Named](#erc20named-api)
-      * [ERC20Validatable](#erc20validatable-api)
       * [getAddressFromPrivateKey](#getaddressfromprivatekeyprivatekey)
     * [Testing](#testing)
 
@@ -299,111 +298,6 @@ Returns Promise that will be resolved with token decimals.
   * rpcaddr: RPC address of Ethereum node to connect on
   * rpcport: RPC port of Ethereum node to connect on
   * contractAddress: Contract address
-  * ssl: (optional) Defines using of ssl for connection or not
-
-### `ERC20Validatable` API
-
-#### contracts.erc20Validatable.isReceivingAllowed(props)
-
-Returns Promise that will be resolved with the isReceivingAllowed flag.
-
-##### props
-
-  * rpcaddr: RPC address of Ethereum node to connect on
-  * rpcport: RPC port of Ethereum node to connect on
-  * contractAddress: Contract address
-  * privateKey: Private key (64 hex symbols, without '0x' prefix)
-  * account: Account address
-  * value: Transaction value
-  * ssl: (optional) Defines using of ssl for connection or not
-
-#### contracts.erc20Validatable.isSpendingAllowed(props)
-
-Returns Promise that will be resolved with the isSpendingAllowed flag.
-
-##### props
-
-  * rpcaddr: RPC address of Ethereum node to connect on
-  * rpcport: RPC port of Ethereum node to connect on
-  * contractAddress: Contract address
-  * privateKey: Private key (64 hex symbols, without '0x' prefix)
-  * account: Account address
-  * value: Transaction value
-  * ssl: (optional) Defines using of ssl for connection or not
-
-#### contracts.erc20Validatable.isTransferAllowed(props)
-
-Returns Promise that will be resolved with the isTransferAllowed flag.
-
-##### props
-
-  * rpcaddr: RPC address of Ethereum node to connect on
-  * rpcport: RPC port of Ethereum node to connect on
-  * contractAddress: Contract address
-  * privateKey: Private key (64 hex symbols, without '0x' prefix)
-  * from: Sender address
-  * spender: Spender address
-  * value: Transaction value
-  * ssl: (optional) Defines using of ssl for connection or not
-
-#### contracts.erc20Validatable.isApproveAllowed(props)
-
-Returns Promise that will be resolved with the isApproveAllowed flag.
-
-##### props
-
-  * rpcaddr: RPC address of Ethereum node to connect on
-  * rpcport: RPC port of Ethereum node to connect on
-  * contractAddress: Contract address
-  * privateKey: Private key (64 hex symbols, without '0x' prefix)
-  * from: Sender address
-  * to: Receiver address
-  * value: Transaction value
-  * ssl: (optional) Defines using of ssl for connection or not
-
-#### contracts.erc20Validatable.isApprovedSpendingAllowed(props)
-
-Returns Promise that will be resolved with the isApprovedSpendingAllowed flag.
-
-##### props
-
-  * rpcaddr: RPC address of Ethereum node to connect on
-  * rpcport: RPC port of Ethereum node to connect on
-  * contractAddress: Contract address
-  * privateKey: Private key (64 hex symbols, without '0x' prefix)
-  * from: Sender address
-  * to: Receiver address
-  * value: Transaction value
-  * ssl: (optional) Defines using of ssl for connection or not
-
-#### contracts.erc20Validatable.isTransferFromAllowed(props)
-
-Returns Promise that will be resolved with the isTransferFromAllowed flag.
-
-##### props
-
-  * rpcaddr: RPC address of Ethereum node to connect on
-  * rpcport: RPC port of Ethereum node to connect on
-  * contractAddress: Contract address
-  * privateKey: Private key (64 hex symbols, without '0x' prefix)
-  * spender: Spender address
-  * from: Sender address
-  * to: Receiver address
-  * value: Transaction value
-  * ssl: (optional) Defines using of ssl for connection or not
-
-#### contracts.erc20Validatable.estimateGas(props)
-
-Returns Promise that will be resolved with estimate gas value.
-
-##### props
-
-  * rpcaddr: RPC address of Ethereum node to connect on
-  * rpcport: RPC port of Ethereum node to connect on
-  * contractAddress: Contract address
-  * privateKey: Private key (64 hex symbols, without '0x' prefix)
-  * method: Method name
-  * args: Method arguments
   * ssl: (optional) Defines using of ssl for connection or not
 
 ### getAddressFromPrivateKey(privateKey)

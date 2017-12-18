@@ -8,7 +8,6 @@ import ETH from './ETH'
 import ERC20 from './ERC20'
 import ERC20Mintable from './ERC20Mintable'
 import ERC20Named from './ERC20Named'
-import ERC20Validatable from './ERC20Validatable'
 
 export default {
   Controller,
@@ -16,5 +15,4 @@ export default {
   ERC20,
   ERC20Mintable,
   ERC20Named,
-  ERC20Validatable,
 }
