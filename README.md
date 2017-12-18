@@ -11,7 +11,9 @@ web3 wrapper for jibrel-contracts
     * [Public API definitions](#public-api-definitions)
       * [ETH](#eth-api)
       * [ERC20](#erc20-api)
+      * [ERC20Mintable](#erc20mintable-api)
       * [ERC20Named](#erc20named-api)
+      * [Controller](#controller-api)
       * [getAddressFromPrivateKey](#getaddressfromprivatekeyprivatekey)
     * [Testing](#testing)
 
@@ -265,6 +267,24 @@ Returns Promise that will be resolved with estimate gas value.
   * args: Method arguments
   * ssl: (optional) Defines using of ssl for connection or not
 
+### `ERC20Mintable` API
+
+#### contracts.erc20Mintable.allEvents(props)
+
+See [contracts.erc20.allEvents](#contractserc20alleventsprops)
+
+#### contracts.erc20Mintable.MintEvent(props)
+
+Subscribes to MintEvent event. Returns Promise that will be resolved with the event emitter (the same as for [allEvents](#contractserc20mintablealleventsprops)).
+
+#### contracts.erc20Mintable.BurnEvent(props)
+
+Subscribes to BurnEvent event. Returns Promise that will be resolved with the event emitter (the same as for [allEvents](#contractserc20mintablealleventsprops)).
+
+#### contracts.erc20Mintable.getPastEvents(props)
+
+See [contracts.erc20.getPastEvents](#contractserc20getpasteventsprops)
+
 ### `ERC20Named` API
 
 #### contracts.erc20Named.name(props)
@@ -298,6 +318,42 @@ Returns Promise that will be resolved with token decimals.
   * rpcaddr: RPC address of Ethereum node to connect on
   * rpcport: RPC port of Ethereum node to connect on
   * contractAddress: Contract address
+  * ssl: (optional) Defines using of ssl for connection or not
+
+### `Controller` API
+
+#### contracts.controller.mint(props)
+
+Mint tokens. Returns Promise that will be resolved with the hash of created contract transaction
+
+##### props
+
+  * rpcaddr: RPC address of Ethereum node to connect on
+  * rpcport: RPC port of Ethereum node to connect on
+  * contractAddress: Contract address
+  * privateKey: Private key (64 hex symbols, without '0x' prefix)
+  * account: Address of account to mint tokens to
+  * value: Transaction value
+  * gasLimit: (optional) Gas limit for the transaction
+  * gasPrice: (optional) Gas price for the transaction
+  * nonce: (optional) Nonce for the transaction
+  * ssl: (optional) Defines using of ssl for connection or not
+
+#### contracts.controller.burn(props)
+
+Burn tokens. Returns Promise that will be resolved with the hash of created contract transaction
+
+##### props
+
+  * rpcaddr: RPC address of Ethereum node to connect on
+  * rpcport: RPC port of Ethereum node to connect on
+  * contractAddress: Contract address
+  * privateKey: Private key (64 hex symbols, without '0x' prefix)
+  * account: Address of account to burn tokens from
+  * value: Transaction value
+  * gasLimit: (optional) Gas limit for the transaction
+  * gasPrice: (optional) Gas price for the transaction
+  * nonce: (optional) Nonce for the transaction
   * ssl: (optional) Defines using of ssl for connection or not
 
 ### getAddressFromPrivateKey(privateKey)
