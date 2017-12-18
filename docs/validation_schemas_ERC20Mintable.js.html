@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: config.js</title>
+    <title>JSDoc: Source: validation/schemas/ERC20Mintable.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: config.js</h1>
+    <h1 class="page-title">Source: validation/schemas/ERC20Mintable.js</h1>
 
     
 
@@ -27,25 +27,34 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * @file Manages configuration for the library
+ * @file Exposes validation schemas for ERC20Mintable interface
  * @author Ivan Violentov &lt;ivan.violentov@jibrel.network>
  */
 
-export default {
-  /**
-   * All web3 methods should be fullfiled or rejected within this timeout,
-   * otherwise returned promise will be rejected
-   *
-   * 30 sec (in ms)
-   */
-  promiseTimeout: 1000 * 30,
+import Joi from 'joi-browser'
 
-  /**
-   * web3 connection status should be received within this timeout
-   *
-   * 3 sec (in ms)
-   */
-  promiseConnectionTimeout: 1000 * 3,
+import validationRules, { generalContractKeys } from '../validationRules'
+
+const getPastEvents = Joi.object().keys({
+  ...generalContractKeys,
+  event: validationRules.event.required(),
+  options: validationRules.eventOptions,
+})
+
+const allEvents = Joi.object().keys({
+  ...generalContractKeys,
+  options: validationRules.eventOptions,
+  callback: validationRules.callback,
+})
+
+const MintEvent = allEvents
+const BurnEvent = allEvents
+
+export default {
+  getPastEvents,
+  allEvents,
+  MintEvent,
+  BurnEvent,
 }
 </code></pre>
         </article>
