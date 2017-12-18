@@ -12,8 +12,9 @@
     "lint": "./node_modules/.bin/eslint ./src",
     "minify": "./node_modules/.bin/minify ./dist/jibrel-contracts-jsapi.js --mangle -o ./dist/jibrel-contracts-jsapi.min.js",
     "test": "./node_modules/.bin/mocha --compilers babel-register",
-    "docs": "./node_modules/.bin/jsdoc ./src/ -r -d docs && npm run docs:open",
-    "docs:open": "./node_modules/.bin/opn ./docs/index.html"
+    "docs": "npm run docs:clean && ./node_modules/.bin/jsdoc ./src/ -r -d docs && npm run docs:open",
+    "docs:open": "./node_modules/.bin/opn ./docs/index.html",
+    "docs:clean": "rm -rf ./docs"
   },
   "repository": {
     "type": "git",
