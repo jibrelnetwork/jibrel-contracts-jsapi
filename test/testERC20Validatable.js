@@ -20,7 +20,7 @@ const from = testParams.accounts[1]
 const to = testParams.accounts[2]
 const value = new BigNumber(1, 10)
 
-describe('ERC20Validatable API', function() {
+describe.skip('ERC20Validatable API', function() {
 
   describe('isReceivingAllowed', function() {
     it('returns isReceivingAllowed boolean flag', function(done) {

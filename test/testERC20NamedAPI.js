@@ -13,7 +13,7 @@ const erc20Named = jibrelContractsApi.contracts.erc20Named
 
 const rpcaddr = process.env.RPCADDR || '127.0.0.1'
 const rpcport = process.env.RPCPORT || 8545
-const contractAddress = testParams.contracts.jTBillViewERC20
+const contractAddress = testParams.contracts.JNTViewERC20
 
 describe('ERC20Named API', function() {
 

@@ -98,7 +98,6 @@ describe('ETH API', function() {
         result.logsBloom.should.be.a.String()
         result.transactionsRoot.should.be.a.String()
         result.stateRoot.should.be.a.String()
-        result.receiptRoot.should.be.a.String()
         result.miner.should.be.a.String()
         result.difficulty.should.be.an.Object()
         result.totalDifficulty.should.be.an.Object()
