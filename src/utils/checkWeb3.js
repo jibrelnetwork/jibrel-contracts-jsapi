@@ -3,7 +3,7 @@
  * @author Ivan Violentov <ivan.violentov@jibrel.network>
  */
 
-import Web3 from 'web3'
+import Web3 from '@jibrelnetwork/web3'
 import Promise from 'bluebird'
 
 import config from '../config'
