@@ -16,6 +16,7 @@ web3 wrapper for jibrel-contracts
       * [Controller](#controller-api)
       * [getAddressFromPrivateKey](#getaddressfromprivatekeyprivatekey)
     * [Testing](#testing)
+      * [Steps to launch tests from jibrel-contracts](#steps-to-launch-tests-from-jibrel-contracts)
 
 ## About
 
