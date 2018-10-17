@@ -19,6 +19,9 @@ const address = testParams.accounts[0]
 const to = testParams.accounts[1]
 const value = new BigNumber(1, 10)
 
+const addressWithoutContract = '0x0000000000000000000000000000000000000000'
+const addressWithContract = testParams.contracts.JNTController
+
 const filterOptions = {
   fromBlock: 0,
   toBlock: 'latest',
@@ -269,6 +272,38 @@ describe('ETH API', function() {
       }).then((result) => {
         result.should.be.a.Number()
         result.should.be.greaterThan(0)
+
+        done()
+      }).catch(done)
+    })
+  })
+
+  describe('getCode', function() {
+    it('contract with empty code', function(done) {
+      eth.getCode({
+        rpcaddr,
+        rpcport,
+        address: addressWithoutContract,
+      }).then((result) => {
+        result.should.be.a.String()
+        if (result !== '0x' && result !== '0x0') {
+          throw new Error('Result should be 0x or 0x0')
+        }
+
+        done()
+      }).catch(done)
+    })
+
+    it('contract with existing code', function(done) {
+      eth.getCode({
+        rpcaddr,
+        rpcport,
+        address: addressWithContract,
+      }).then((result) => {
+        result.should.be.a.String()
+        result.should.be.not.equal('0x')
+        result.should.be.not.equal('0x0')
+        result.length.should.be.greaterThan(3)
 
         done()
       }).catch(done)
