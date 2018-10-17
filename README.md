@@ -372,3 +372,17 @@ Also `JSON_PATH` env variable should exists. `JSON_PATH` stores path to .json fi
   * contract addresses
 
 The simplest way to `test` - is launch jibrel-contracts tests. During tests execution it will check that jibrel-contracts-jsapi project is in the same dir, and will agregate all need information and write it to .json file.
+
+### Steps to launch tests from jibrel-contracts
+
+**Note**: prepare jibrel-contracts-jsapi project (`npm i && npm run compile`)
+
+```
+$ git clone git@github.com:jibrelnetwork/jibrel-contracts.git
+$ cd jibrel-contracts
+$ git pull origin master
+$ git reset --hard e3c917eadcabddef00ab3acd45791c1c456787dd
+$ npm i
+$ npm run compile
+$ npm test
+```
