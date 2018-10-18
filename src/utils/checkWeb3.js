@@ -84,6 +84,7 @@ function checkSupportedMethods(jWeb3) {
   const supportedMethods = [
     'getBalance',
     'getBlock',
+    'getCode',
     'contract',
     'filter',
     'getTransaction',

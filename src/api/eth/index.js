@@ -59,6 +59,32 @@ export function getBalance(props = {}) {
 
 /**
  * @async
+ * @function getCode
+ *
+ * @description Get the code at a specific address
+ *
+ * @param {object} props={} - API function properties
+ * @param {string} props.rpcaddr - RPC address of Ethereum node to connect on
+ * @param {number} props.rpcport - RPC port of Ethereum node to connect on
+ * @param {string} props.address - The address to get the code from
+ * @param {(number|string)} [props.defaultBlock] - Redefines of web3.eth.defaultBlock
+ * @param {boolean} [props.ssl] - Defines using of ssl for connection or not
+ *
+ * @returns Promise that will be resolved with code of the provided address
+ */
+export function getCode(props = {}) {
+  const { address, defaultBlock } = props
+
+  return ethMethod.call({
+    props,
+    interfaceName,
+    method: 'getCode',
+    args: [address, defaultBlock],
+  })
+}
+
+/**
+ * @async
  * @function getBlockNumber
  *
  * @description Gets current block number
@@ -212,6 +238,7 @@ export default {
   getBalance,
   getBlockNumber,
   getBlock,
+  getCode,
   getTransaction,
   getTransactionReceipt,
   getLogsFilter,
