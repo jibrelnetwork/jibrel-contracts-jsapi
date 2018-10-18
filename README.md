@@ -25,7 +25,7 @@ jibrel-contracts-jsapi is a set of stateless methods that make easier work with 
 ## Get Started
 
 ```
-npm install jibrel-contracts-jsapi
+npm install @jibrelnetwork/contracts-jsapi
 ```
 
 ```javascript
