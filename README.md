@@ -29,7 +29,7 @@ npm install jibrel-contracts-jsapi
 ```
 
 ```javascript
-const jibrelContractsJsapi = require('jibrel-contracts-jsapi')
+const jibrelContractsJsapi = require('@jibrelnetwork/contracts-jsapi')
 ```
 
 ### Available npm scripts:

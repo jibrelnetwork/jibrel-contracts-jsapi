@@ -1,6 +1,6 @@
 {
-  "name": "jibrel-contracts-jsapi",
-  "version": "0.6.0",
+  "name": "@jibrelnetwork/contracts-jsapi",
+  "version": "1.0.0",
   "description": "Set of stateless wrapper methods for contracts based on ERC20 token.",
   "main": "index.js",
   "scripts": {
