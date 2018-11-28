@@ -52,7 +52,7 @@ export async function getRawTx(props) {
   const [txNonce, txGasPrice, txGasLimit] = await Promise.all([
     nonce || getNonce(address),
     gasPrice || getGasPrice(),
-    gasLimit || getGasLimit({ data, to, value }),
+    gasLimit || getGasLimit({ data, to, value, from: address }),
   ])
 
   return {
