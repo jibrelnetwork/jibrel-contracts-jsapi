@@ -15,8 +15,8 @@ import {
   signTx,
   getRawTx,
   getGasLimit,
-  getNonce as getNonceFn,
-  getGasPrice as getGasPriceFn,
+  getNonce as getNonceW3,
+  getGasPrice as getGasPriceW3,
 } from '../../utils/txUtils'
 
 import config from '../../config'
@@ -93,7 +93,7 @@ function getNonce(payload) {
  * @description Wrapper for getGasPrice function (@see getGasPrice)
  */
 function getGasPrice(payload) {
-  return prepareETHMethod(payload).then(getGasPriceFn)
+  return prepareETHMethod(payload).then(getGasPriceW3)
 }
 
 function prepareETHMethod(payload) {
@@ -197,7 +197,7 @@ function getPastETHLogs(payload) {
  * @description Gets estimate gas for the transaction
  *
  * @param {object} payload - Payload object
- * @param {object} payload.props.props - Method properties
+ * @param {object} payload.props - Method properties
  *
  * @returns Promise that will be resolved with estimate gas value
  */
@@ -205,8 +205,19 @@ function estimateETHGas(payload) {
   return getGasLimit(payload.props)
 }
 
+/**
+ * @async
+ * @function estimateETHGas
+ *
+ * @description Gets thansaction count for sending transactions
+ *
+ * @param {object} payload - Payload object
+ * @param {object} payload.props.address - Ethereum address
+ *
+ * @returns Promise that will be resolved withthansaction count value
+ */
 function getETHNonce(payload) {
-  return getNonceFn(payload.props.address)
+  return getNonceW3(payload.props.address)
 }
 
 export default { call, sendTransaction, filterLogs, getPastLogs, estimateGas, getNonce, getGasPrice }
