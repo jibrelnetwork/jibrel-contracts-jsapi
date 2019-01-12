@@ -310,4 +310,33 @@ describe('ETH API', function() {
     })
   })
 
+  describe('getNonce', function() {
+    it('nonce for contract address with existing code', function(done) {
+      eth.getNonce({
+        rpcaddr,
+        rpcport,
+        address: addressWithContract,
+      }).then((result) => {
+        result.should.be.a.Number()
+        result.should.be.greaterThan(0)
+
+        done()
+      }).catch(done)
+    })
+  })
+
+  describe('getGasPrice', function() {
+    it('current gas price', function(done) {
+      eth.getGasPrice({
+        rpcaddr,
+        rpcport,
+      }).then((result) => {
+        result.should.be.an.Object()
+        result.toNumber().should.be.greaterThan(0)
+
+        done()
+      }).catch(done)
+    })
+  })
+
 })
