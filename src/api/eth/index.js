@@ -233,6 +233,14 @@ export function estimateGas(props) {
   return ethMethod.estimateGas({ props, interfaceName, method: 'estimateGas' })
 }
 
+export function getNonce(props) {
+  return ethMethod.getNonce({ props, interfaceName, method: 'getNonce' })
+}
+
+export function getGasPrice(props) {
+  return ethMethod.getGasPrice({ props, interfaceName, method: 'getGasPrice' })
+}
+
 export default {
   sendTransaction,
   getBalance,
@@ -244,4 +252,6 @@ export default {
   getLogsFilter,
   getPastLogs,
   estimateGas,
+  getNonce,
+  getGasPrice,
 }

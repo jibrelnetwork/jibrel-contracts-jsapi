@@ -67,6 +67,15 @@ const estimateGas = Joi.object().keys({
   data: validationRules.data,
 })
 
+const getGasPrice = Joi.object().keys({
+  ...generalETHKeys,
+})
+
+const getNonce = Joi.object().keys({
+  ...generalETHKeys,
+  address: validationRules.address.required(),
+})
+
 export default {
   sendTransaction,
   getBalance,
@@ -78,4 +87,6 @@ export default {
   getLogsFilter,
   getPastLogs,
   estimateGas,
+  getGasPrice,
+  getNonce,
 }

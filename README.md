@@ -169,6 +169,28 @@ Returns Promise that will be resolved with estimate gas value.
   * data: (optional) Transaction data
   * ssl: (optional) Defines using of ssl for connection or not
 
+#### eth.getGasPrice(props)
+
+Returns Promise that will be resolved with current gas price value.
+
+##### props
+
+  * rpcaddr: RPC address of Ethereum node to connect on
+  * rpcport: RPC port of Ethereum node to connect on
+  * ssl: (optional) Defines using of ssl for connection or not
+
+#### eth.getNonce(props)
+
+Returns Promise that will be resolved with current transaction count value for address specified
+
+##### props
+
+  * rpcaddr: RPC address of Ethereum node to connect on
+  * rpcport: RPC port of Ethereum node to connect on
+  * ssl: (optional) Defines using of ssl for connection or not
+  * address: Address to get transaction count
+
+
 ### `ERC20` API
 
 #### contracts.erc20.totalSupply(props)

@@ -136,13 +136,30 @@ export function getContractGasLimit(method, args) {
     .timeout(config.promiseTimeout, new Error('Can not get estimate gas for contract method'))
 }
 
-function getNonce(address) {
+/**
+ * @async
+ * @function getNonce
+ *
+ * @description Gets transaction count for specified address
+ *
+ * @param {string} address - Ethereum address
+ *
+ * @returns Promise that will be resolved with nonce for sending the transaction
+ */
+export function getNonce(address) {
   return Promise
     .promisify(jWeb3.eth.getTransactionCount)(address)
     .timeout(config.promiseTimeout, new Error('Can not get transaction count'))
 }
 
-function getGasPrice() {
+/**
+ * @function getGasPrice
+ *
+ * @description Request current gas price from ethereum node
+ *
+ * @returns Promise that will be resolved with gasPrice for sending the transaction
+ */
+export function getGasPrice() {
   return Promise
     .promisify(jWeb3.eth.getGasPrice)()
     .timeout(config.promiseTimeout, new Error('Can not get gas price'))
