@@ -71,7 +71,8 @@ const generalContractKeys = {
 
 const estimateGasKeys = {
   ...generalContractKeys,
-  privateKey: validationRules.privateKey.required(),
+  privateKey: validationRules.privateKey,
+  from: validationRules.address,
   method: validationRules.method.required(),
   args: validationRules.args.required(),
 }
