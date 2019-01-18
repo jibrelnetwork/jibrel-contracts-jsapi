@@ -15,8 +15,8 @@ import {
   signTx,
   getRawTx,
   getGasLimit,
-  getNonce as getNonceW3,
-  getGasPrice as getGasPriceW3,
+  getNonce as getETHNonce,
+  getGasPrice as getETHGasPrice,
 } from '../../utils/txUtils'
 
 import config from '../../config'
@@ -76,12 +76,12 @@ function estimateGas(payload) {
  * @function getNonce
  * 
  * @param {Object} payload Payload object
- * @param {Object} payload.address - Eth address for nonce request
+ * @param {Object} payload.address - ETH address for nonce request
  * 
  * @description Wrapper for getNonce function (@see getNonce)
  */
 function getNonce(payload) {
-  return prepareETHMethod(payload).then(getETHNonce)
+  return prepareETHMethod(payload).then(p => getETHNonce(p.props.address))
 }
 
 /**
@@ -93,7 +93,7 @@ function getNonce(payload) {
  * @description Wrapper for getGasPrice function (@see getGasPrice)
  */
 function getGasPrice(payload) {
-  return prepareETHMethod(payload).then(getGasPriceW3)
+  return prepareETHMethod(payload).then(getETHGasPrice)
 }
 
 function prepareETHMethod(payload) {
@@ -203,21 +203,6 @@ function getPastETHLogs(payload) {
  */
 function estimateETHGas(payload) {
   return getGasLimit(payload.props)
-}
-
-/**
- * @async
- * @function estimateETHGas
- *
- * @description Gets thansaction count for sending transactions
- *
- * @param {object} payload - Payload object
- * @param {object} payload.props.address - Ethereum address
- *
- * @returns Promise that will be resolved withthansaction count value
- */
-function getETHNonce(payload) {
-  return getNonceW3(payload.props.address)
 }
 
 export default { call, sendTransaction, filterLogs, getPastLogs, estimateGas, getNonce, getGasPrice }
