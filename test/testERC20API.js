@@ -730,22 +730,6 @@ describe('ERC20 API', function() {
 
   describe('estimateGas', function() {
 
-    it('returns the used gas for the simulated call/transaction (using privateKey)', function(done) {
-      erc20.estimateGas({
-        rpcaddr,
-        rpcport,
-        contractAddress,
-        privateKey,
-        method: 'transfer',
-        args: [to, value],
-      }).then((result) => {
-        result.should.be.a.Number()
-        result.should.be.greaterThan(0)
-
-        done()
-      }).catch(done)
-    })
-
     it('returns the used gas for the simulated call/transaction (using from)', function(done) {
       erc20.estimateGas({
         rpcaddr,
@@ -771,7 +755,7 @@ describe('ERC20 API', function() {
             rpcaddr,
             rpcport,
             contractAddress,
-            privateKey,
+            from: owner,
             args: [to, value],
           }).then(() => {
             done(new Error('Exception was not thrown'))
@@ -790,7 +774,7 @@ describe('ERC20 API', function() {
             rpcaddr,
             rpcport,
             contractAddress,
-            privateKey,
+            from: owner,
             method: 123,
             args: [to, value],
           }).then(() => {
@@ -810,8 +794,8 @@ describe('ERC20 API', function() {
             rpcaddr,
             rpcport,
             contractAddress,
-            privateKey,
             method: '',
+            from: owner,
             args: [to, value],
           }).then(() => {
             done(new Error('Exception was not thrown'))
@@ -830,7 +814,7 @@ describe('ERC20 API', function() {
             rpcaddr,
             rpcport,
             contractAddress,
-            privateKey,
+            from: owner,
             method: 'a'.repeat(1000),
             args: [to, value],
           }).then(() => {
@@ -854,7 +838,7 @@ describe('ERC20 API', function() {
             rpcaddr,
             rpcport,
             contractAddress,
-            privateKey,
+            from: owner,
             method: 'transfer',
           }).then(() => {
             done(new Error('Exception was not thrown'))
@@ -873,7 +857,7 @@ describe('ERC20 API', function() {
             rpcaddr,
             rpcport,
             contractAddress,
-            privateKey,
+            from: owner,
             method: 'transfer',
             args: 123,
           }).then(() => {
