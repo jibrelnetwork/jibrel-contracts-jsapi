@@ -189,6 +189,7 @@ Returns Promise that will be resolved with current transaction count value for a
   * rpcport: RPC port of Ethereum node to connect on
   * ssl: (optional) Defines using of ssl for connection or not
   * address: Address to get transaction count
+  * defaultBlock: (optional) Redefines of web3.eth.defaultBlock
 
 
 ### `ERC20` API
@@ -280,16 +281,12 @@ Returns Promise that will be resolved with the past event logs.
 
 Returns Promise that will be resolved with estimate gas value.
 
-Only one of the two params (`privateKey` or `from`) is required.
-`privateKey` has higher priority
-
 ##### props
 
   * rpcaddr: RPC address of Ethereum node to connect on
   * rpcport: RPC port of Ethereum node to connect on
   * contractAddress: Contract address
-  * from: Owner address
-  * privateKey: Private key (64 hex symbols, without '0x' prefix)
+  * from: Transaction sender address
   * method: Method name
   * args: Method arguments
   * ssl: (optional) Defines using of ssl for connection or not
