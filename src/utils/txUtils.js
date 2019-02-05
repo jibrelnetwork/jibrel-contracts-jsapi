@@ -147,8 +147,10 @@ export function estimateContractGas(method, args) {
  * @returns Promise that will be resolved with nonce for sending the transaction
  */
 export function getTransactionCount(address, defaultBlock) {
+  const block = (defaultBlock == null) ? 'pending' : defaultBlock
+
   return Promise
-    .promisify(jWeb3.eth.getTransactionCount)(address, defaultBlock)
+    .promisify(jWeb3.eth.getTransactionCount)(address, block)
     .timeout(config.promiseTimeout, new Error('Can not get transaction count'))
 }
 
