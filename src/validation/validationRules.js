@@ -69,12 +69,16 @@ const generalContractKeys = {
   contractAddress: validationRules.address.required(),
 }
 
-const estimateGasKeys = {
+const estimateContractGasKeys = {
   ...generalContractKeys,
-  privateKey: validationRules.privateKey,
-  from: validationRules.address,
   method: validationRules.method.required(),
   args: validationRules.args.required(),
+  from: validationRules.address,
 }
 
-export { generalETHKeys, generalContractKeys, estimateGasKeys, validationRules as default }
+export {
+  generalETHKeys,
+  generalContractKeys,
+  estimateContractGasKeys,
+  validationRules as default,
+}

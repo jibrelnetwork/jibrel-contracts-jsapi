@@ -5,21 +5,17 @@
 
 import Promise from 'bluebird'
 
+import config from '../../config'
+import validate from '../../validation'
+import checkWeb3 from '../../utils/checkWeb3'
 import getAddressFromPrivateKey from '../getAddressFromPrivateKey'
 
-import validate from '../../validation'
-
-import checkWeb3 from '../../utils/checkWeb3'
-import { filter, getLogs } from '../../utils/logUtils'
 import {
-  signTx,
-  getRawTx,
-  getGasLimit,
-  getNonce as getETHNonce,
-  getGasPrice as getETHGasPrice,
-} from '../../utils/txUtils'
+  filter,
+  getLogs,
+} from '../../utils/logUtils'
 
-import config from '../../config'
+import * as txUtils from '../../utils/txUtils'
 
 /**
  * @async
@@ -74,14 +70,11 @@ function estimateGas(payload) {
 /**
  * @async
  * @function getNonce
- * 
- * @param {Object} payload Payload object
- * @param {Object} payload.address - ETH address for nonce request
- * 
- * @description Wrapper for getNonce function (@see getNonce)
+ *
+ * @description Wrapper for getETHNonce function (@see getETHNonce)
  */
 function getNonce(payload) {
-  return prepareETHMethod(payload).then(p => getETHNonce(p.props.address))
+  return prepareETHMethod(payload).then(getETHNonce)
 }
 
 /**
@@ -93,7 +86,7 @@ function getNonce(payload) {
  * @description Wrapper for getGasPrice function (@see getGasPrice)
  */
 function getGasPrice(payload) {
-  return prepareETHMethod(payload).then(getETHGasPrice)
+  return prepareETHMethod(payload).then(txUtils.getGasPrice)
 }
 
 function prepareETHMethod(payload) {
@@ -148,8 +141,8 @@ async function sendETHTransaction(payload) {
   const { privateKey, to, value, gasLimit, gasPrice, nonce, data } = payload.props
 
   const address = getAddressFromPrivateKey(privateKey)
-  const rawTx = await getRawTx({ gasLimit, gasPrice, nonce, address, data, to, value })
-  const signedTx = signTx(rawTx, privateKey)
+  const rawTx = await txUtils.getRawTx({ gasLimit, gasPrice, nonce, address, data, to, value })
+  const signedTx = txUtils.signTx(rawTx, privateKey)
 
   return Promise
     .promisify(jWeb3.eth.sendRawTransaction)(signedTx)
@@ -202,7 +195,30 @@ function getPastETHLogs(payload) {
  * @returns Promise that will be resolved with estimate gas value
  */
 function estimateETHGas(payload) {
-  return getGasLimit(payload.props)
+  return txUtils.estimateGas(payload.props)
 }
 
-export default { call, sendTransaction, filterLogs, getPastLogs, estimateGas, getNonce, getGasPrice }
+/**
+ * @async
+ * @function getETHNonce
+ *
+ * @description Gets thansaction count for sending transactions
+ *
+ * @param {object} payload - Payload object
+ * @param {object} payload.args - Method args
+ *
+ * @returns Promise that will be resolved with transaction count value
+ */
+function getETHNonce(payload) {
+  return txUtils.getTransactionCount(...payload.args)
+}
+
+export default {
+  call,
+  getNonce,
+  filterLogs,
+  getGasPrice,
+  getPastLogs,
+  estimateGas,
+  sendTransaction,
+}

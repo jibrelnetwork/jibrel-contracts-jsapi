@@ -5,7 +5,7 @@
 
 import Joi from 'joi-browser'
 
-import validationRules, { generalContractKeys, estimateGasKeys } from '../validationRules'
+import validationRules, { generalContractKeys, estimateContractGasKeys } from '../validationRules'
 
 const totalSupply = Joi.object().keys(generalContractKeys)
 
@@ -38,17 +38,16 @@ const allEvents = Joi.object().keys({
 
 const Transfer = allEvents
 
-const estimateGas = Joi
-  .object()
-  .keys(estimateGasKeys)
-  .xor('privateKey', 'from')
+const estimateGas = Joi.object().keys({
+  ...estimateContractGasKeys,
+})
 
 export default {
-  totalSupply,
-  balanceOf,
   transfer,
-  getPastEvents,
-  allEvents,
   Transfer,
+  allEvents,
+  balanceOf,
   estimateGas,
+  totalSupply,
+  getPastEvents,
 }

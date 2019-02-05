@@ -23,8 +23,8 @@ const MintEvent = allEvents
 const BurnEvent = allEvents
 
 export default {
-  getPastEvents,
   allEvents,
   MintEvent,
   BurnEvent,
+  getPastEvents,
 }

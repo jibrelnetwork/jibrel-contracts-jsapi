@@ -5,17 +5,18 @@
 
 import Promise from 'bluebird'
 
+import config from '../../config'
+import validate from '../../validation'
+import checkWeb3 from '../../utils/checkWeb3'
 import getContractInstance from './getContractInstance'
-
 import getAddressFromPrivateKey from '../getAddressFromPrivateKey'
 
-import validate from '../../validation'
+import {
+  getEvents,
+  subscribe,
+} from '../../utils/eventUtils'
 
-import checkWeb3 from '../../utils/checkWeb3'
-import { getEvents, subscribe } from '../../utils/eventUtils'
-import { signTx, getContractRawTx, getContractGasLimit } from '../../utils/txUtils'
-
-import config from '../../config'
+import * as txUtils from '../../utils/txUtils'
 
 /**
  * @async
@@ -90,7 +91,12 @@ function prepareContractInstanceMethod(payload) {
  * @returns Promise that will be resolved with the result of contract method execution
  */
 function callContractMethod(payload) {
-  const { contractInstance, interfaceName, method, args } = payload
+  const {
+    args,
+    method,
+    interfaceName,
+    contractInstance,
+  } = payload
 
   return Promise
     .promisify(contractInstance[method].call)(...args)
@@ -117,7 +123,14 @@ function callContractMethod(payload) {
  * @returns Promise that will be resolved with the hash of the contract transaction
  */
 async function sendContractTransaction(payload) {
-  const { contractInstance, interfaceName, method, props, args } = payload
+  const {
+    args,
+    props,
+    method,
+    interfaceName,
+    contractInstance,
+  } = payload
+
   const { privateKey } = props
   const contractMethod = contractInstance[method]
 
@@ -127,8 +140,8 @@ async function sendContractTransaction(payload) {
   const transactionObject = { from: address }
   args.push(transactionObject)
 
-  const rawTx = await getContractRawTx({ props, address, contractMethod, args })
-  const signedTx = signTx(rawTx, privateKey)
+  const rawTx = await txUtils.getContractRawTx({ props, address, contractMethod, args })
+  const signedTx = txUtils.signTx(rawTx, privateKey)
 
   return Promise
     .promisify(jWeb3.eth.sendRawTransaction)(signedTx)
@@ -153,8 +166,16 @@ async function sendContractTransaction(payload) {
  * @returns {object} The event emitter (@see subscribe)
  */
 function subscribeToContractEvent(payload) {
-  const { props, contractInstance, method } = payload
-  const { options, callback } = props
+  const {
+    props,
+    method,
+    contractInstance,
+  } = payload
+
+  const {
+    options,
+    callback,
+  } = props
 
   return subscribe(contractInstance[method], options, callback)
 }
@@ -174,8 +195,15 @@ function subscribeToContractEvent(payload) {
  * @returns Promise that will be resolved with past events (@see getEvents)
  */
 function getPastContractEvents(payload) {
-  const { props, contractInstance } = payload
-  const { event, options } = props
+  const {
+    props,
+    contractInstance,
+  } = payload
+
+  const {
+    event,
+    options,
+  } = props
 
   return getEvents(contractInstance[event], options)
 }
@@ -199,18 +227,28 @@ function getPastContractEvents(payload) {
  * @returns Promise (@see getContractGasLimit)
  */
 function estimateContractGas(payload) {
-  const { contractInstance, props } = payload
-  const { method, args, privateKey, from } = props
+  const {
+    props,
+    contractInstance,
+  } = payload
 
-  const address = (privateKey)
-    ? getAddressFromPrivateKey(privateKey)
-    : from
+  const {
+    args,
+    from,
+    method,
+  } = props
 
   // Extend contract method args. Add transaction object as last argument
-  const transactionObject = { from: address }
+  const transactionObject = { from }
   args.push(transactionObject)
 
-  return getContractGasLimit(contractInstance[method], args)
+  return txUtils.estimateContractGas(contractInstance[method], args)
 }
 
-export default { call, sendTransaction, subscribeToEvent, getPastEvents, estimateGas }
+export default {
+  call,
+  estimateGas,
+  getPastEvents,
+  sendTransaction,
+  subscribeToEvent,
+}

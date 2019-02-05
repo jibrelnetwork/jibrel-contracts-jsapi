@@ -47,13 +47,19 @@ export function sendTransaction(props) {
  * @returns Promise that will be resolved with balance of the provided address
  */
 export function getBalance(props = {}) {
-  const { address, defaultBlock } = props
+  const {
+    address,
+    defaultBlock,
+  } = props
 
   return ethMethod.call({
     props,
     interfaceName,
     method: 'getBalance',
-    args: [address, defaultBlock],
+    args: [
+      address,
+      defaultBlock,
+    ],
   })
 }
 
@@ -73,13 +79,19 @@ export function getBalance(props = {}) {
  * @returns Promise that will be resolved with code of the provided address
  */
 export function getCode(props = {}) {
-  const { address, defaultBlock } = props
+  const {
+    address,
+    defaultBlock,
+  } = props
 
   return ethMethod.call({
     props,
     interfaceName,
     method: 'getCode',
-    args: [address, defaultBlock],
+    args: [
+      address,
+      defaultBlock,
+    ],
   })
 }
 
@@ -114,20 +126,26 @@ export function getBlockNumber(props = {}) {
  * @param {object} props={} - API function properties
  * @param {string} props.rpcaddr - RPC address of Ethereum node to connect on
  * @param {number} props.rpcport - RPC port of Ethereum node to connect on
- * @param {string} [props.blockId] - block number or hash. Or the string "earliest"/"latest"/"pending"
+ * @param {string} [props.blockId] - Redefines of web3.eth.defaultBlock
  * @param {boolean} [props.returnTransactionObjects] - return all transactions as objects if true
  * @param {boolean} [props.ssl] - Defines using of ssl for connection or not
  *
  * @returns Promise that will be resolved with block data
  */
 export function getBlock(props = {}) {
-  const { blockId, returnTransactionObjects } = props
+  const {
+    blockId,
+    returnTransactionObjects,
+  } = props
 
   return ethMethod.call({
     props,
     interfaceName,
     method: 'getBlock',
-    args: [blockId || 'latest', returnTransactionObjects],
+    args: [
+      blockId || 'latest',
+      returnTransactionObjects,
+    ],
   })
 }
 
@@ -233,25 +251,66 @@ export function estimateGas(props) {
   return ethMethod.estimateGas({ props, interfaceName, method: 'estimateGas' })
 }
 
+/**
+ * @async
+ * @function getNonce
+ *
+ * @description Gets nonce number for the address
+ *
+ * @param {object} props - API function properties
+ * @param {string} props.rpcaddr - RPC address of Ethereum node to connect on
+ * @param {number} props.rpcport - RPC port of Ethereum node to connect on
+ * @param {string} props.address - Ethereum address
+ * @param {(number|string)} [props.defaultBlock] - Redefines of web3.eth.defaultBlock
+ * @param {boolean} [props.ssl] - Defines using of ssl for connection or not
+ *
+ * @returns Promise that will be resolved with nonce number
+ */
 export function getNonce(props) {
-  return ethMethod.getNonce({ props, interfaceName, method: 'getNonce' })
+  const {
+    address,
+    defaultBlock,
+  } = props
+
+  return ethMethod.getNonce({
+    props,
+    interfaceName,
+    method: 'getNonce',
+    args: [
+      address,
+      defaultBlock,
+    ],
+  })
 }
 
+/**
+ * @async
+ * @function getGasPrice
+ *
+ * @description Gets current gas price median value for latest X blocks
+ *
+ * @param {object} props - API function properties
+ * @param {string} props.rpcaddr - RPC address of Ethereum node to connect on
+ * @param {number} props.rpcport - RPC port of Ethereum node to connect on
+ * @param {boolean} [props.ssl] - Defines using of ssl for connection or not
+ *
+ * @returns Promise that will be resolved with current gas price value
+ */
 export function getGasPrice(props) {
   return ethMethod.getGasPrice({ props, interfaceName, method: 'getGasPrice' })
 }
 
 export default {
-  sendTransaction,
-  getBalance,
-  getBlockNumber,
-  getBlock,
   getCode,
-  getTransaction,
-  getTransactionReceipt,
-  getLogsFilter,
-  getPastLogs,
-  estimateGas,
   getNonce,
+  getBlock,
+  getBalance,
+  estimateGas,
   getGasPrice,
+  getPastLogs,
+  getLogsFilter,
+  getBlockNumber,
+  getTransaction,
+  sendTransaction,
+  getTransactionReceipt,
 }
