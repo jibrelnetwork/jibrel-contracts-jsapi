@@ -280,11 +280,15 @@ Returns Promise that will be resolved with the past event logs.
 
 Returns Promise that will be resolved with estimate gas value.
 
+Only one of the two params (`privateKey` or `from`) is required.
+`privateKey` has higher priority
+
 ##### props
 
   * rpcaddr: RPC address of Ethereum node to connect on
   * rpcport: RPC port of Ethereum node to connect on
   * contractAddress: Contract address
+  * from: Owner address
   * privateKey: Private key (64 hex symbols, without '0x' prefix)
   * method: Method name
   * args: Method arguments

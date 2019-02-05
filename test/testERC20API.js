@@ -730,7 +730,7 @@ describe('ERC20 API', function() {
 
   describe('estimateGas', function() {
 
-    it('returns the used gas for the simulated call/transaction', function(done) {
+    it('returns the used gas for the simulated call/transaction (using privateKey)', function(done) {
       erc20.estimateGas({
         rpcaddr,
         rpcport,
@@ -745,6 +745,22 @@ describe('ERC20 API', function() {
         done()
       }).catch(done)
     })
+
+    it('returns the used gas for the simulated call/transaction (using from)', function(done) {
+      erc20.estimateGas({
+        rpcaddr,
+        rpcport,
+        contractAddress,
+        from: owner,
+        method: 'transfer',
+        args: [to, value],
+      }).then((result) => {
+        result.should.be.a.Number()
+        result.should.be.greaterThan(0)
+
+        done()
+      }).catch(done)
+    })    
 
     describe('returns error', function() {
 

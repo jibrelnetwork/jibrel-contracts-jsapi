@@ -38,7 +38,10 @@ const allEvents = Joi.object().keys({
 
 const Transfer = allEvents
 
-const estimateGas = Joi.object().keys(estimateGasKeys)
+const estimateGas = Joi
+  .object()
+  .keys(estimateGasKeys)
+  .xor('privateKey', 'from')
 
 export default {
   totalSupply,

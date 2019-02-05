@@ -185,21 +185,26 @@ function getPastContractEvents(payload) {
  * @function estimateContractGas
  *
  * @description Gets estimate gas for the contract transaction
+ * Only one of the two params ({privateKey} or {from}) is required
+ * {privateKey} has higher priority
  *
  * @param {object} payload - Payload object
  * @param {object} payload.props - API function properties
  * @param {string} payload.props.method - Contract method name
  * @param {array} payload.props.args - Contract method arguments
  * @param {string} payload.props.privateKey - Private key (64 hex symbols, without '0x' prefix)
+ * @param {string} payload.props.from - Address from (42 hex symbols, with '0x' prefix)
  * @param {object} payload.contractInstance - Contract instance
  *
  * @returns Promise (@see getContractGasLimit)
  */
 function estimateContractGas(payload) {
   const { contractInstance, props } = payload
-  const { method, args, privateKey } = props
+  const { method, args, privateKey, from } = props
 
-  const address = getAddressFromPrivateKey(privateKey)
+  const address = (privateKey)
+    ? getAddressFromPrivateKey(privateKey)
+    : from
 
   // Extend contract method args. Add transaction object as last argument
   const transactionObject = { from: address }
