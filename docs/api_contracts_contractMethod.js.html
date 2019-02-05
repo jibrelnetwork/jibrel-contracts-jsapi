@@ -33,17 +33,18 @@
 
 import Promise from 'bluebird'
 
+import config from '../../config'
+import validate from '../../validation'
+import checkWeb3 from '../../utils/checkWeb3'
 import getContractInstance from './getContractInstance'
-
 import getAddressFromPrivateKey from '../getAddressFromPrivateKey'
 
-import validate from '../../validation'
+import {
+  getEvents,
+  subscribe,
+} from '../../utils/eventUtils'
 
-import checkWeb3 from '../../utils/checkWeb3'
-import { getEvents, subscribe } from '../../utils/eventUtils'
-import { signTx, getContractRawTx, getContractGasLimit } from '../../utils/txUtils'
-
-import config from '../../config'
+import * as txUtils from '../../utils/txUtils'
 
 /**
  * @async
@@ -118,7 +119,12 @@ function prepareContractInstanceMethod(payload) {
  * @returns Promise that will be resolved with the result of contract method execution
  */
 function callContractMethod(payload) {
-  const { contractInstance, interfaceName, method, args } = payload
+  const {
+    args,
+    method,
+    interfaceName,
+    contractInstance,
+  } = payload
 
   return Promise
     .promisify(contractInstance[method].call)(...args)
@@ -145,7 +151,14 @@ function callContractMethod(payload) {
  * @returns Promise that will be resolved with the hash of the contract transaction
  */
 async function sendContractTransaction(payload) {
-  const { contractInstance, interfaceName, method, props, args } = payload
+  const {
+    args,
+    props,
+    method,
+    interfaceName,
+    contractInstance,
+  } = payload
+
   const { privateKey } = props
   const contractMethod = contractInstance[method]
 
@@ -155,8 +168,8 @@ async function sendContractTransaction(payload) {
   const transactionObject = { from: address }
   args.push(transactionObject)
 
-  const rawTx = await getContractRawTx({ props, address, contractMethod, args })
-  const signedTx = signTx(rawTx, privateKey)
+  const rawTx = await txUtils.getContractRawTx({ props, address, contractMethod, args })
+  const signedTx = txUtils.signTx(rawTx, privateKey)
 
   return Promise
     .promisify(jWeb3.eth.sendRawTransaction)(signedTx)
@@ -181,8 +194,16 @@ async function sendContractTransaction(payload) {
  * @returns {object} The event emitter (@see subscribe)
  */
 function subscribeToContractEvent(payload) {
-  const { props, contractInstance, method } = payload
-  const { options, callback } = props
+  const {
+    props,
+    method,
+    contractInstance,
+  } = payload
+
+  const {
+    options,
+    callback,
+  } = props
 
   return subscribe(contractInstance[method], options, callback)
 }
@@ -202,8 +223,15 @@ function subscribeToContractEvent(payload) {
  * @returns Promise that will be resolved with past events (@see getEvents)
  */
 function getPastContractEvents(payload) {
-  const { props, contractInstance } = payload
-  const { event, options } = props
+  const {
+    props,
+    contractInstance,
+  } = payload
+
+  const {
+    event,
+    options,
+  } = props
 
   return getEvents(contractInstance[event], options)
 }
@@ -213,30 +241,45 @@ function getPastContractEvents(payload) {
  * @function estimateContractGas
  *
  * @description Gets estimate gas for the contract transaction
+ * Only one of the two params ({privateKey} or {from}) is required
+ * {privateKey} has higher priority
  *
  * @param {object} payload - Payload object
  * @param {object} payload.props - API function properties
  * @param {string} payload.props.method - Contract method name
  * @param {array} payload.props.args - Contract method arguments
  * @param {string} payload.props.privateKey - Private key (64 hex symbols, without '0x' prefix)
+ * @param {string} payload.props.from - Address from (42 hex symbols, with '0x' prefix)
  * @param {object} payload.contractInstance - Contract instance
  *
  * @returns Promise (@see getContractGasLimit)
  */
 function estimateContractGas(payload) {
-  const { contractInstance, props } = payload
-  const { method, args, privateKey } = props
+  const {
+    props,
+    contractInstance,
+  } = payload
 
-  const address = getAddressFromPrivateKey(privateKey)
+  const {
+    args,
+    from,
+    method,
+  } = props
 
   // Extend contract method args. Add transaction object as last argument
-  const transactionObject = { from: address }
+  const transactionObject = { from }
   args.push(transactionObject)
 
-  return getContractGasLimit(contractInstance[method], args)
+  return txUtils.estimateContractGas(contractInstance[method], args)
 }
 
-export default { call, sendTransaction, subscribeToEvent, getPastEvents, estimateGas }
+export default {
+  call,
+  estimateGas,
+  getPastEvents,
+  sendTransaction,
+  subscribeToEvent,
+}
 </code></pre>
         </article>
     </section>
@@ -247,13 +290,13 @@ export default { call, sendTransaction, subscribeToEvent, getPastEvents, estimat
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Events</h3><ul><li><a href="global.html#event:subscribeDataEvent">subscribeDataEvent</a></li><li><a href="global.html#event:subscribeErrorEvent">subscribeErrorEvent</a></li></ul><h3>Global</h3><ul><li><a href="global.html#add0x">add0x</a></li><li><a href="global.html#allEvents">allEvents</a></li><li><a href="global.html#balanceOf">balanceOf</a></li><li><a href="global.html#burn">burn</a></li><li><a href="global.html#BurnEvent">BurnEvent</a></li><li><a href="global.html#call">call</a></li><li><a href="global.html#callContractMethod">callContractMethod</a></li><li><a href="global.html#callETHMethod">callETHMethod</a></li><li><a href="global.html#checkWeb3">checkWeb3</a></li><li><a href="global.html#decimals">decimals</a></li><li><a href="global.html#estimateContractGas">estimateContractGas</a></li><li><a href="global.html#estimateETHGas">estimateETHGas</a></li><li><a href="global.html#estimateGas">estimateGas</a></li><li><a href="global.html#filter">filter</a></li><li><a href="global.html#filterETHLogs">filterETHLogs</a></li><li><a href="global.html#filterLogs">filterLogs</a></li><li><a href="global.html#getAddressFromPrivateKey">getAddressFromPrivateKey</a></li><li><a href="global.html#getBalance">getBalance</a></li><li><a href="global.html#getBlock">getBlock</a></li><li><a href="global.html#getBlockNumber">getBlockNumber</a></li><li><a href="global.html#getCode">getCode</a></li><li><a href="global.html#getContractGasLimit">getContractGasLimit</a></li><li><a href="global.html#getContractInstance">getContractInstance</a></li><li><a href="global.html#getContractRawTx">getContractRawTx</a></li><li><a href="global.html#getEvents">getEvents</a></li><li><a href="global.html#getGasLimit">getGasLimit</a></li><li><a href="global.html#getLogs">getLogs</a></li><li><a href="global.html#getLogsFilter">getLogsFilter</a></li><li><a href="global.html#getPastContractEvents">getPastContractEvents</a></li><li><a href="global.html#getPastETHLogs">getPastETHLogs</a></li><li><a href="global.html#getPastEvents">getPastEvents</a></li><li><a href="global.html#getPastLogs">getPastLogs</a></li><li><a href="global.html#getRawTx">getRawTx</a></li><li><a href="global.html#getTransaction">getTransaction</a></li><li><a href="global.html#getTransactionReceipt">getTransactionReceipt</a></li><li><a href="global.html#memoize">memoize</a></li><li><a href="global.html#mint">mint</a></li><li><a href="global.html#MintEvent">MintEvent</a></li><li><a href="global.html#name">name</a></li><li><a href="global.html#sendContractTransaction">sendContractTransaction</a></li><li><a href="global.html#sendETHTransaction">sendETHTransaction</a></li><li><a href="global.html#sendTransaction">sendTransaction</a></li><li><a href="global.html#signTx">signTx</a></li><li><a href="global.html#subscribe">subscribe</a></li><li><a href="global.html#subscribeToContractEvent">subscribeToContractEvent</a></li><li><a href="global.html#subscribeToEvent">subscribeToEvent</a></li><li><a href="global.html#symbol">symbol</a></li><li><a href="global.html#totalSupply">totalSupply</a></li><li><a href="global.html#transfer">transfer</a></li><li><a href="global.html#Transfer">Transfer</a></li><li><a href="global.html#validate">validate</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Events</h3><ul><li><a href="global.html#event:subscribeDataEvent">subscribeDataEvent</a></li><li><a href="global.html#event:subscribeErrorEvent">subscribeErrorEvent</a></li></ul><h3>Global</h3><ul><li><a href="global.html#add0x">add0x</a></li><li><a href="global.html#allEvents">allEvents</a></li><li><a href="global.html#balanceOf">balanceOf</a></li><li><a href="global.html#burn">burn</a></li><li><a href="global.html#BurnEvent">BurnEvent</a></li><li><a href="global.html#call">call</a></li><li><a href="global.html#callContractMethod">callContractMethod</a></li><li><a href="global.html#callETHMethod">callETHMethod</a></li><li><a href="global.html#checkWeb3">checkWeb3</a></li><li><a href="global.html#decimals">decimals</a></li><li><a href="global.html#estimateContractGas">estimateContractGas</a></li><li><a href="global.html#estimateETHGas">estimateETHGas</a></li><li><a href="global.html#estimateGas">estimateGas</a></li><li><a href="global.html#filter">filter</a></li><li><a href="global.html#filterETHLogs">filterETHLogs</a></li><li><a href="global.html#filterLogs">filterLogs</a></li><li><a href="global.html#getAddressFromPrivateKey">getAddressFromPrivateKey</a></li><li><a href="global.html#getBalance">getBalance</a></li><li><a href="global.html#getBlock">getBlock</a></li><li><a href="global.html#getBlockNumber">getBlockNumber</a></li><li><a href="global.html#getCode">getCode</a></li><li><a href="global.html#getContractInstance">getContractInstance</a></li><li><a href="global.html#getContractRawTx">getContractRawTx</a></li><li><a href="global.html#getETHNonce">getETHNonce</a></li><li><a href="global.html#getEvents">getEvents</a></li><li><a href="global.html#getGasPrice">getGasPrice</a></li><li><a href="global.html#getLogs">getLogs</a></li><li><a href="global.html#getLogsFilter">getLogsFilter</a></li><li><a href="global.html#getNonce">getNonce</a></li><li><a href="global.html#getPastContractEvents">getPastContractEvents</a></li><li><a href="global.html#getPastETHLogs">getPastETHLogs</a></li><li><a href="global.html#getPastEvents">getPastEvents</a></li><li><a href="global.html#getPastLogs">getPastLogs</a></li><li><a href="global.html#getRawTx">getRawTx</a></li><li><a href="global.html#getTransaction">getTransaction</a></li><li><a href="global.html#getTransactionCount">getTransactionCount</a></li><li><a href="global.html#getTransactionReceipt">getTransactionReceipt</a></li><li><a href="global.html#memoize">memoize</a></li><li><a href="global.html#mint">mint</a></li><li><a href="global.html#MintEvent">MintEvent</a></li><li><a href="global.html#name">name</a></li><li><a href="global.html#sendContractTransaction">sendContractTransaction</a></li><li><a href="global.html#sendETHTransaction">sendETHTransaction</a></li><li><a href="global.html#sendTransaction">sendTransaction</a></li><li><a href="global.html#signTx">signTx</a></li><li><a href="global.html#subscribe">subscribe</a></li><li><a href="global.html#subscribeToContractEvent">subscribeToContractEvent</a></li><li><a href="global.html#subscribeToEvent">subscribeToEvent</a></li><li><a href="global.html#symbol">symbol</a></li><li><a href="global.html#totalSupply">totalSupply</a></li><li><a href="global.html#Transfer">Transfer</a></li><li><a href="global.html#transfer">transfer</a></li><li><a href="global.html#validate">validate</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Oct 17 2018 20:12:04 GMT+0300 (STD)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Feb 05 2019 13:46:09 GMT+0300 (MSK)
 </footer>
 
 <script> prettyPrint(); </script>
