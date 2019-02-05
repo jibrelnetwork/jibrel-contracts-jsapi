@@ -75,13 +75,19 @@ export function sendTransaction(props) {
  * @returns Promise that will be resolved with balance of the provided address
  */
 export function getBalance(props = {}) {
-  const { address, defaultBlock } = props
+  const {
+    address,
+    defaultBlock,
+  } = props
 
   return ethMethod.call({
     props,
     interfaceName,
     method: 'getBalance',
-    args: [address, defaultBlock],
+    args: [
+      address,
+      defaultBlock,
+    ],
   })
 }
 
@@ -101,13 +107,19 @@ export function getBalance(props = {}) {
  * @returns Promise that will be resolved with code of the provided address
  */
 export function getCode(props = {}) {
-  const { address, defaultBlock } = props
+  const {
+    address,
+    defaultBlock,
+  } = props
 
   return ethMethod.call({
     props,
     interfaceName,
     method: 'getCode',
-    args: [address, defaultBlock],
+    args: [
+      address,
+      defaultBlock,
+    ],
   })
 }
 
@@ -142,20 +154,26 @@ export function getBlockNumber(props = {}) {
  * @param {object} props={} - API function properties
  * @param {string} props.rpcaddr - RPC address of Ethereum node to connect on
  * @param {number} props.rpcport - RPC port of Ethereum node to connect on
- * @param {string} [props.blockId] - block number or hash. Or the string "earliest"/"latest"/"pending"
+ * @param {string} [props.blockId] - Redefines of web3.eth.defaultBlock
  * @param {boolean} [props.returnTransactionObjects] - return all transactions as objects if true
  * @param {boolean} [props.ssl] - Defines using of ssl for connection or not
  *
  * @returns Promise that will be resolved with block data
  */
 export function getBlock(props = {}) {
-  const { blockId, returnTransactionObjects } = props
+  const {
+    blockId,
+    returnTransactionObjects,
+  } = props
 
   return ethMethod.call({
     props,
     interfaceName,
     method: 'getBlock',
-    args: [blockId || 'latest', returnTransactionObjects],
+    args: [
+      blockId || 'latest',
+      returnTransactionObjects,
+    ],
   })
 }
 
@@ -261,17 +279,68 @@ export function estimateGas(props) {
   return ethMethod.estimateGas({ props, interfaceName, method: 'estimateGas' })
 }
 
+/**
+ * @async
+ * @function getNonce
+ *
+ * @description Gets nonce number for the address
+ *
+ * @param {object} props - API function properties
+ * @param {string} props.rpcaddr - RPC address of Ethereum node to connect on
+ * @param {number} props.rpcport - RPC port of Ethereum node to connect on
+ * @param {string} props.address - Ethereum address
+ * @param {(number|string)} [props.defaultBlock] - Redefines of web3.eth.defaultBlock
+ * @param {boolean} [props.ssl] - Defines using of ssl for connection or not
+ *
+ * @returns Promise that will be resolved with nonce number
+ */
+export function getNonce(props) {
+  const {
+    address,
+    defaultBlock,
+  } = props
+
+  return ethMethod.getNonce({
+    props,
+    interfaceName,
+    method: 'getNonce',
+    args: [
+      address,
+      defaultBlock,
+    ],
+  })
+}
+
+/**
+ * @async
+ * @function getGasPrice
+ *
+ * @description Gets current gas price median value for latest X blocks
+ *
+ * @param {object} props - API function properties
+ * @param {string} props.rpcaddr - RPC address of Ethereum node to connect on
+ * @param {number} props.rpcport - RPC port of Ethereum node to connect on
+ * @param {boolean} [props.ssl] - Defines using of ssl for connection or not
+ *
+ * @returns Promise that will be resolved with current gas price value
+ */
+export function getGasPrice(props) {
+  return ethMethod.getGasPrice({ props, interfaceName, method: 'getGasPrice' })
+}
+
 export default {
-  sendTransaction,
-  getBalance,
-  getBlockNumber,
-  getBlock,
   getCode,
-  getTransaction,
-  getTransactionReceipt,
-  getLogsFilter,
-  getPastLogs,
+  getNonce,
+  getBlock,
+  getBalance,
   estimateGas,
+  getGasPrice,
+  getPastLogs,
+  getLogsFilter,
+  getBlockNumber,
+  getTransaction,
+  sendTransaction,
+  getTransactionReceipt,
 }
 </code></pre>
         </article>
@@ -283,13 +352,13 @@ export default {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Events</h3><ul><li><a href="global.html#event:subscribeDataEvent">subscribeDataEvent</a></li><li><a href="global.html#event:subscribeErrorEvent">subscribeErrorEvent</a></li></ul><h3>Global</h3><ul><li><a href="global.html#add0x">add0x</a></li><li><a href="global.html#allEvents">allEvents</a></li><li><a href="global.html#balanceOf">balanceOf</a></li><li><a href="global.html#burn">burn</a></li><li><a href="global.html#BurnEvent">BurnEvent</a></li><li><a href="global.html#call">call</a></li><li><a href="global.html#callContractMethod">callContractMethod</a></li><li><a href="global.html#callETHMethod">callETHMethod</a></li><li><a href="global.html#checkWeb3">checkWeb3</a></li><li><a href="global.html#decimals">decimals</a></li><li><a href="global.html#estimateContractGas">estimateContractGas</a></li><li><a href="global.html#estimateETHGas">estimateETHGas</a></li><li><a href="global.html#estimateGas">estimateGas</a></li><li><a href="global.html#filter">filter</a></li><li><a href="global.html#filterETHLogs">filterETHLogs</a></li><li><a href="global.html#filterLogs">filterLogs</a></li><li><a href="global.html#getAddressFromPrivateKey">getAddressFromPrivateKey</a></li><li><a href="global.html#getBalance">getBalance</a></li><li><a href="global.html#getBlock">getBlock</a></li><li><a href="global.html#getBlockNumber">getBlockNumber</a></li><li><a href="global.html#getCode">getCode</a></li><li><a href="global.html#getContractGasLimit">getContractGasLimit</a></li><li><a href="global.html#getContractInstance">getContractInstance</a></li><li><a href="global.html#getContractRawTx">getContractRawTx</a></li><li><a href="global.html#getEvents">getEvents</a></li><li><a href="global.html#getGasLimit">getGasLimit</a></li><li><a href="global.html#getLogs">getLogs</a></li><li><a href="global.html#getLogsFilter">getLogsFilter</a></li><li><a href="global.html#getPastContractEvents">getPastContractEvents</a></li><li><a href="global.html#getPastETHLogs">getPastETHLogs</a></li><li><a href="global.html#getPastEvents">getPastEvents</a></li><li><a href="global.html#getPastLogs">getPastLogs</a></li><li><a href="global.html#getRawTx">getRawTx</a></li><li><a href="global.html#getTransaction">getTransaction</a></li><li><a href="global.html#getTransactionReceipt">getTransactionReceipt</a></li><li><a href="global.html#memoize">memoize</a></li><li><a href="global.html#mint">mint</a></li><li><a href="global.html#MintEvent">MintEvent</a></li><li><a href="global.html#name">name</a></li><li><a href="global.html#sendContractTransaction">sendContractTransaction</a></li><li><a href="global.html#sendETHTransaction">sendETHTransaction</a></li><li><a href="global.html#sendTransaction">sendTransaction</a></li><li><a href="global.html#signTx">signTx</a></li><li><a href="global.html#subscribe">subscribe</a></li><li><a href="global.html#subscribeToContractEvent">subscribeToContractEvent</a></li><li><a href="global.html#subscribeToEvent">subscribeToEvent</a></li><li><a href="global.html#symbol">symbol</a></li><li><a href="global.html#totalSupply">totalSupply</a></li><li><a href="global.html#transfer">transfer</a></li><li><a href="global.html#Transfer">Transfer</a></li><li><a href="global.html#validate">validate</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Events</h3><ul><li><a href="global.html#event:subscribeDataEvent">subscribeDataEvent</a></li><li><a href="global.html#event:subscribeErrorEvent">subscribeErrorEvent</a></li></ul><h3>Global</h3><ul><li><a href="global.html#add0x">add0x</a></li><li><a href="global.html#allEvents">allEvents</a></li><li><a href="global.html#balanceOf">balanceOf</a></li><li><a href="global.html#burn">burn</a></li><li><a href="global.html#BurnEvent">BurnEvent</a></li><li><a href="global.html#call">call</a></li><li><a href="global.html#callContractMethod">callContractMethod</a></li><li><a href="global.html#callETHMethod">callETHMethod</a></li><li><a href="global.html#checkWeb3">checkWeb3</a></li><li><a href="global.html#decimals">decimals</a></li><li><a href="global.html#estimateContractGas">estimateContractGas</a></li><li><a href="global.html#estimateETHGas">estimateETHGas</a></li><li><a href="global.html#estimateGas">estimateGas</a></li><li><a href="global.html#filter">filter</a></li><li><a href="global.html#filterETHLogs">filterETHLogs</a></li><li><a href="global.html#filterLogs">filterLogs</a></li><li><a href="global.html#getAddressFromPrivateKey">getAddressFromPrivateKey</a></li><li><a href="global.html#getBalance">getBalance</a></li><li><a href="global.html#getBlock">getBlock</a></li><li><a href="global.html#getBlockNumber">getBlockNumber</a></li><li><a href="global.html#getCode">getCode</a></li><li><a href="global.html#getContractInstance">getContractInstance</a></li><li><a href="global.html#getContractRawTx">getContractRawTx</a></li><li><a href="global.html#getETHNonce">getETHNonce</a></li><li><a href="global.html#getEvents">getEvents</a></li><li><a href="global.html#getGasPrice">getGasPrice</a></li><li><a href="global.html#getLogs">getLogs</a></li><li><a href="global.html#getLogsFilter">getLogsFilter</a></li><li><a href="global.html#getNonce">getNonce</a></li><li><a href="global.html#getPastContractEvents">getPastContractEvents</a></li><li><a href="global.html#getPastETHLogs">getPastETHLogs</a></li><li><a href="global.html#getPastEvents">getPastEvents</a></li><li><a href="global.html#getPastLogs">getPastLogs</a></li><li><a href="global.html#getRawTx">getRawTx</a></li><li><a href="global.html#getTransaction">getTransaction</a></li><li><a href="global.html#getTransactionCount">getTransactionCount</a></li><li><a href="global.html#getTransactionReceipt">getTransactionReceipt</a></li><li><a href="global.html#memoize">memoize</a></li><li><a href="global.html#mint">mint</a></li><li><a href="global.html#MintEvent">MintEvent</a></li><li><a href="global.html#name">name</a></li><li><a href="global.html#sendContractTransaction">sendContractTransaction</a></li><li><a href="global.html#sendETHTransaction">sendETHTransaction</a></li><li><a href="global.html#sendTransaction">sendTransaction</a></li><li><a href="global.html#signTx">signTx</a></li><li><a href="global.html#subscribe">subscribe</a></li><li><a href="global.html#subscribeToContractEvent">subscribeToContractEvent</a></li><li><a href="global.html#subscribeToEvent">subscribeToEvent</a></li><li><a href="global.html#symbol">symbol</a></li><li><a href="global.html#totalSupply">totalSupply</a></li><li><a href="global.html#Transfer">Transfer</a></li><li><a href="global.html#transfer">transfer</a></li><li><a href="global.html#validate">validate</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Oct 17 2018 20:12:04 GMT+0300 (STD)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Feb 05 2019 13:46:09 GMT+0300 (MSK)
 </footer>
 
 <script> prettyPrint(); </script>

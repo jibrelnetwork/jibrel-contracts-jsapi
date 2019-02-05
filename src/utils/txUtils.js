@@ -6,9 +6,8 @@
 import Promise from 'bluebird'
 import Tx from 'ethereumjs-tx'
 
-import add0x from '../utils/add0x'
-
 import config from '../config'
+import add0x from '../utils/add0x'
 
 /**
  * @function signTx
@@ -49,10 +48,10 @@ export async function getRawTx(props) {
   const { address, to, gasLimit, gasPrice, nonce, data } = props
   const value = jWeb3.toHex(props.value)
 
-  const [txNonce, txGasPrice, txGasLimit] = await Promise.all([
-    nonce || getNonce(address),
+  const [txGasPrice, txNonce, txGasLimit] = await Promise.all([
     gasPrice || getGasPrice(),
-    gasLimit || getGasLimit({ data, to, value, from: address }),
+    nonce || getTransactionCount(address),
+    gasLimit || estimateGas({ data, to, value, from: address }),
   ])
 
   return {
@@ -87,11 +86,11 @@ export async function getContractRawTx(payload) {
   const { props, address, contractMethod, args } = payload
   const { contractAddress, gasLimit, gasPrice, nonce } = props
 
-  const [txData, txNonce, txGasPrice, txGasLimit] = await Promise.all([
+  const [txData, txGasPrice, txNonce, txGasLimit] = await Promise.all([
     contractMethod.getData(...args),
-    nonce || getNonce(address),
     gasPrice || getGasPrice(),
-    gasLimit || getContractGasLimit(contractMethod, args),
+    nonce || getTransactionCount(address),
+    gasLimit || estimateContractGas(contractMethod, args),
   ])
 
   return {
@@ -105,7 +104,7 @@ export async function getContractRawTx(payload) {
 
 /**
  * @async
- * @function getGasLimit
+ * @function estimateGas
  *
  * @description Gets gas limit for the transaction
  *
@@ -113,7 +112,7 @@ export async function getContractRawTx(payload) {
  *
  * @returns Promise that will be resolved with estimate gas for sending of the transaction
  */
-export function getGasLimit(props) {
+export function estimateGas(props) {
   return Promise
     .promisify(jWeb3.eth.estimateGas)(props)
     .timeout(config.promiseTimeout, new Error('Can not get estimate gas'))
@@ -121,7 +120,7 @@ export function getGasLimit(props) {
 
 /**
  * @async
- * @function getContractGasLimit
+ * @function estimateContractGas
  *
  * @description Gets gas limit for the contract transaction
  *
@@ -130,7 +129,7 @@ export function getGasLimit(props) {
  *
  * @returns Promise that will be resolved with estimate gas for sending of the contract transaction
  */
-export function getContractGasLimit(method, args) {
+export function estimateContractGas(method, args) {
   return Promise
     .promisify(method.estimateGas)(...args)
     .timeout(config.promiseTimeout, new Error('Can not get estimate gas for contract method'))
@@ -138,17 +137,20 @@ export function getContractGasLimit(method, args) {
 
 /**
  * @async
- * @function getNonce
+ * @function getTransactionCount
  *
  * @description Gets transaction count for specified address
  *
  * @param {string} address - Ethereum address
+ * @param {number|string} [defaultBlock] - Redefines of web3.eth.defaultBlock
  *
  * @returns Promise that will be resolved with nonce for sending the transaction
  */
-export function getNonce(address) {
+export function getTransactionCount(address, defaultBlock) {
+  const block = (defaultBlock == null) ? 'pending' : defaultBlock
+
   return Promise
-    .promisify(jWeb3.eth.getTransactionCount)(address)
+    .promisify(jWeb3.eth.getTransactionCount)(address, block)
     .timeout(config.promiseTimeout, new Error('Can not get transaction count'))
 }
 

@@ -74,19 +74,20 @@ const getGasPrice = Joi.object().keys({
 const getNonce = Joi.object().keys({
   ...generalETHKeys,
   address: validationRules.address.required(),
+  defaultBlock: validationRules.blockId,
 })
 
 export default {
-  sendTransaction,
-  getBalance,
-  getBlockNumber,
-  getBlock,
   getCode,
-  getTransaction,
-  getTransactionReceipt,
-  getLogsFilter,
+  getBlock,
+  getNonce,
+  getBalance,
   getPastLogs,
   estimateGas,
   getGasPrice,
-  getNonce,
+  getLogsFilter,
+  getBlockNumber,
+  getTransaction,
+  sendTransaction,
+  getTransactionReceipt,
 }

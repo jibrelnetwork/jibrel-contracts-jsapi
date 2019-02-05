@@ -145,14 +145,26 @@ export function getPastEvents(props) {
  * @param {string} props.rpcaddr - RPC address of Ethereum node to connect on
  * @param {number} props.rpcport - RPC port of Ethereum node to connect on
  * @param {string} props.contractAddress - Contract address
- * @param {string} props.privateKey - Private key (64 hex symbols, without '0x' prefix)
+ * @param {string} props.from - Transaction sender address
  * @param {string} props.method - Method name
  * @param {array} props.args - Method arguments
  *
  * @returns Promise that will be resolved with estimate gas value
  */
 export function estimateGas(props) {
-  return contractMethod.estimateGas({ props, interfaceName, method: 'estimateGas' })
+  return contractMethod.estimateGas({
+    props,
+    interfaceName,
+    method: 'estimateGas',
+  })
 }
 
-export default { totalSupply, balanceOf, transfer, Transfer, allEvents, getPastEvents, estimateGas }
+export default {
+  transfer,
+  Transfer,
+  allEvents,
+  balanceOf,
+  estimateGas,
+  totalSupply,
+  getPastEvents,
+}

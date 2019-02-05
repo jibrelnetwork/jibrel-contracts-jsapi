@@ -34,9 +34,8 @@
 import Promise from 'bluebird'
 import Tx from 'ethereumjs-tx'
 
-import add0x from '../utils/add0x'
-
 import config from '../config'
+import add0x from '../utils/add0x'
 
 /**
  * @function signTx
@@ -77,10 +76,10 @@ export async function getRawTx(props) {
   const { address, to, gasLimit, gasPrice, nonce, data } = props
   const value = jWeb3.toHex(props.value)
 
-  const [txNonce, txGasPrice, txGasLimit] = await Promise.all([
-    nonce || getNonce(address),
+  const [txGasPrice, txNonce, txGasLimit] = await Promise.all([
     gasPrice || getGasPrice(),
-    gasLimit || getGasLimit({ data, to, value }),
+    nonce || getTransactionCount(address),
+    gasLimit || estimateGas({ data, to, value, from: address }),
   ])
 
   return {
@@ -115,11 +114,11 @@ export async function getContractRawTx(payload) {
   const { props, address, contractMethod, args } = payload
   const { contractAddress, gasLimit, gasPrice, nonce } = props
 
-  const [txData, txNonce, txGasPrice, txGasLimit] = await Promise.all([
+  const [txData, txGasPrice, txNonce, txGasLimit] = await Promise.all([
     contractMethod.getData(...args),
-    nonce || getNonce(address),
     gasPrice || getGasPrice(),
-    gasLimit || getContractGasLimit(contractMethod, args),
+    nonce || getTransactionCount(address),
+    gasLimit || estimateContractGas(contractMethod, args),
   ])
 
   return {
@@ -133,7 +132,7 @@ export async function getContractRawTx(payload) {
 
 /**
  * @async
- * @function getGasLimit
+ * @function estimateGas
  *
  * @description Gets gas limit for the transaction
  *
@@ -141,7 +140,7 @@ export async function getContractRawTx(payload) {
  *
  * @returns Promise that will be resolved with estimate gas for sending of the transaction
  */
-export function getGasLimit(props) {
+export function estimateGas(props) {
   return Promise
     .promisify(jWeb3.eth.estimateGas)(props)
     .timeout(config.promiseTimeout, new Error('Can not get estimate gas'))
@@ -149,7 +148,7 @@ export function getGasLimit(props) {
 
 /**
  * @async
- * @function getContractGasLimit
+ * @function estimateContractGas
  *
  * @description Gets gas limit for the contract transaction
  *
@@ -158,19 +157,37 @@ export function getGasLimit(props) {
  *
  * @returns Promise that will be resolved with estimate gas for sending of the contract transaction
  */
-export function getContractGasLimit(method, args) {
+export function estimateContractGas(method, args) {
   return Promise
     .promisify(method.estimateGas)(...args)
     .timeout(config.promiseTimeout, new Error('Can not get estimate gas for contract method'))
 }
 
-function getNonce(address) {
+/**
+ * @async
+ * @function getTransactionCount
+ *
+ * @description Gets transaction count for specified address
+ *
+ * @param {string} address - Ethereum address
+ * @param {number|string} [defaultBlock] - Redefines of web3.eth.defaultBlock
+ *
+ * @returns Promise that will be resolved with nonce for sending the transaction
+ */
+export function getTransactionCount(address, defaultBlock) {
   return Promise
-    .promisify(jWeb3.eth.getTransactionCount)(address)
+    .promisify(jWeb3.eth.getTransactionCount)(address, defaultBlock)
     .timeout(config.promiseTimeout, new Error('Can not get transaction count'))
 }
 
-function getGasPrice() {
+/**
+ * @function getGasPrice
+ *
+ * @description Request current gas price from ethereum node
+ *
+ * @returns Promise that will be resolved with gasPrice for sending the transaction
+ */
+export function getGasPrice() {
   return Promise
     .promisify(jWeb3.eth.getGasPrice)()
     .timeout(config.promiseTimeout, new Error('Can not get gas price'))
@@ -185,13 +202,13 @@ function getGasPrice() {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Events</h3><ul><li><a href="global.html#event:subscribeDataEvent">subscribeDataEvent</a></li><li><a href="global.html#event:subscribeErrorEvent">subscribeErrorEvent</a></li></ul><h3>Global</h3><ul><li><a href="global.html#add0x">add0x</a></li><li><a href="global.html#allEvents">allEvents</a></li><li><a href="global.html#balanceOf">balanceOf</a></li><li><a href="global.html#burn">burn</a></li><li><a href="global.html#BurnEvent">BurnEvent</a></li><li><a href="global.html#call">call</a></li><li><a href="global.html#callContractMethod">callContractMethod</a></li><li><a href="global.html#callETHMethod">callETHMethod</a></li><li><a href="global.html#checkWeb3">checkWeb3</a></li><li><a href="global.html#decimals">decimals</a></li><li><a href="global.html#estimateContractGas">estimateContractGas</a></li><li><a href="global.html#estimateETHGas">estimateETHGas</a></li><li><a href="global.html#estimateGas">estimateGas</a></li><li><a href="global.html#filter">filter</a></li><li><a href="global.html#filterETHLogs">filterETHLogs</a></li><li><a href="global.html#filterLogs">filterLogs</a></li><li><a href="global.html#getAddressFromPrivateKey">getAddressFromPrivateKey</a></li><li><a href="global.html#getBalance">getBalance</a></li><li><a href="global.html#getBlock">getBlock</a></li><li><a href="global.html#getBlockNumber">getBlockNumber</a></li><li><a href="global.html#getCode">getCode</a></li><li><a href="global.html#getContractGasLimit">getContractGasLimit</a></li><li><a href="global.html#getContractInstance">getContractInstance</a></li><li><a href="global.html#getContractRawTx">getContractRawTx</a></li><li><a href="global.html#getEvents">getEvents</a></li><li><a href="global.html#getGasLimit">getGasLimit</a></li><li><a href="global.html#getLogs">getLogs</a></li><li><a href="global.html#getLogsFilter">getLogsFilter</a></li><li><a href="global.html#getPastContractEvents">getPastContractEvents</a></li><li><a href="global.html#getPastETHLogs">getPastETHLogs</a></li><li><a href="global.html#getPastEvents">getPastEvents</a></li><li><a href="global.html#getPastLogs">getPastLogs</a></li><li><a href="global.html#getRawTx">getRawTx</a></li><li><a href="global.html#getTransaction">getTransaction</a></li><li><a href="global.html#getTransactionReceipt">getTransactionReceipt</a></li><li><a href="global.html#memoize">memoize</a></li><li><a href="global.html#mint">mint</a></li><li><a href="global.html#MintEvent">MintEvent</a></li><li><a href="global.html#name">name</a></li><li><a href="global.html#sendContractTransaction">sendContractTransaction</a></li><li><a href="global.html#sendETHTransaction">sendETHTransaction</a></li><li><a href="global.html#sendTransaction">sendTransaction</a></li><li><a href="global.html#signTx">signTx</a></li><li><a href="global.html#subscribe">subscribe</a></li><li><a href="global.html#subscribeToContractEvent">subscribeToContractEvent</a></li><li><a href="global.html#subscribeToEvent">subscribeToEvent</a></li><li><a href="global.html#symbol">symbol</a></li><li><a href="global.html#totalSupply">totalSupply</a></li><li><a href="global.html#transfer">transfer</a></li><li><a href="global.html#Transfer">Transfer</a></li><li><a href="global.html#validate">validate</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Events</h3><ul><li><a href="global.html#event:subscribeDataEvent">subscribeDataEvent</a></li><li><a href="global.html#event:subscribeErrorEvent">subscribeErrorEvent</a></li></ul><h3>Global</h3><ul><li><a href="global.html#add0x">add0x</a></li><li><a href="global.html#allEvents">allEvents</a></li><li><a href="global.html#balanceOf">balanceOf</a></li><li><a href="global.html#burn">burn</a></li><li><a href="global.html#BurnEvent">BurnEvent</a></li><li><a href="global.html#call">call</a></li><li><a href="global.html#callContractMethod">callContractMethod</a></li><li><a href="global.html#callETHMethod">callETHMethod</a></li><li><a href="global.html#checkWeb3">checkWeb3</a></li><li><a href="global.html#decimals">decimals</a></li><li><a href="global.html#estimateContractGas">estimateContractGas</a></li><li><a href="global.html#estimateETHGas">estimateETHGas</a></li><li><a href="global.html#estimateGas">estimateGas</a></li><li><a href="global.html#filter">filter</a></li><li><a href="global.html#filterETHLogs">filterETHLogs</a></li><li><a href="global.html#filterLogs">filterLogs</a></li><li><a href="global.html#getAddressFromPrivateKey">getAddressFromPrivateKey</a></li><li><a href="global.html#getBalance">getBalance</a></li><li><a href="global.html#getBlock">getBlock</a></li><li><a href="global.html#getBlockNumber">getBlockNumber</a></li><li><a href="global.html#getCode">getCode</a></li><li><a href="global.html#getContractInstance">getContractInstance</a></li><li><a href="global.html#getContractRawTx">getContractRawTx</a></li><li><a href="global.html#getETHNonce">getETHNonce</a></li><li><a href="global.html#getEvents">getEvents</a></li><li><a href="global.html#getGasPrice">getGasPrice</a></li><li><a href="global.html#getLogs">getLogs</a></li><li><a href="global.html#getLogsFilter">getLogsFilter</a></li><li><a href="global.html#getNonce">getNonce</a></li><li><a href="global.html#getPastContractEvents">getPastContractEvents</a></li><li><a href="global.html#getPastETHLogs">getPastETHLogs</a></li><li><a href="global.html#getPastEvents">getPastEvents</a></li><li><a href="global.html#getPastLogs">getPastLogs</a></li><li><a href="global.html#getRawTx">getRawTx</a></li><li><a href="global.html#getTransaction">getTransaction</a></li><li><a href="global.html#getTransactionCount">getTransactionCount</a></li><li><a href="global.html#getTransactionReceipt">getTransactionReceipt</a></li><li><a href="global.html#memoize">memoize</a></li><li><a href="global.html#mint">mint</a></li><li><a href="global.html#MintEvent">MintEvent</a></li><li><a href="global.html#name">name</a></li><li><a href="global.html#sendContractTransaction">sendContractTransaction</a></li><li><a href="global.html#sendETHTransaction">sendETHTransaction</a></li><li><a href="global.html#sendTransaction">sendTransaction</a></li><li><a href="global.html#signTx">signTx</a></li><li><a href="global.html#subscribe">subscribe</a></li><li><a href="global.html#subscribeToContractEvent">subscribeToContractEvent</a></li><li><a href="global.html#subscribeToEvent">subscribeToEvent</a></li><li><a href="global.html#symbol">symbol</a></li><li><a href="global.html#totalSupply">totalSupply</a></li><li><a href="global.html#Transfer">Transfer</a></li><li><a href="global.html#transfer">transfer</a></li><li><a href="global.html#validate">validate</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Oct 17 2018 20:12:04 GMT+0300 (STD)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Feb 05 2019 13:46:09 GMT+0300 (MSK)
 </footer>
 
 <script> prettyPrint(); </script>

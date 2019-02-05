@@ -311,10 +311,24 @@ describe('ETH API', function() {
   })
 
   describe('getNonce', function() {
-    it('nonce for contract address with existing code', function(done) {
+    it('nonce for contract address with existing code (without specifying block)', function(done) {
       eth.getNonce({
         rpcaddr,
         rpcport,
+        address: addressWithContract,
+      }).then((result) => {
+        result.should.be.a.Number()
+        result.should.be.greaterThan(0)
+
+        done()
+      }).catch(done)
+    })
+
+    it('nonce for contract address with existing code (with specifying block)', function(done) {
+      eth.getNonce({
+        rpcaddr,
+        rpcport,
+        defaultBlock: 'pending',
         address: addressWithContract,
       }).then((result) => {
         result.should.be.a.Number()
