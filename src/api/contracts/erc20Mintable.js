@@ -76,12 +76,10 @@ export function allEvents(props) {
  * @param {object} props - API function properties
  * @param {string} props.rpcaddr - RPC address of Ethereum node to connect on
  * @param {number} props.rpcport - RPC port of Ethereum node to connect on
- * @param {string} props.contractAddress - Contract address
- * @param {string} props.event - Event name (@see subscribe)
- * @param {object} [props.options] - Event options (@see subscribe)
+ * @param {object} [props.options] - Event options (@see getEvents)
  * @param {boolean} [props.ssl] - Defines using of ssl for connection or not
  *
- * @returns Promise that will be resolved with the event logs (@see getPast)
+ * @returns Promise that will be resolved with the event logs (@see getEvents)
  */
 export function getPastEvents(props) {
   return contractMethod.getPastEvents({ props, interfaceName, method: 'getPastEvents' })

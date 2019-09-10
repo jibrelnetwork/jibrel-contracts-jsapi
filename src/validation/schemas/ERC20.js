@@ -5,7 +5,11 @@
 
 import Joi from 'joi-browser'
 
-import validationRules, { generalContractKeys, estimateContractGasKeys } from '../validationRules'
+import validationRules, {
+  generalETHKeys,
+  generalContractKeys,
+  estimateContractGasKeys,
+} from '../validationRules'
 
 const totalSupply = Joi.object().keys(generalContractKeys)
 
@@ -25,8 +29,7 @@ const transfer = Joi.object().keys({
 })
 
 const getPastEvents = Joi.object().keys({
-  ...generalContractKeys,
-  event: validationRules.event.required(),
+  ...generalETHKeys,
   options: validationRules.eventOptions,
 })
 

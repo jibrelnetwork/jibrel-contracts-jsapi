@@ -5,11 +5,13 @@
 
 import Joi from 'joi-browser'
 
-import validationRules, { generalContractKeys } from '../validationRules'
+import validationRules, {
+  generalETHKeys,
+  generalContractKeys,
+} from '../validationRules'
 
 const getPastEvents = Joi.object().keys({
-  ...generalContractKeys,
-  event: validationRules.event.required(),
+  ...generalETHKeys,
   options: validationRules.eventOptions,
 })
 

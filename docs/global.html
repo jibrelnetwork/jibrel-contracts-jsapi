@@ -3738,7 +3738,7 @@ Only one of the two params ({privateKey} or {from}) is required
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="api_contracts_contractMethod.js.html">api/contracts/contractMethod.js</a>, <a href="api_contracts_contractMethod.js.html#line211">line 211</a>
+        <a href="api_contracts_contractMethod.js.html">api/contracts/contractMethod.js</a>, <a href="api_contracts_contractMethod.js.html#line199">line 199</a>
     </li></ul></dd>
     
 
@@ -4495,7 +4495,7 @@ Only one of the two params ({privateKey} or {from}) is required
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="api_contracts_erc20.js.html">api/contracts/erc20.js</a>, <a href="api_contracts_erc20.js.html#line138">line 138</a>
+        <a href="api_contracts_erc20.js.html">api/contracts/erc20.js</a>, <a href="api_contracts_erc20.js.html#line136">line 136</a>
     </li></ul></dd>
     
 
@@ -8186,7 +8186,7 @@ Only one of the two params ({privateKey} or {from}) is required
     
 
     
-    <h4 class="name" id="getEvents"><span class="type-signature">(async) </span>getEvents<span class="signature">(Event, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="getEvents"><span class="type-signature">(async) </span>getEvents<span class="signature">(options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
     
 
     
@@ -8230,41 +8230,6 @@ Only one of the two params ({privateKey} or {from}) is required
     </thead>
 
     <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>Event</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last">Function to get past events</td>
-        </tr>
-
     
 
         <tr>
@@ -8325,39 +8290,6 @@ Only one of the two params ({privateKey} or {from}) is required
     </thead>
 
     <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>filter</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">Filter options by indexed event parameters</td>
-        </tr>
-
     
 
         <tr>
@@ -9043,7 +8975,7 @@ Only one of the two params ({privateKey} or {from}) is required
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_txUtils.js.html">utils/txUtils.js</a>, <a href="utils_txUtils.js.html#line155">line 155</a>
+        <a href="utils_txUtils.js.html">utils/txUtils.js</a>, <a href="utils_txUtils.js.html#line157">line 157</a>
     </li></ul></dd>
     
 
@@ -10273,37 +10205,6 @@ Only one of the two params ({privateKey} or {from}) is required
 
         <tr>
             
-                <td class="name"><code>event</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">Event name</td>
-        </tr>
-
-    
-
-        <tr>
-            
                 <td class="name"><code>options</code></td>
             
 
@@ -10338,29 +10239,6 @@ Only one of the two params ({privateKey} or {from}) is required
 </table>
 
             </td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>contractInstance</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Contract instance</td>
         </tr>
 
     
@@ -10857,68 +10735,6 @@ Only one of the two params ({privateKey} or {from}) is required
 
         <tr>
             
-                <td class="name"><code>contractAddress</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">Contract address</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>event</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">Event name (@see subscribe)</td>
-        </tr>
-
-    
-
-        <tr>
-            
                 <td class="name"><code>options</code></td>
             
 
@@ -10945,7 +10761,7 @@ Only one of the two params ({privateKey} or {from}) is required
 
             
 
-            <td class="description last">Event options (@see subscribe)</td>
+            <td class="description last">Event options (@see getEvents)</td>
         </tr>
 
     
@@ -11053,7 +10869,7 @@ Only one of the two params ({privateKey} or {from}) is required
 
         
 <div class="param-desc">
-    Promise that will be resolved with the event logs (@see getPast)
+    Promise that will be resolved with the event logs (@see getEvents)
 </div>
 
 
@@ -11306,68 +11122,6 @@ Only one of the two params ({privateKey} or {from}) is required
 
         <tr>
             
-                <td class="name"><code>contractAddress</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">Contract address</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>event</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">Event name (@see subscribe)</td>
-        </tr>
-
-    
-
-        <tr>
-            
                 <td class="name"><code>options</code></td>
             
 
@@ -11394,7 +11148,7 @@ Only one of the two params ({privateKey} or {from}) is required
 
             
 
-            <td class="description last">Event options (@see subscribe)</td>
+            <td class="description last">Event options (@see getEvents)</td>
         </tr>
 
     
@@ -11502,7 +11256,7 @@ Only one of the two params ({privateKey} or {from}) is required
 
         
 <div class="param-desc">
-    Promise that will be resolved with the event logs (@see getPast)
+    Promise that will be resolved with the event logs (@see getEvents)
 </div>
 
 
@@ -19225,7 +18979,7 @@ Only one of the two params ({privateKey} or {from}) is required
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Feb 05 2019 13:46:09 GMT+0300 (MSK)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Sep 10 2019 14:16:39 GMT+0300 (MSK)
 </footer>
 
 <script> prettyPrint(); </script>
