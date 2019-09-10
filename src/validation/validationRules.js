@@ -23,8 +23,8 @@ const blockString = Joi.string().valid(['latest', 'pending'])
 const hash = Joi.string().regex(/^[a-fx0-9]+$/i)
 
 const options = {
-  fromBlock: [Joi.number().integer().min(0), blockString],
-  toBlock: [Joi.number().integer().min(0), blockString],
+  toBlock: [hash, blockString],
+  fromBlock: [hash, blockString],
   address: [hash.length(42), Joi.array().items(hash.length(42))],
   topics: Joi.array().allow(null),
 }

@@ -1,12 +1,12 @@
 /**
- * @file Manages helper functions to work with events
+ * @file Manages helper functions to work with smart contract events
  * @author Ivan Violentov <ivan.violentov@jibrel.network>
  */
 
-import Promise from 'bluebird'
 import EventEmitter from 'events'
+import request from 'request-promise'
 
-import config from '../config'
+let ETH_GETLOGS_ID = 100000
 
 /**
  * @callback eventCallback
@@ -81,9 +81,7 @@ export function subscribe(Event, options = {}, callback) {
  *
  * @description Gets past events
  *
- * @param {function} Event - Function to get past events
  * @param {object} [options={}] - Event options
- * @param {object} [options.filter] - Filter options by indexed event parameters
  * @param {(number|string)} [options.fromBlock] - The number of the earliest block
  * @param {(number|string)} [options.toBlock] - The number of the latest block
  * @param {(string|string[])} [options.address] - An address(es) to get logs from
@@ -91,23 +89,21 @@ export function subscribe(Event, options = {}, callback) {
  *
  * @returns Promise that will be resolved with past events
  */
-export function getEvents(Event, options = {}) {
-  /**
-   * web3@0.x.x event takes filter and additional options in different params
-   * web3@1.x.x event takes all options in one param
-   */
-  const { filter, ...additionalOptions } = options
-  const event = Event(filter, additionalOptions)
+export function getEvents(options = {}) {
+  const id = ETH_GETLOGS_ID
 
-  /**
-   * event.get uses instance methods inside,
-   * but bluebird promisify don't save context,
-   * so need to bind to event object directly
-   */
-  return Promise
-    .promisify(event.get.bind(event))()
-    .timeout(
-      config.promiseTimeout,
-      new Error(`Can not get past events within ${config.promiseTimeout}ms`)
-    )
+  // eslint-disable-next-line no-plusplus
+  ETH_GETLOGS_ID++
+
+  return request({
+    method: 'POST',
+    uri: jWeb3.currentProvider.host,
+    body: {
+      id,
+      jsonrpc: '2.0',
+      method: 'eth_getLogs',
+      params: [options],
+    },
+    json: true,
+  }).then(response => response && response.result)
 }

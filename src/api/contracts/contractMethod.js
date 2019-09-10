@@ -188,24 +188,12 @@ function subscribeToContractEvent(payload) {
  *
  * @param {object} payload - Payload object
  * @param {object} payload.props - API function properties
- * @param {string} payload.props.event - Event name
  * @param {object} [payload.props.options] - Event options (@see getEvents)
- * @param {object} payload.contractInstance - Contract instance
  *
  * @returns Promise that will be resolved with past events (@see getEvents)
  */
 function getPastContractEvents(payload) {
-  const {
-    props,
-    contractInstance,
-  } = payload
-
-  const {
-    event,
-    options,
-  } = props
-
-  return getEvents(contractInstance[event], options)
+  return getEvents(payload.props.options)
 }
 
 /**
